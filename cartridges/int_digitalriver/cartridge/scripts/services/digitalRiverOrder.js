@@ -72,7 +72,12 @@ function createFulfillment(body) {
     if (callResult.ok) {
         logger.info('Fulfilments were successfully posted');
     } else {
-        logger.error('Error while while posting fulfilments for order {0}', body.orderId);
+        if (callResult.error >= 500 && callResult.error < 600) {
+            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
+            callResult = digitalRiver.drServiceRetryLogic(drOrderService, body, true);
+        } else {
+            logger.error('Error while while posting fulfilments for order {0}', body.orderId);
+        }
     }
     return callResult;
 }

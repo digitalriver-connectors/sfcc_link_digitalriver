@@ -19,7 +19,12 @@ function createTaxIdentifier(body) {
     if (result.ok) {
         logger.info('tax identifier created {0}', result.object.id);
     } else {
-        logger.error('Error while creating tax identifier: {0}', JSON.stringify(result.errorMessage));
+        if (result.error >= 500 && result.error < 600) {
+            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', result.error, result.errorMessage);
+            result = digitalRiver.drServiceRetryLogic(taxidentifierSvc, body, true);
+        } else {
+            logger.error('Error while creating tax identifier: {0}', JSON.stringify(result.errorMessage));
+        }
     }
     return result;
 }

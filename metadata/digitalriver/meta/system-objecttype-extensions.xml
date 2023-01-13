@@ -187,27 +187,7 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>true</externally-managed-flag>
             </attribute-definition>
-            <attribute-definition attribute-id="drTrackingCompany">
-                <display-name xml:lang="x-default">Tracking Company</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
-            <attribute-definition attribute-id="drTrackingNumber">
-                <display-name xml:lang="x-default">Tracking Number</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
-            <attribute-definition attribute-id="drTrackingUrl">
-                <display-name xml:lang="x-default">Tracking URL</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
+    
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="DigitalRiverAttributes">
@@ -221,9 +201,6 @@
                 <attribute attribute-id="drDuty"/>
                 <attribute attribute-id="drTotalImporterTax"/>
                 <attribute attribute-id="drTotalFees"/>
-                <attribute attribute-id="drTrackingCompany"/>
-                <attribute attribute-id="drTrackingNumber"/>
-                <attribute attribute-id="drTrackingUrl"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -616,6 +593,27 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>true</externally-managed-flag>
             </attribute-definition>
+            <attribute-definition attribute-id="drTrackingCompany">
+                <display-name xml:lang="x-default">Tracking Company</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTrackingNumber">
+                <display-name xml:lang="x-default">Tracking Number</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTrackingUrl">
+                <display-name xml:lang="x-default">Tracking URL</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
             <group-definitions>
             <attribute-group group-id="Digital River">
@@ -626,6 +624,9 @@
                 <attribute attribute-id="drFeeAmount"/>
                 <attribute attribute-id="drFeeTaxAmount"/>
                 <attribute attribute-id="drFeeDetails"/>
+                <attribute attribute-id="drTrackingCompany"/>
+                <attribute attribute-id="drTrackingNumber"/>
+                <attribute attribute-id="drTrackingUrl"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

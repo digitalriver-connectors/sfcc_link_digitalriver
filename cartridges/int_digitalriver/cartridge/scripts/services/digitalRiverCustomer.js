@@ -183,7 +183,15 @@ function createFile(payload) {
         result = callResult.object || null;
         logger.info('Send image of Tax Certificate {0}', payload.fileName);
     } else {
-        logger.error('Error sending image of Tax Certificate: {0}', JSON.stringify(callResult.errorMessage));
+        if (callResult.error >= 500 && callResult.error < 600) {
+            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
+            callResult = digitalRiver.drServiceRetryLogic(drUploadFileSvc, payload, true);
+            if (callResult.ok) {
+                result = callResult.object || null;
+            }
+        } else {
+            logger.error('Error sending image of Tax Certificate: {0}', JSON.stringify(callResult.errorMessage));
+        }
     }
     return result;
 }

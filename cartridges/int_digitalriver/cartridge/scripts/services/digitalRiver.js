@@ -98,6 +98,35 @@ function createDigitalRiverService(relativePath, serviceConfig) {
     return svc;
 }
 
+/**
+ * @param {object} drServicePath  - url path to Digital River endpoint
+ * @param {object} body - Passing request body
+ * @param {boolean} isBody - check request body includes data 
+ * @returns return the oject
+ */
+ function drServiceRetryLogic(drServicePath, body, isBody) {
+    var counterLimit = require('*/cartridge/customData.json').retryLogicCount;
+    var counter = 0;
+    var callResult;
+    do {
+        if (isBody) {
+            callResult = drServicePath.call(body);
+        } else {
+            callResult = drServicePath.call();
+        }
+        if (callResult.ok) {
+            break;
+        }
+        logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
+        counter++;
+    } while (callResult.error >= 500 && callResult.error < 600 && counter < counterLimit);
+    if (callResult.error < 500 || callResult.error >= 600) {
+        logger.error('ERROR::>> ', JSON.stringify(callResult.errorMessage));
+    }
+    return callResult;
+}
+
 module.exports = {
-    createDigitalRiverService: createDigitalRiverService
+    createDigitalRiverService: createDigitalRiverService,
+    drServiceRetryLogic: drServiceRetryLogic
 };

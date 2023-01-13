@@ -219,17 +219,40 @@ function notifyOrderFulfillment(order, items) {
     if (!drOrderId) {
         logger.error('Order {0} has no Digital River id', order.getOrderNo());
     }
+    var i;
+    var body;
+    var result;
+    var mapOfLineItems = new Map();    // stores "drTrackingNumber" as a key and body as a value
 
-    var body = {
-        orderId: drOrderId,
-        items: itemsDRformat
-    };
+    for (i = 0; i < lineItemsToSend.length; i++) {
+        var drTrackingCompany = lineItemsToSend[i].custom.drTrackingCompany;
+        var drTrackingNumber = lineItemsToSend[i].custom.drTrackingNumber;
+        var drTrackingUrl = lineItemsToSend[i].custom.drTrackingUrl;
 
-    order.custom.drTrackingCompany ? (body.trackingCompany = order.custom.drTrackingCompany) : null; // eslint-disable-line no-unused-expressions
-    order.custom.drTrackingNumber ? (body.trackingNumber = order.custom.drTrackingNumber) : null; // eslint-disable-line no-unused-expressions
-    order.custom.drTrackingUrl ? (body.trackingUrl = order.custom.drTrackingUrl) : null; // eslint-disable-line no-unused-expressions
+        if (!drTrackingNumber) {         // checking whether tracking number is empty
+            drTrackingNumber = null;
+        }
 
-    return drOrderAPI.createFulfillment(body);
+        var itemsList = [];
+        if (mapOfLineItems.has(drTrackingNumber)) {
+            itemsList = mapOfLineItems.get(drTrackingNumber).items;
+        }
+        itemsList.push(itemsDRformat[i]);
+        body = {
+            orderId: drOrderId,
+            items: itemsList,
+            trackingCompany: drTrackingCompany,
+            trackingNumber: drTrackingNumber,
+            trackingUrl: drTrackingUrl
+        };
+        mapOfLineItems.set(drTrackingNumber, body);
+    }
+
+    mapOfLineItems.forEach(function (value) {
+        result = drOrderAPI.createFulfillment(value);
+    });
+
+    return result;
 }
 
 /**
