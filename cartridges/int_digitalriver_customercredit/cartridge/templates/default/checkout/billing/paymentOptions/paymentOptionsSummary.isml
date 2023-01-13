@@ -1,0 +1,23 @@
+<div class="payment-details">
+    <div class="row leading-lines">
+        <isset name="index" value="1" scope="page" />
+        <isloop items="${pdict.order.billing.payment.selectedPaymentInstruments}" var="payment">
+            <!-- @IG: Modify the following condition depending on your implementation of secondary payment -->
+            <isif condition="${payment.paymentMethod === 'GIFT_CERTIFICATE'}" />
+                <div class="col-6 start-lines">
+                    <span class="order-receipt-label">${Resource.msg('label.order.sales.customerCredit','digitalriver', null) + ' ' + index++}</span>
+                </div>
+                <div class="col-6 end-lines">
+                    <div class="text-right"><span>${payment.formattedAmount}</span></div>
+                </div>
+            </isif>
+        </isloop>
+    </div>
+    <isloop items="${pdict.order.billing.payment.selectedPaymentInstruments}" var="payment">
+        <isif condition="${payment.paymentMethod === 'CREDIT_CARD'}">
+            <isinclude template="checkout/billing/paymentOptions/creditCardSummary" />
+        <iselseif condition="${payment.paymentMethod === 'DIGITAL_RIVER_DROPIN'}" />
+            <isinclude template="checkout/billing/paymentOptions/dropInSummary" />
+        </isif>
+    </isloop>
+</div>

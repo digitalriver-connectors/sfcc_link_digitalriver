@@ -1,0 +1,40 @@
+{
+    "hooks": [
+        {
+            "name": "dw.order.calculateTax",
+            "script": "./cartridge/scripts/hooks/cart/calculate.js"
+        },
+        {
+            "name": "app.payment.processor.digital_river",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river"
+        },
+        {
+            "name": "app.payment.processor.digital_river_dropin",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_dropin"
+        },
+        {
+            "name": "app.payment.form.processor.digital_river",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_form_processor"
+        },
+        {
+            "name": "app.payment.processor.digital_river_paypal",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_paypal"
+        },
+        {
+            "name": "app.payment.form.processor.digital_river_paypal",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_paypal_form_processor"
+        },
+        {
+            "name": "app.payment.form.processor.digital_river_dropin",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_dropin_form_processor"
+        },
+        {
+            "name": "app.payment.form.processor.digital_river_zero_payment",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_zero_payment_form_processor"
+        },
+        {
+            "name": "app.payment.processor.digital_river_zero_payment",
+            "script": "./cartridge/scripts/hooks/payment/processor/digital_river_zero_payment"
+        }
+    ]
+}

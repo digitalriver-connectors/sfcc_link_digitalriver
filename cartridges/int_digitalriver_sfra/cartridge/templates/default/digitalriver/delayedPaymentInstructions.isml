@@ -1,0 +1,17 @@
+<isif condition="${pdict.sourceId && pdict.sourceClientSecret}">
+    <div id="delayed-payment-container"></div>
+
+    <script>
+        var DRLocale = '<isprint value="${request.getLocale().replace('_', '-')}" encoding="htmldoublequote" />';
+        var DRapiKey = '<isprint value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drPublicKey')}" encoding="htmlsinglequote" />';
+        var digitalriver = new DigitalRiver(DRapiKey, {
+            "locale": DRLocale
+        });
+        var options = {
+            "sourceId": "<isprint value="${pdict.sourceId}" encoding="htmldoublequote" />",
+            "sourceClientSecret": "<isprint value="${pdict.sourceClientSecret}" encoding="htmldoublequote" />"
+        }
+        var delayedPaymentInstructions = digitalriver.createElement("delayedpaymentinstructions", options);
+        delayedPaymentInstructions.mount("delayed-payment-container");
+    </script>
+</isif>

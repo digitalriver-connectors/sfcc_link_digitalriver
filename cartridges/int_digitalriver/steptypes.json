@@ -1,0 +1,162 @@
+{
+    "step-types": {
+        "script-module-step": [
+            {
+                "@type-id": "custom.deltaSkuUpdate",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Create delta SKUs",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/createSKU.js",
+                "function": "deltaSkuUpdate",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.deltaSkuUpdateOnButton",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Scheduled to create delta SKUs",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/createSKU.js",
+                "function": "deltaSkuUpdateOnButton",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.fullSkuUpdate",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Create all SKUs",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/createSKU.js",
+                "function": "fullSkuUpdate",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.fullSkuUpdateOnButton",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Scheduled to create all SKUs",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/createSKU.js",
+                "function": "fullSkuUpdateOnButton",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "WARN",
+                            "description": "Used when small, but acceptable problems occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.DigitalRiverUpdatePendingOrders",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Updates orders that were put on hold according to status changes on Digital River",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drUpdateOrders.js",
+                "function": "updatePendingOrders",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.DigitalRiverCompleteOrders",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Updates orders that are cancelled or completed but still have 'accepted' Digital River status",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drUpdateOrders.js",
+                "function": "completeFulfilledOrders",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.DigitalRiverFulfillOrders",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Create Digital River fulfillments for orders that are cancelled or shipped and update their status afterwards",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drUpdateOrders.js",
+                "function": "fulfillOrders",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

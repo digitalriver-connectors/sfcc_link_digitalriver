@@ -1,0 +1,47 @@
+<isdecorate template="common/layout/page">
+    <script src="https://js.digitalriverws.com/v1/DigitalRiver.js"></script>
+    <link rel="stylesheet" href="https://js.digitalriverws.com/v1/css/DigitalRiver.css" type="text/css"/>
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('/js/paymentInstruments.js');
+        assets.addCss('/css/account/payment.css');
+        assets.addCss('/css/digitalRiver.css');
+    </isscript>
+    <div class="hero slant-down account-image">
+        <h1 class="page-title">${Resource.msg('page.heading.payments','payment',null)}</h1>
+    </div>
+    <div class="container">
+        <!---Breadcrumbs--->
+        <isinclude template="components/breadcrumbs/pageBreadcrumbs"/>
+        <isif condition="${pdict.drCustomerError}">
+             <div class="alert alert-danger" role="alert">
+                <p class="error-message-text">${pdict.drCustomerError}</p>
+            </div>
+        <iselse/>
+            <div class="row justify-content-center">
+                <div class="col-sm-8 col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <isif condition="${pdict.UUID}">
+                                <h2>${Resource.msg('label.payment.editpayment','payment',null)}</h2>
+                            <iselse>
+                                <h2>${Resource.msg('label.payment.addnewpayment','payment',null)}</h2>
+                            </isif>
+                        </div>
+                        <div class="card-body">
+                            <iscomment> Include Digital River Drop-in </iscomment>
+                            <isset name="useDigitalRiverDropIn" value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseDropInFeature')}" scope="page" />
+                            <isif condition="${useDigitalRiverDropIn}">
+                                <isinclude template="account/payment/dropinForm"/>
+                                <isinclude url="${URLUtils.url('DigitalRiver-DisplayCompliance', 'complianceId', 'compliancePayment')}" />
+                            <iselse/>
+                            <iscomment> Default Payment form </iscomment>
+                                <isinclude template="account/payment/paymentForm"/>
+                            </isif>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </isif>
+    </div>
+</isdecorate>

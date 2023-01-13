@@ -1,0 +1,64 @@
+.dr-accordion-btn {
+    color: #00a1e0;
+    cursor: pointer;
+}
+
+.dr-accordion-card-header {
+    .dr-accordion-btn {
+        background-color: transparent;
+        border: 0;
+        border: 0.0625em solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.1875rem;
+        width: 100%;
+        padding: 1rem;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+
+        &[aria-expanded="true"] {
+            border-radius: 0.1875rem 0.1875rem 0 0;
+        }
+
+        &::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border: 0.3125em solid transparent;
+            border-top: none;
+            border-bottom: 0.375em solid #00a1e0;
+            display: block;
+            float: right;
+            margin-top: 0.375em;
+        }
+
+        &[aria-expanded="false"]::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border: 0.3125em solid transparent;
+            border-top: 0.375em solid rgba(0, 0, 0, 0.26);
+            border-bottom: none;
+            display: block;
+            float: right;
+            margin-top: 0.375em;
+        }
+    }
+}
+
+.dr-accordion-card-body {
+    position: relative;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-bottom: 0.0625em solid rgba(0, 0, 0, 0.125);
+    border-left: 0.0625em solid rgba(0, 0, 0, 0.125);
+    border-right: 0.0625em solid rgba(0, 0, 0, 0.125);
+
+    .contact-info-block {
+        border: none;
+    }
+
+    .payment-instruments-container {
+        border: none;
+    }
+}

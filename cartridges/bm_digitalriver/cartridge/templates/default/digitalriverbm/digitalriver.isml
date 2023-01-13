@@ -1,0 +1,53 @@
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addCss('/css/testServices.css');
+</isscript>
+
+<isdecorate template="application/MenuFrame">
+
+    <div class="drbm-title">
+        ${Resource.msg('dr.servicetester.title', 'digitalriver', null)}
+    </div>
+    <div class="drbm-summary">
+        ${Resource.msg('dr.servicetester.description', 'digitalriver', null)}
+    </div>
+    <div class="drbm-services">
+        <div class="drbm-title">
+            ${Resource.msg('dr.servicetester.name', 'digitalriver', null)}
+        </div>
+        <div class="drbm-service">
+            ${Resource.msg('dr.servicetester.sku', 'digitalriver', null)}
+        </div>
+        <div class="drbm-service">
+            ${Resource.msg('dr.servicetester.checkout', 'digitalriver', null)}
+        </div>
+        <div class="drbm-service">
+            ${Resource.msg('dr.servicetester.customer', 'digitalriver', null)}
+        </div>
+    </div>
+    <div class="drbm-statuses">
+        <div class="drbm-title">
+            ${Resource.msg('dr.servicetester.status', 'digitalriver', null)}
+        </div>
+        <div class="drbm-result sku-result">
+            ${Resource.msg('dr.servicetester.notchecked', 'digitalriver', null)}
+        </div>
+        <div class="drbm-result checkout-result">
+            ${Resource.msg('dr.servicetester.notchecked', 'digitalriver', null)}
+        </div>
+        <div class="drbm-result customer-result">
+            ${Resource.msg('dr.servicetester.notchecked', 'digitalriver', null)}
+        </div>
+    </div>
+    <div class="test-service" data-url="${URLUtils.url('DigitalRiver-TestServices')}">
+        ${Resource.msg('dr.servicetester.test', 'digitalriver', null)}
+    </div>
+    <div class="drbm-error-info"></div>
+
+</isdecorate>
+
+<isloop items="${require('*/cartridge/scripts/assets.js').styles}" var="style">
+    <link rel="stylesheet" href="${style}" />
+</isloop>
+
+<script src="${URLUtils.staticURL('/js/testServices.js')}" type="text/javascript"></script>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+
+    <!-- field for edit Company Name -->
+    <field
+        formid="companyName"
+        label="label.input.company.name"
+        type="string"
+        mandatory="true"
+        max-length="20"
+        missing-error="error.message.required"
+        range-error="error.message.20orless"/>
+
+    <!-- use set of supported countries -->
+    <field formid="country" label="label.input.country" type="string" mandatory="true" binding="countryCode"
+           missing-error="address.country.missing">
+        <options>
+            <option optionid="US" label="select.option.country.unitedstates" value="US"/>
+        </options>
+    </field>
+
+    <!-- use global state list -->
+    <include formid="states" name="usstates" missing-error="address.state.missing" parse-error="error.message.required" value-error="error.message.required"/>
+
+    <!-- field for edit extamption start date -->
+    <field
+        formid="startDate"
+        label="label.input.start.date"
+        type="string"
+        mandatory="true"/>
+
+    <!-- field for edit expiration date -->
+    <field
+        formid="endDate"
+        label="label.input.end.date"
+        type="string"
+        mandatory="true"/>
+
+    <field
+        formid="imageFile"
+        label="label.input.file.name"
+        type="string"
+        mandatory="true"
+        missing-error="error.message.required"/>
+
+</form>

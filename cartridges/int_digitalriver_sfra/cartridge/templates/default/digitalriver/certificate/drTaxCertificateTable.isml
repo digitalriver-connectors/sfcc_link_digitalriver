@@ -1,0 +1,27 @@
+<div class="us-certificate-table">
+    <isif condition="${pdict.digitalRiverTaxCertificate && pdict.digitalRiverTaxCertificate.length > 0}">
+        <div class="us-certificate-header">
+            ${Resource.msg('label.taxcertificate', 'digitalriver', null)}
+        </div>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">${Resource.msg('label.taxcertificate.company.name', 'digitalriver', null)}</th>
+                    <th scope="col">${Resource.msg('label.taxcertificate.authority', 'digitalriver', null)}</th>
+                    <th scope="col">${Resource.msg('label.taxcertificate.start', 'digitalriver', null)}</th>
+                    <th scope="col">${Resource.msg('label.taxcertificate.end', 'digitalriver', null)}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <isloop items="${pdict.digitalRiverTaxCertificate}" var="certificate" status="status">
+                    <tr>
+                        <td>${certificate.companyName||''}</td>
+                        <td>${certificate.taxAuthority||''}</td>
+                        <td>${certificate.startDate||''}</td>
+                        <td>${certificate.endDate||''}</td>
+                    </tr>                           
+                </isloop>
+            </tbody>
+        </table>
+    </isif>
+</div>

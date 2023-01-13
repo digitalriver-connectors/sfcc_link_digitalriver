@@ -1,0 +1,2 @@
+<!--- Change template name based on the ID of the payment processor that is used for customer credit payment methods --->
+<isinclude template="order/drDashboardLink" />

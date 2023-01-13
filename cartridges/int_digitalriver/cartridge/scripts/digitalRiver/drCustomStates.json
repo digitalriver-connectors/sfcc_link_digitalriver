@@ -1,0 +1,14 @@
+{
+    "ORDER_STATE_ACCEPTED" : "accepted",
+    "ORDER_STATE_ON_FRAUD_REVIEW" : "in_review",
+    "ORDER_STATE_ON_PAYMENT_REVIEW" : "pending_payment",
+    "ORDER_STATE_BLOCKED" : "blocked",
+    "ORDER_STATE_CHARGE_FAILED" : "cancelled",
+    "ORDER_STATE_COMPLETED" : "complete",
+    "ORDER_STATE_CANCELLED": "cancelled",
+    "ORDER_STATE_FULFILLED": "fulfilled",
+    
+    "FRAUD_STATUS_PASSED" : "passed",
+    "FRAUD_STATUS_REVIEW_OPENED" : "review_opened",
+    "FRAUD_STATUS_BLOCKED" : "blocked"
+}

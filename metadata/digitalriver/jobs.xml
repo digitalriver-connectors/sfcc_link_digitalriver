@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+
+    <job job-id="DigitalRiver_DeltaSkuUpdateOnButton" priority="0">
+        <description>Scheduled to send Modified SKUs to Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="deltaSkuUpdateOnButton" type="custom.deltaSkuUpdateOnButton" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_DeltaSkuUpdate" priority="0">
+        <description>Sends Modified SKUs to Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="deltaSkuUpdate" type="custom.deltaSkuUpdate" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_FullSkuUpdateOnButton" priority="0">
+        <description>Scheduled to send all SKUs to Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="fullSkuUpdateOnButton" type="custom.fullSkuUpdateOnButton" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_FullSkuUpdate" priority="0">
+        <description>Sends all SKUs to Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="fullSkuUpdate" type="custom.fullSkuUpdate" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_updateCompletedOrders" priority="0">
+        <description>Updates orders that that are cancelled or completed but still have 'accepted' Digital River status</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="completeOrders" type="custom.DigitalRiverCompleteOrders" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_updatePendingOrders" priority="0">
+        <description>Updates incomplete orders according to status changes on Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="updatePendingOrders" type="custom.DigitalRiverUpdatePendingOrders" enforce-restart="false">
+                <description>Updates orders that were put on hold according to status changes on Digital River</description>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="DigitalRiver_fulfillOrders" priority="0">
+        <description>Updates incomplete orders according to status changes on Digital River</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="fulfillOrders" type="custom.DigitalRiverFulfillOrders" enforce-restart="false">
+                <description>Creates Digital River fulfillments for orders that were shipped or cancelled</description>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+</jobs>

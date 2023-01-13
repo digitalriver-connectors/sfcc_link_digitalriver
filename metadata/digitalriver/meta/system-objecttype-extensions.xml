@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+
+    <type-extension type-id="Basket">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drCheckoutID">
+                <display-name xml:lang="x-default">Digital River Checkout Id</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drCheckoutData">
+                <display-name xml:lang="x-default">drCheckoutData</display-name>
+                <description xml:lang="x-default">Stringified summary from digitalriver/checkouts API call. Used to avoid API call ervery time basket is re-calculated.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDropInResponse">
+                <display-name xml:lang="x-default">DropIn Response</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPaymentSessionId">
+                <display-name xml:lang="x-default">drPaymentSessionId</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTotalFees">
+                <display-name xml:lang="x-default">Total Fees</display-name>
+                <description xml:lang="x-default">Aggregated amount of regulatory fees in the totalFees.&#13;
+(if fees were assessed for Checkout, Order, Invoice)</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTotalImporterTax">
+                <display-name xml:lang="x-default">Total Importer Tax</display-name>
+                <description xml:lang="x-default"></description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDuty">
+                <display-name xml:lang="x-default">Total Duty</display-name>
+                <description xml:lang="x-default"></description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTaxIdentifiers">
+                <display-name xml:lang="x-default">Tax Identifiers</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTaxIdentifierType">
+                <display-name xml:lang="x-default">Digital River Tax Identifier Type</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="DigitalRiverAttributes">
+                <display-name xml:lang="x-default">Digital River Attributes</display-name>
+                <attribute attribute-id="drCheckoutID"/>
+                <attribute attribute-id="drCheckoutData"/>
+                <attribute attribute-id="drDropInResponse"/>
+                <attribute attribute-id="drPaymentSessionId"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drCheckoutID">
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drCheckoutData">
+                <display-name xml:lang="x-default">drCheckoutData</display-name>
+                <description xml:lang="x-default">Represents key information about Digital River checkout, such as total amount, items, taxes, etc.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drOrderID">
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDropInResponse">
+                <display-name xml:lang="x-default">DropIn Response</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drFraudStatus">
+                <display-name xml:lang="x-default">Digital River Fraud Status</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Passed</display>
+                        <value>passed</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">On review</display>
+                        <value>review_opened</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Blocked</display>
+                        <value>blocked</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drOrderStatus">
+                <display-name xml:lang="x-default">Digital River Order Status</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Accepted</display>
+                        <value>accepted</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">On fraud review</display>
+                        <value>in_review</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">On payment review</display>
+                        <value>pending_payment</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Cancelled</display>
+                        <value>cancelled</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Blocked</display>
+                        <value>blocked</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Complete</display>
+                        <value>complete</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Fulfilled</display>
+                        <value>fulfilled</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTotalFees">
+                <display-name xml:lang="x-default">Total Fees</display-name>
+                <description xml:lang="x-default">Aggregated amount of regulatory fees in the totalFees.&#13;
+(if fees were assessed for Checkout, Order, Invoice)</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTotalImporterTax">
+                <display-name xml:lang="x-default">Total Importer Tax</display-name>
+                <description xml:lang="x-default"></description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDuty">
+                <display-name xml:lang="x-default">Total Duty</display-name>
+                <description xml:lang="x-default"></description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTrackingCompany">
+                <display-name xml:lang="x-default">Tracking Company</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTrackingNumber">
+                <display-name xml:lang="x-default">Tracking Number</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTrackingUrl">
+                <display-name xml:lang="x-default">Tracking URL</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="DigitalRiverAttributes">
+                <display-name xml:lang="x-default">Digital River Attributes</display-name>
+                <attribute attribute-id="drCheckoutID"/>
+                <attribute attribute-id="drCheckoutData"/>
+                <attribute attribute-id="drOrderID"/>
+                <attribute attribute-id="drDropInResponse"/>
+                <attribute attribute-id="drOrderStatus"/>
+                <attribute attribute-id="drFraudStatus"/>
+                <attribute attribute-id="drDuty"/>
+                <attribute attribute-id="drTotalImporterTax"/>
+                <attribute attribute-id="drTotalFees"/>
+                <attribute attribute-id="drTrackingCompany"/>
+                <attribute attribute-id="drTrackingNumber"/>
+                <attribute attribute-id="drTrackingUrl"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="Product">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drCountryOfOrigin">
+                <display-name xml:lang="x-default">Digital River Country Of Origin</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drECCN">
+                <display-name xml:lang="x-default">Digital River ECCN</display-name>
+                <type>enum-of-string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">EAR99</display>
+                        <value>EAR99</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3A991</display>
+                        <value>3A991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3A992</display>
+                        <value>3A992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3A999</display>
+                        <value>3A999</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3B991</display>
+                        <value>3B991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3B992</display>
+                        <value>3B992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3C992</display>
+                        <value>3C992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3D991</display>
+                        <value>3D991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">3E991</display>
+                        <value>3E991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">4A994</display>
+                        <value>4A994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">4D993</display>
+                        <value>4D993</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">4D994</display>
+                        <value>4D994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">4E992</display>
+                        <value>4E992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">4E993</display>
+                        <value>4E993</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5A002</display>
+                        <value>5A002</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5A991</display>
+                        <value>5A991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5A992</display>
+                        <value>5A992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5B991</display>
+                        <value>5B991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5C991</display>
+                        <value>5C991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5D002</display>
+                        <value>5D002</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5D991</display>
+                        <value>5D991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5D992</display>
+                        <value>5D992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5E991</display>
+                        <value>5E991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">5E992</display>
+                        <value>5E992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A991</display>
+                        <value>6A991</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A993</display>
+                        <value>6A993</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A994</display>
+                        <value>6A994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A995</display>
+                        <value>6A995</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A996</display>
+                        <value>6A996</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6A997</display>
+                        <value>6A997</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6C992</display>
+                        <value>6C992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6C994</display>
+                        <value>6C994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6D992</display>
+                        <value>6D992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6D993</display>
+                        <value>6D993</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6E992</display>
+                        <value>6E992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">6E993</display>
+                        <value>6E993</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">7B994</display>
+                        <value>7B994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">7D994</display>
+                        <value>7D994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">7E994</display>
+                        <value>7E994</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">8A992</display>
+                        <value>8A992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">8D992</display>
+                        <value>8D992</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">8E992</display>
+                        <value>8E992</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drExportedDate">
+                <display-name xml:lang="x-default">Digital River exported date</display-name>
+                <type>datetime</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPartNumber">
+                <display-name xml:lang="x-default">Digital River Part Number</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drHsCode">
+                <display-name xml:lang="x-default">HS Code</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDigitalProduct">
+                <display-name xml:lang="x-default">DR Digital Product</display-name>
+                <description xml:lang="x-default">Defines if type of product is digital(true) or physical(false)</description>
+                <type>boolean</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drWeight">
+                <display-name xml:lang="x-default">Weight</display-name>
+                <type>double</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <scale>4</scale>
+            </attribute-definition>
+            <attribute-definition attribute-id="drWeightUnit">
+                <display-name xml:lang="x-default">Weight Unit</display-name>
+                <type>enum-of-string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">oz</display>
+                        <value>oz</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">lb</display>
+                        <value>lb</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">g</display>
+                        <value>g</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">kg</display>
+                        <value>kg</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drManagedFulfillment">
+                <display-name xml:lang="x-default">Managed Fulfillment</display-name>
+                <type>enum-of-string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">DRGlobalFulfillment</display>
+                        <value>DRGlobalFulfillment</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drManufacturerId">
+                <display-name xml:lang="x-default">Manufacturer Id</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSkuGroupId">
+                <display-name xml:lang="x-default">Digital River SKU Group Id</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="drAttributes">
+                <display-name xml:lang="x-default">Digital River Attributes</display-name>
+                <attribute attribute-id="drECCN"/>
+                <attribute attribute-id="drCountryOfOrigin"/>
+                <attribute attribute-id="drPartNumber"/>
+                <attribute attribute-id="drExportedDate"/>
+                <attribute attribute-id="drHsCode"/>
+                <attribute attribute-id="drDigitalProduct"/>
+                <attribute attribute-id="drWeight"/>
+                <attribute attribute-id="drWeightUnit"/>
+                <attribute attribute-id="drManagedFulfillment"/>
+                <attribute attribute-id="drManufacturerId"/>
+                <attribute attribute-id="drSkuGroupId"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="ProductLineItem">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="digitalRiverID">
+                <display-name xml:lang="x-default">Digital River ID</display-name>
+                <description xml:lang="x-default">Id of relevant item in Digital River checkout/order</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drIORTaxAmount">
+                <display-name xml:lang="x-default">Importer Tax</display-name>
+                <description xml:lang="x-default">How much taxes the importer of record pays on all quantities of this line item.</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDutyAmount">
+                <display-name xml:lang="x-default">Duty</display-name>
+                <description xml:lang="x-default">The amount of duty levied by the importing country for the line item.</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drFeeAmount">
+                <display-name xml:lang="x-default">Fee</display-name>
+                <description xml:lang="x-default">Total fee amount for the line item</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drFeeTaxAmount">
+                <display-name xml:lang="x-default">Fee Tax</display-name>
+                <description xml:lang="x-default">Total taxAmount for the line item</description>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drFeeDetails">
+                <display-name xml:lang="x-default">Fee Details</display-name>
+                <description xml:lang="x-default">Since multiple fees can be associated with the same SKU, DR also returns the details array that provides more granular data. An element in this array contains data on specific fees that are associated with the SKU</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+            <group-definitions>
+            <attribute-group group-id="Digital River">
+                <display-name xml:lang="x-default">Digital River</display-name>
+                <attribute attribute-id="digitalRiverID"/>
+                <attribute attribute-id="drIORTaxAmount"/>
+                <attribute attribute-id="drDutyAmount"/>
+                <attribute attribute-id="drFeeAmount"/>
+                <attribute attribute-id="drFeeTaxAmount"/>
+                <attribute attribute-id="drFeeDetails"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+	
+	<type-extension type-id="Profile">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="globalCommerceCustID">
+                <display-name xml:lang="x-default">Global Commerce Customer ID</display-name>
+                <description xml:lang="x-default">Customer ID from Digital River</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Digital River">
+                <display-name xml:lang="x-default">Digital River</display-name>
+                <attribute attribute-id="globalCommerceCustID"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drAPIKey">
+                <display-name xml:lang="x-default">API Key</display-name>
+                <type>password</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPublicKey">
+                <display-name xml:lang="x-default">Digital River public key</display-name>
+                <description xml:lang="x-default">Public key that you get in your Digital River dashboard</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromAddress1">
+                <display-name xml:lang="x-default">Digital River ship from address line 1</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromAddress2">
+                <display-name xml:lang="x-default">Digital River ship from address line 2</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromCity">
+                <display-name xml:lang="x-default">Digital River ship from city</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromCountry">
+                <display-name xml:lang="x-default">Digital River ship from country</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromPostalCode">
+                <display-name xml:lang="x-default">Digital River ship from postal code</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShipFromState">
+                <display-name xml:lang="x-default">Digital River ship from state</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drStartDeltaJob">
+                <display-name xml:lang="x-default">Modified SKU's update requested</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="drStartAllSkusJob">
+                <display-name xml:lang="x-default">All SKU's update requested</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="drUseDropInFeature">
+                <display-name xml:lang="x-default">Enable Digital River</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drUseUSTaxExemptions">
+                <display-name xml:lang="x-default">Enable US Tax Exemptions</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drWebhookSignatureToken">
+                <display-name xml:lang="x-default">Webhook Signature Token</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTechnicalEmailAddress">
+                <display-name xml:lang="x-default">Technical Email Address</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDefaultEntity">
+                <display-name xml:lang="x-default">DigitalRiver Default Entity</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drDigitalProductTaxCodes">
+                <display-name xml:lang="x-default">Tax Codes for Digital Products</display-name>
+                <type>set-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drReplacePromotions">
+                <display-name xml:lang="x-default">Replace all promotions with one fixed amount (Important: read the guide before enabling)</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Digital River">
+                <display-name xml:lang="x-default">Digital River</display-name>
+                <attribute attribute-id="drUseDropInFeature"/>
+                <attribute attribute-id="drAPIKey"/>
+                <attribute attribute-id="drPublicKey"/>
+                <attribute attribute-id="drWebhookSignatureToken"/>
+                <attribute attribute-id="drShipFromCountry"/>
+                <attribute attribute-id="drShipFromState"/>
+                <attribute attribute-id="drShipFromCity"/>
+                <attribute attribute-id="drShipFromAddress1"/>
+                <attribute attribute-id="drShipFromAddress2"/>
+                <attribute attribute-id="drShipFromPostalCode"/>
+                <attribute attribute-id="drStartDeltaJob"/>
+                <attribute attribute-id="drStartAllSkusJob"/>
+                <attribute attribute-id="drUseUSTaxExemptions"/>
+                <attribute attribute-id="drTechnicalEmailAddress"/>
+                <attribute attribute-id="drDefaultEntity"/>
+                <attribute attribute-id="drDigitalProductTaxCodes"/>
+                <attribute attribute-id="drReplacePromotions"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="CustomerPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="digitalRiverId">
+                <display-name xml:lang="x-default">Digital River Source Id</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPaymentType">
+                <display-name xml:lang="x-default">Digital River payment type</display-name>
+                <description xml:lang="x-default">Represents payment type used within DIGITAL_RIVER_DROPIN payment method (e.g. creditCard)</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="DigitalRiver">
+                <display-name xml:lang="x-default">Digital River</display-name>
+                <attribute attribute-id="digitalRiverId"/>
+                <attribute attribute-id="drPaymentType"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="OrderPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drSourceId">
+                <display-name xml:lang="x-default">Source ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPaymentType">
+                <display-name xml:lang="x-default">Payment type</display-name>
+                <description xml:lang="x-default">Represents payment type used within DIGITAL_RIVER_DROPIN payment method (e.g. creditCard)</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="DigitalRiver">
+                <attribute attribute-id="drSourceId"/>
+                <attribute attribute-id="drPaymentType"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

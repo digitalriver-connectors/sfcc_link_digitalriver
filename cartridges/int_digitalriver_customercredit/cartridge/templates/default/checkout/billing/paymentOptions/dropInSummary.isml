@@ -1,0 +1,26 @@
+<isif condition="${payment.paymentType === 'creditCard'}">
+    <div class="row leading-lines">
+        <div class="col-6 start-lines">
+            <span class="order-receipt-label credit-card-type">${Resource.msg('msg.payment.type.credit', 'confirmation', null)}
+            ${payment.type}</span>
+        </div>
+        <div class="col-6 end-lines">
+            <div class="text-right"><span>${payment.formattedAmount}</span></div>
+        </div>
+    </div>
+    <div class="credit-card-number">
+        ${payment.maskedCreditCardNumber}
+    </div>
+    <div class="credit-card-expiration-date">
+        <span>${Resource.msg('msg.card.type.ending', 'confirmation', null)} ${payment.expirationMonth}/${payment.expirationYear}</span>
+    </div>
+<iselse>
+    <div class="row leading-lines">
+        <div class="col-6 start-lines">
+            <span>${payment.paymentType}</span>
+        </div>
+        <div class="col-6 end-lines">
+            <div class="text-right"><span>${payment.formattedAmount}</span></div>
+        </div>
+    </div>
+</isif>

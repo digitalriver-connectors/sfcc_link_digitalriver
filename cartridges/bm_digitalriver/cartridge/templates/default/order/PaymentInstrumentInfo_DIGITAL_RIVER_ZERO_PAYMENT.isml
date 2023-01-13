@@ -1,0 +1,3 @@
+<!--- TEMPLATENAME: PaymentInstrumentInfo_DIGITAL_RIVER_ZERO_PAYMENT.isml --->
+<isinclude template="order/drDashboardLink" />
+

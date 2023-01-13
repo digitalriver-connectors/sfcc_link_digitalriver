@@ -1,0 +1,25 @@
+.digitalriver-hide {
+    display: none !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn-add-new-cetrificate {
+    color: #{var(--skin-primary-color-1)};
+    float: right;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.vat-msg {
+    font-size: 0.85rem;
+}
+
+.vat-reflect-msg {
+    font-weight: 700;
+}

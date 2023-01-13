@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+
+	<menuitem id="digitalriver" position="200" site="true" >
+		<name xml:lang="x-default">Digital River</name>
+		<short_description xml:lang="x-default">Digital River Extentions</short_description>
+		<description xml:lang="x-default">Digital River BM Extentions</description>
+		<icon>images/dr-favicon.ico</icon>
+	</menuitem>
+
+	<menuaction id="digitalriverAction" menupath="digitalriver" position="200" site="true">
+		<name xml:lang="x-default">Digital River Service Tester</name>
+		<short_description xml:lang="x-default">Digital River Service Tester</short_description>
+		<description xml:lang="x-default">Digital River Service Tester</description>
+		<exec pipeline="DigitalRiver" node="Start" />
+		<sub-pipelines>
+			<pipeline name="DigitalRiver-Start" />
+			<pipeline name="DigitalRiver-TestServices" />
+		</sub-pipelines>
+		<icon>images/dr-favicon.ico</icon>
+	</menuaction>
+
+	<menuaction id="dr-trigger-delta-job" menupath="digitalriver" position="200" site="true">
+		<name xml:lang="x-default">Request SKU's update</name>
+		<short_description xml:lang="x-default">Trigger updateDigitalRiverSKUs Delta Job Run</short_description>
+		<description xml:lang="x-default">Button to trigger updateDigitalRiverSKUs Job on the next run</description>
+		<exec pipeline="DigitalRiver" node="ShowDeltaJobTrigger" />
+		<sub-pipelines>
+			<pipeline name="DigitalRiver-ShowDeltaJobTrigger" />
+			<pipeline name="DigitalRiver-TriggerDeltaSkuUpdateJob" />
+			<pipeline name="DigitalRiver-TriggerAllSkusJob" />
+		</sub-pipelines>
+		<icon>images/dr-favicon.ico</icon>
+	</menuaction>
+
+</extensions>

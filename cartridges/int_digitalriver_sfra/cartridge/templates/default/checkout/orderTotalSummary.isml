@@ -1,0 +1,104 @@
+<!--- Subtotal --->
+<div class="row leading-lines subtotal-item">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.subtotal','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="sub-total">${pdict.order.totals.subTotal}</span></p>
+    </div>
+</div>
+
+<!--- Order Discount --->
+<div class="row leading-lines order-discount <isif condition="${pdict.order.totals.orderLevelDiscountTotal.value === 0}">hide-order-discount</isif>">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.discount', 'common', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="order-discount-total">- ${pdict.order.totals.orderLevelDiscountTotal.formatted}</span></p>
+    </div>
+</div>
+
+<!--- Shipping Cost --->
+<div class="row leading-lines shipping-item">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.shipping.cost','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="shipping-total-cost">${pdict.order.totals.totalShippingCost}</span></p>
+    </div>
+</div>
+
+<!--- Shipping Discount --->
+<div class="row leading-lines shipping-discount <isif condition="${pdict.order.totals.shippingLevelDiscountTotal.value === 0}">hide-shipping-discount</isif>">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.shipping.discount', 'common', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="shipping-discount-total">- ${pdict.order.totals.shippingLevelDiscountTotal.formatted}</span></p>
+    </div>
+</div>
+
+<!--- Sales Tax --->
+<isif condition="${dw.order.TaxMgr.getTaxationPolicy() !== dw.order.TaxMgr.TAX_POLICY_GROSS}">
+    <div class="row leading-lines sales-tax-item">
+        <div class="col-6 start-lines">
+            <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.tax','confirmation', null)}</span></p>
+        </div>
+        <div class="col-6 end-lines">
+            <p class="text-right"><span class="tax-total">${pdict.order.totals.totalTax}</span></p>
+        </div>
+    </div>
+</isif>
+
+<!--- Digital River Taxations --->
+<isif condition="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseDropInFeature')}">
+    <div class="row leading-lines duty-item ${!pdict.order.totals.isImporterOfRecordTax && pdict.order.totals.duty.value === 0 ? 'hide-order-discount': ''}">
+        <div class="col-6 start-lines">
+            <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.duty','digitalriver', null)}</span></p>
+        </div>
+        <div class="col-6 end-lines">
+            <p class="text-right"><span class="duty-total">${pdict.order.totals.duty.formatted}</span></p>
+        </div>
+    </div>
+    <div class="row leading-lines importerTax-item ${!pdict.order.totals.isImporterOfRecordTax && pdict.order.totals.importerTax.value === 0 ? 'hide-order-discount': ''}">
+        <div class="col-6 start-lines">
+            <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.importerTax','digitalriver', null)}</span></p>
+        </div>
+        <div class="col-6 end-lines">
+            <p class="text-right"><span class="importerTax-total">${pdict.order.totals.importerTax.formatted}</span></p>
+        </div>
+    </div>
+    <div class="row leading-lines totalFees-item ${!pdict.order.totals.isImporterOfRecordTax && pdict.order.totals.totalFees.value === 0 ? 'hide-order-discount': ''}">
+        <div class="col-6 start-lines">
+            <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.totalFees','digitalriver', null)}</span></p>
+        </div>
+        <div class="col-6 end-lines">
+            <p class="text-right"><span class="totalFees-total">${pdict.order.totals.totalFees.formatted}</span></p>
+        </div>
+    </div>
+</isif>
+
+<!--- Grand Total --->
+<div class="row grand-total leading-lines">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.grand.total','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="grand-total-sum">${pdict.order.totals.grandTotal}</span></p>
+    </div>
+</div>
+
+<!--- Digital River Gross Site VAT Info --->
+<isif condition="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseDropInFeature') && dw.order.TaxMgr.getTaxationPolicy() === dw.order.TaxMgr.TAX_POLICY_GROSS}">
+    <isif condition="${!pdict.order.orderNumber}">
+        <p class="vat-msg vat-included-msg ${pdict.order.totals.drTaxDiscountTotal.value === 0  ? '': 'hidden'}">
+            ${Resource.msg('msg.vat.included', 'digitalriver', null)}
+        </p>
+        <p class="vat-msg vat-exempted-msg ${pdict.order.totals.drTaxDiscountTotal.value === 0  ? 'hidden': ''}">
+            <span class="vat-exempted-value">${pdict.order.totals.drTaxDiscountTotal.formatted}</span> ${Resource.msg('msg.vat.exempted', 'digitalriver', null)}
+        </p>
+    </isif>
+    <isif condition="${pdict.vatReflectMsg}">
+        <p class="vat-msg vat-reflect-msg">${pdict.vatReflectMsg}</p>
+    </isif>
+</isif>

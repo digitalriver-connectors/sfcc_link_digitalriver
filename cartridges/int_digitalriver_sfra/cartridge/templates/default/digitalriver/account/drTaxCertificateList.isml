@@ -1,0 +1,64 @@
+<isset name="isUSTaxExemptionsEnable" value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseUSTaxExemptions')}" scope="page" />
+<isdecorate template="common/layout/page">
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addCss('/css/account/payment.css');
+    </isscript>
+    <div class="hero slant-down account-image">
+        <h1 class="page-title">${Resource.msg('label.taxcertificate','digitalriver',null)}</h1>
+    </div>
+    <div class="container">
+        <!---Breadcrumbs--->
+        <isinclude template="components/breadcrumbs/pageBreadcrumbs"/>
+        <isif condition="${pdict.drCustomerError}">
+            <div class="alert alert-danger" role="alert">
+                <p class="error-message-text">${pdict.drCustomerError}</p>
+            </div>
+        <iselse/>
+            <div class="row justify-content-center certificate-instruments">
+                <isif condition="${!pdict.taxCertificates}">
+                    <div class="col">
+                        <h3>${Resource.msg('msg.no.saved.taxcertificates','digitalriver',null)}</h3>
+                    </div>
+                </isif>
+            </div>
+            <!-- Rows for Buttons -->
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col">
+                            <a href="${URLUtils.url('Account-Show')}" class="text-center back-to-account-link" aria-label="${Resource.msg('label.addressbook.myaccount','account',null)}">
+                            ${Resource.msg('link.profile.backtomyaccount','account',null)}
+                            </a>
+                        </div>
+                        <isif condition="${isUSTaxExemptionsEnable}">
+                            <div class="col">
+                                <a href="${URLUtils.url('TaxCertificates-AddCertificate')}" class="btn btn-save btn-block btn-primary" aria-label="${Resource.msg('label.taxcertificate.addnewtaxcertificate','digitalriver',null)}">${Resource.msg('button.addnew','digitalriver',null)}</a>
+                            </div>
+                        </isif>
+                    </div>
+                </div>
+            </div>
+            <!-- Rows for Tax Certificates -->
+            <isloop items="${pdict.taxCertificates}" var="taxCertificate">
+                <div class="row justify-content-center" id="uuid-${taxCertificate.fileId}">
+                    <div class="col-sm-8 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="pull-left">${taxCertificate.companyName}</h2>
+                            </div>
+                            <div class="card-body card-body-positioning">
+                                <div class="card-info-group">
+                                    <p>${taxCertificate.companyName}</p>
+                                    <p>${Resource.msg('label.state','digitalriver',null)} ${taxCertificate.taxAuthority}</p>
+                                    <p>${Resource.msg('label.date.start','digitalriver',null)} ${taxCertificate.startDate}</p>
+                                    <p>${Resource.msg('label.date.end','digitalriver',null)} ${taxCertificate.endDate}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </isloop>
+        </isif>
+    </div>
+</isdecorate>

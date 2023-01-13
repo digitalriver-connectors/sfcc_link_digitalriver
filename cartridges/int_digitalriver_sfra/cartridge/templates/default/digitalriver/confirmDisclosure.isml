@@ -1,0 +1,27 @@
+<div id="confirmdisclosure"></div>
+<script>
+    if (typeof DigitalRiver !== 'undefined') {
+        var DRLocale = '<isprint value="${request.getLocale().replace('_', '-')}" encoding="htmldoublequote" />';
+        var DRapiKey = '<isprint value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drPublicKey')}" encoding="htmlsinglequote" />';
+    
+        var disclosureDigitalRiver = new DigitalRiver(DRapiKey, {
+            locale: DRLocale
+        });
+
+        var confirmdisclosure = disclosureDigitalRiver.Compliance.getDetails(
+            "<isprint value="${require('*/cartridge/scripts/digitalRiver/drTaxHelper').getComplianceEntity()}" encoding="htmldoublequote" />",
+            DRLocale
+        );
+        document.addEventListener('DOMContentLoaded', function() {
+            var element = document.getElementById('confirmdisclosure');
+            element.innerHTML = '<div class="card-body row">'
+                + '<div class="col-12">'
+                + '<div class="custom-control custom-checkbox">'
+                + '<input class="custom-control-input" type="checkbox" id="dr-cb-confirm" />'
+                + '<label for="dr-cb-confirm" class="custom-control-label checkout-checkbox" id="lb-confirm">'
+                + confirmdisclosure.disclosure.confirmDisclosure.localizedText
+                + '</label></div></div></div>';
+
+        });
+    }
+</script>

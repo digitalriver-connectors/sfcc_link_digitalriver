@@ -1,0 +1,209 @@
+
+<isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
+
+<div class="alert alert-danger dropin-form-error-message hidden" role="alert">
+    <p class="error-message-text"></p>
+</div>
+
+<form id="dropInAddressForm" autocomplete="on"
+          action="${URLUtils.url('DigitalRiver-SubmitDropInConfigForm')}"
+          method="POST"
+          <isprint value=${pdict.forms.billingForm.attributes} encoding="htmlsinglequote"/>
+    >
+    <fieldset class="billing-address-block">
+        
+        <fieldset class="billing-address">
+            <isset name="billingFields" value="${pdict.forms.billingForm.addressFields}" scope="page"/>
+            
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.firstName.mandatory === true ? 'required' : ''}
+                        ${billingFields.firstName.htmlName}">
+                        <label class="form-control-label" for="billingFirstName">${Resource.msg('field.billing.address.first.name','address',null)}</label>
+                        <input autofocus type="text" class="form-control billingFirstName" id="billingFirstName"
+                            value="${billingFields.firstName.value || ''}"
+                            <isprint value=${billingFields.firstName.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="given-name" >
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.lastName.mandatory === true ? 'required' : ''}
+                        ${billingFields.lastName.htmlName}">
+                        <label class="form-control-label" for="billingLastName">${Resource.msg('field.billing.address.last.name','address',null)}</label>
+                        <input type="text" class="form-control billingLastName" id="billingLastName"
+                            value="${billingFields.lastName.value || ''}"
+                            <isprint value=${billingFields.lastName.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="family-name">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group
+                        ${billingFields.address1.mandatory === true ? 'required' : ''}
+                        ${billingFields.address1.htmlName}">
+                        <label class="form-control-label" for="billingAddressOne">${Resource.msg('field.billing.address.one','address',null)}</label>
+                        <input type="text" class="form-control billingAddressOne" id="billingAddressOne"
+                            value="${billingFields.address1.value || ''}"
+                            <isprint value=${billingFields.address1.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing address-line1">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group
+                        ${billingFields.address2.mandatory === true ? 'required' : ''}
+                        ${billingFields.address2.htmlName}">
+                        <label class="form-control-label" for="billingAddressTwo">${Resource.msg('field.billing.address.two','address',null)}</label>
+                        <input type="text" class="form-control billingAddressTwo" id="billingAddressTwo"
+                            value="${billingFields.address2.value || ''}"
+                            <isprint value=${billingFields.address2.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing address-line2">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--- make drop down--->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.country.mandatory === true ? 'required' : ''}
+                        ${billingFields.country.htmlName}">
+                        <label class="form-control-label" for="billingCountry">${Resource.msg('field.billing.address.country','address',null)}</label>
+                        <select class="form-control billingCountry custom-select" id="billingCountry"
+                            <isprint value=${billingFields.country.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing country">
+                                <option label=" "></option>
+                                <isloop items=${billingFields.country.options} var="country">
+                                    <option id="${country.id}" value="${country.htmlValue}"
+                                        ${country.id === billingFields.country.value
+                                            ? "selected"
+                                            : "" }
+                                    >
+                                        ${country.label}
+                                    </option>
+                                </isloop>
+                        </select>
+                        <div class="invalid-feedback"></div>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.states.stateCode.mandatory === true ? 'required' : ''}
+                        ${billingFields.states.stateCode.htmlName}">
+                        <label class="form-control-label" for="billingState">${Resource.msg('field.billing.address.state','address',null)}</label>
+                        <select class="form-control billingState custom-select" id="billingState"
+                            <isprint value=${billingFields.states.stateCode.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing address-level1">
+                                <isloop items=${billingFields.states.stateCode.options} var="state">
+                                    <option id="${state.id}"  value="${state.htmlValue}"
+                                        ${state.id === billingFields.states.stateCode.value
+                                            ? "selected"
+                                            : "" }
+                                    >
+                                        ${state.label}
+                                    </option>
+                                </isloop>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.city.mandatory === true ? 'required' : ''}
+                        ${billingFields.city.htmlName}">
+                        <label class="form-control-label" for="billingAddressCity">${Resource.msg('field.billing.address.city','address',null)}</label>
+                        <input type="text" class="form-control billingAddressCity" id="billingAddressCity"
+                            value="${billingFields.city.value || ''}"
+                            <isprint value=${billingFields.city.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing address-level2">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group
+                        ${billingFields.postalCode.mandatory === true ? 'required' : ''}
+                        ${billingFields.postalCode.htmlName}">
+                        <label class="form-control-label" for="billingZipCode">${Resource.msg('field.billing.address.zip.code','address',null)}</label>
+                        <input type="text" class="form-control billingZipCode" id="billingZipCode"
+                            value="${billingFields.postalCode.value || ''}"
+                            <isprint value=${billingFields.postalCode.attributes} encoding="htmlsinglequote"/>
+                            autocomplete="billing postal-code">
+                        <div class="invalid-feedback"></div>
+                        <span>${Resource.msg('example.postalcode','forms',null)}</span>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="contact-info-block">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group
+                    <isif condition=${pdict.forms.customerForm.email.mandatory === true}>required</isif>
+                    ${pdict.forms.customerForm.email.htmlName}">
+                    <label class="form-control-label" for="email">${Resource.msg('field.customer.email','checkout',null)}</label>
+
+                    <button type="button" class="info-icon">
+                        <span class="icon" aria-hidden="true">i</span>
+                        <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
+                        <span class="tooltip d-none">
+                            ${Resource.msg('tooltip.email','creditCard',null)}
+                        </span>
+                    </button>
+
+                    <input type="text" class="form-control email" id="email"
+                        value="${pdict.CurrentCustomer.profile.email}" 
+                        <isprint value=${pdict.forms.customerForm.email.attributes} encoding="htmlsinglequote"/>
+                        aria-describedby="emailInvalidMessage" >
+                    <div class="invalid-feedback" id="emailInvalidMessage"></div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group
+                    <isif condition=${pdict.forms.billingForm.contactInfoFields.phone.mandatory === true}>required</isif>
+                    ${pdict.forms.billingForm.contactInfoFields.phone.htmlName}">
+                    <label class="form-control-label" for="phoneNumber">${Resource.msg('field.customer.phone.number','checkout',null)}</label>
+
+                    <button type="button" class="info-icon">
+                        <span class="icon" aria-hidden="true">i</span>
+                        <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
+                        <span class="tooltip d-none">
+                            ${Resource.msg('tooltip.phone.number','creditCard',null)}
+                        </span>
+                    </button>
+
+                    <div class="invalid-feedback" id="DRPhoneInvalidMessage"></div>
+
+                    <input type="tel" class="form-control phone" id="phoneNumber"
+                        value="${billingFields.phone.value || ''}" <isprint value=${pdict.forms.billingForm.contactInfoFields.phone.attributes} encoding="htmlsinglequote"/>
+                        aria-describedby="phoneInvalidMessage" >
+                    <div class="invalid-feedback" id="phoneInvalidMessage"></div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    
+    <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+
+</form>
+
+<button type="button" class="btn btn-outline-primary btn-block" id="openDropIn">${Resource.msg('button.addPayment','digitalriver',null)} </button>
+
+<div id="drop-in" data-url="${URLUtils.url('PaymentInstruments-DrSavePayment')}"></div>
+
+<button type="button" class="btn btn-outline-primary btn-block hidden" id="closeDropIn">${Resource.msg('button.editAddress','digitalriver',null)} </button>

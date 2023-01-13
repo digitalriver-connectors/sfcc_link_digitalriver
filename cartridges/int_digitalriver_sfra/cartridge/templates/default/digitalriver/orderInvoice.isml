@@ -1,0 +1,41 @@
+<div id="invoice-credit"
+    data-loading-text="${Resource.msg('msg.invoice.creditmemo.loading', 'digitalriver', null)}"
+    data-loading-error-text="${Resource.msg('msg.error.invoice.creditmemo.loading', 'digitalriver', null)}"
+    data-url="${URLUtils.url('DigitalRiver-FileLinks')}"
+>
+    <div class="card confirm-details">
+        <div class="card-header">
+            <h2 class="card-header-custom">${Resource.msg('heading.invoices', 'digitalriver', null)}</h2>
+        </div>
+        <isif condition="${pdict.invoiceIds}">
+            <div
+                id="invoiceLinks"
+                class="card-body"
+                data-files="${pdict.invoiceIds}"
+                data-file-label="${Resource.msg('label.invoice', 'digitalriver', null)}"
+            >
+            </div>
+        <iselse/>
+            <div class="card-body">${Resource.msg('msg.no.invoice.creditmemo.data', 'digitalriver', null)}</div>
+        </isif>
+        
+    </div>
+
+    <div class="card confirm-details">
+        <div class="card-header">
+            <h2 class="card-header-custom">${Resource.msg('heading.creditmemos', 'digitalriver', null)}</h2>
+        </div>
+
+        <isif condition="${pdict.creditMemoIds}">
+            <div
+                id="creditMemoLinks"
+                class="card-body"
+                data-files="${pdict.creditMemoIds}"
+                data-file-label="${Resource.msg('label.creditmemo', 'digitalriver', null)}"
+            >
+            </div>
+        <iselse/>
+            <div class="card-body">${Resource.msg('msg.no.invoice.creditmemo.data', 'digitalriver', null)}</div>
+        </isif>
+    </div>
+</div>

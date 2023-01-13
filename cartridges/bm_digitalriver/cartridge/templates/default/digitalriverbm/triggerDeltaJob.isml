@@ -1,0 +1,25 @@
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addCss('/css/triggerDeltaJob.css');
+</isscript>
+
+<isdecorate template="application/MenuFrame">
+    <div class="drbm-trigger-button" data-url="${pdict.actionUrlModifiedProducts}">
+        <isprint value="${pdict.actionMessageModifiedProducts}" encoding="htmlcontent" />
+    </div>
+    <p>
+        <isprint value="${Resource.msg('dr.triggerdeltajob.explanation', 'digitalriver', null)}" encoding="htmlcontent" />
+    </p>
+    <div class="drbm-trigger-button" data-url="${pdict.actionUrlAllProducts}">
+        <isprint value="${pdict.actionMessageAllProducts}" encoding="htmlcontent" />
+    </div>
+    <p>
+        <isprint value="${Resource.msg('dr.triggerallproductsjob.explanation', 'digitalriver', null)}" encoding="htmlcontent" />
+    </p>
+</isdecorate>
+
+<isloop items="${require('*/cartridge/scripts/assets.js').styles}" var="style">
+    <link rel="stylesheet" href="${style}" />
+</isloop>
+
+<script src="${URLUtils.staticURL('/js/triggerDeltaJob.js')}" type="text/javascript"></script>

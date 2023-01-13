@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipping xmlns="http://www.demandware.com/xml/impex/shipping/2007-03-31">
+    <shipping-method method-id="DigitalProductShipmentUSD" default="false">
+        <display-name xml:lang="x-default">Digital Product Shipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product(USD)</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>USD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DigitalProductShipmentGPB" default="false">
+        <display-name xml:lang="x-default">DigitalProductShipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0.0">0.0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>GBP</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DigitalProductShipmentEUR" default="false">
+        <display-name xml:lang="x-default">DigitalProductShipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product(EUR)</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0.0">0.0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>EUR</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DigitalProductShipmentAUD" default="false">
+        <display-name xml:lang="x-default">Digital Product Shipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product(AUD)</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0.0">0.0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>AUD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DigitalProductShipmentCAD" default="false">
+        <display-name xml:lang="x-default">Digital Product Shipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product(CAD)</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0.0">0.0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>CAD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DigitalProductShipmentNOK" default="false">
+        <display-name xml:lang="x-default">Digital Product Shipment</display-name>
+        <description xml:lang="x-default">Shipment method for Digital Product(NOK)</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <amount order-value="0.0">0.0</amount>
+        </price-table>
+        <excluded-products>
+            <included-products>
+                <condition-group>
+                    <attribute-condition operator="does not exist" attribute-id="drDigitalProduct"/>
+                </condition-group>
+                <condition-group>
+                    <attribute-condition operator="equals" attribute-id="drDigitalProduct">
+                        <attribute-value>false</attribute-value>
+                    </attribute-condition>
+                </condition-group>
+            </included-products>
+        </excluded-products>
+        <custom-attributes>
+            <custom-attribute attribute-id="estimatedArrivalTime" xml:lang="x-default">Immediate</custom-attribute>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>NOK</currency>
+    </shipping-method>
+
+</shipping>

@@ -1,0 +1,50 @@
+<isset
+    name="digitalRiverTaxExemptEnable"
+    value="${pdict.digitalRiverTaxExemptData.drUseUSTaxExemptions
+        && pdict.digitalRiverTaxExemptData.loggedInCustomer
+        && pdict.digitalRiverTaxExemptData.hasGlobalCommerceCustID
+        && pdict.digitalRiverTaxExemptData.validCountry}"
+    scope="page"
+/>
+
+<div class="purchase-type-selector" data-url="${URLUtils.url('DigitalRiver-PurchaseType')}">
+    <fieldset class="address-selector-block-ss">
+        <div class="form-group">
+            <div class="purchase-type-header">
+                ${Resource.msg('label.purchase.type', 'digitalriver', null)}
+            </div>
+
+            <div class="row leading-lines purchase-method-list">
+                <div class="form-check col-9 start-lines">
+                    <input id="typeIndividual" name="purchaseType" type="radio" value="individual" class="form-check-input"
+                    ${pdict.digitalRiverCustomerType === 'business' ? '' : 'checked="checked"'}/>
+                    <label class="form-check-label tax-method-option" for="typeIndividual">
+                        <span class="display-name">
+                            ${Resource.msg('label.purchase.individual', 'digitalriver', null)}
+                        </span>
+                    </label>
+                </div>
+                <div class="form-check col-9 start-lines">
+                    <input id="typeBusiness" name="purchaseType" type="radio" value="business" class="form-check-input"
+                    ${pdict.digitalRiverCustomerType === 'business' ? 'checked="checked"': ''}/>
+                    <label class="form-check-label tax-method-option" for="typeBusiness">
+                        <span class="display-name">
+                            ${Resource.msg('label.purchase.business', 'digitalriver', null)}
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div
+                class="us-tax-certificate-list ${digitalRiverTaxExemptEnable && pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}"
+                data-url="${URLUtils.url('TaxCertificates-CertificateList')}"
+                data-tax-exempt="${JSON.stringify(pdict.digitalRiverTaxExemptData)}"
+            >
+                <button class="btn btn-block btn-primary add-new-certificate" type="button">
+                    ${Resource.msg('label.taxcertificate.addcertificate', 'digitalriver', null)}
+                </button>
+                <isinclude template="digitalriver/certificate/drTaxCertificateTable" />
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,152 @@
+<div class="card ghost payment">
+    <div class="card-header">
+        <h2 class="card-header-custom">${Resource.msg('heading.payment', 'checkout', null)}</h2>
+    </div>
+</div>
+
+<div class="card payment-form">
+    <div class="card-header">
+        <h2 class="card-header-custom">${Resource.msg('heading.payment', 'checkout', null)}</h2>
+    </div>
+    <div class="card-body">
+        <form autocomplete="on" method="POST" action="${URLUtils.url('CheckoutServices-SubmitPayment')}"
+            data-address-mode="${!pdict.order.billing.billingAddress.address ? 'new' : 'edit'}"
+            <isprint value=${pdict.forms.billingForm.attributes} encoding="htmlsinglequote" /> novalidate>
+            
+            <iscomment> DigitalRiver accordion section </iscomment>
+            <isif condition="${pdict.digitalRiverUseDropInFeature}">
+                <div class="accordion" id="accordionBilling" data-digital-cart="${pdict.isDigitalCart}">
+                    <div class="dr-accordion-card">
+                        <div class="dr-accordion-card-header" id="headingBilling">
+                            <h2 class="mb-0">
+                                <span class="btn btn-link dr-accordion-btn" data-toggle="collapse" data-target="#collapse-billing" aria-expanded="true" aria-controls="collapse-billing">
+                                    ${Resource.msg('button.billing', 'digitalriver', null)}
+                                </span>
+                            </h2>
+                        </div>
+                        <div id="collapse-billing" class="collapse show" aria-labelledby="headingBilling" data-parent="#accordionBilling">
+                            <div class="dr-accordion-card-body">
+            </isif>
+            
+            <fieldset class="billing-address-block">
+                <!-------------------------------------------------------------------------->
+                <!-- Billing Address Selector                                             -->
+                <!-------------------------------------------------------------------------->
+                <fieldset class="address-selector-block">
+                    <div class="form-group">
+                        <label class="form-control-label" for="billingAddressSelector">
+                            ${Resource.msg('heading.billing.address', 'checkout', null)}
+                        </label>
+
+                        <isinclude template="checkout/billing/addressSelector" />
+                        <div class="invalid-feedback"></div>
+                        <div class="row">
+                            <a class="col-6 text-center btn-show-details">${Resource.msg('action.update.address', 'checkout', null)}</a>
+                            <a class="col-6 text-center btn-add-new">${Resource.msg('action.add.new', 'checkout', null)}</a>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-------------------------------------------------------------------------->
+                <!-- Billing Address                                                      -->
+                <!-------------------------------------------------------------------------->
+                <fieldset class="billing-address">
+                    <isinclude template="checkout/billing/billingAddress" />
+                </fieldset>
+
+                <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+                <input type="hidden" name="localizedNewAddressTitle" value="${Resource.msg('msg.new.address', 'checkout', null)}"/>
+            </fieldset>
+
+            <!-------------------------------------------------------------------------->
+            <!-- Contact Info (Email and Phone)                                       -->
+            <!-------------------------------------------------------------------------->
+            <fieldset class="contact-info-block">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group
+                            <isif condition=${pdict.forms.billingForm.contactInfoFields.phone.mandatory === true}>required</isif>
+                            ${pdict.forms.billingForm.contactInfoFields.phone.htmlName}">
+                            <label class="form-control-label" for="phoneNumber">${Resource.msg('field.customer.phone.number','checkout',null)}</label>
+
+                            <button type="button" class="info-icon">
+                                <span class="icon" aria-hidden="true">i</span>
+                                <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
+                                <span class="tooltip d-none">
+                                    ${Resource.msg('tooltip.phone.number','creditCard',null)}
+                                </span>
+                            </button>
+
+                            <input type="tel" class="form-control phone" id="phoneNumber"
+                                value="${pdict.order.billing.billingAddress.address
+                                ? pdict.order.billing.billingAddress.address.phone||''
+                                : ''}" <isprint value=${pdict.forms.billingForm.contactInfoFields.phone.attributes} encoding="htmlsinglequote"/>
+                                aria-describedby="phoneInvalidMessage" >
+                            <div class="invalid-feedback" id="phoneInvalidMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <isinclude template="digitalriver/checkout/billing/drPurchaseTypeSection" />
+
+            <iscomment> DigitalRiver accordion section </iscomment>
+            <isif condition="${pdict.digitalRiverUseDropInFeature}">
+                </div></div></div>
+
+                <iscomment>DigitalRiver tax identifier</iscomment>
+                <div id="tax-id-accordion" class="dr-accordion-card ${pdict.digitalRiverUseTaxIdentifier ? '' : 'hidden'}">
+                    <div class="dr-accordion-card-header" id="headingTaxIdentifier">
+                        <h2 class="mb-0">
+                            <span class="btn btn-link dr-accordion-btn" data-toggle="collapse" data-target="#collapse-taxidentifier" aria-expanded="false" aria-controls="collapse-taxidentifier">
+                                ${Resource.msg('button.taxidentifier', 'digitalriver', null)}
+                            </span>
+                        </h2>
+                    </div>
+                    <div id="collapse-taxidentifier" class="collapse" aria-labelledby="headingTaxIdentifier" data-parent="#accordionBilling">
+                        <div class="dr-accordion-card-body">
+                            <div id="tax-id" data-config-url="${URLUtils.url('DigitalRiver-TaxIdentifierConfig')}"></div>
+                            <button class="btn btn-block btn-primary dr-btn-taxidentifier-submit" type="button" data-apply-url="${URLUtils.url('DigitalRiver-TaxIdentifierApply')}">
+                                ${Resource.msg('button.submit.taxidentifier', 'digitalriver', null)}
+                            </button>
+                            <div id="dr-list-of-applied-identifiers" data-delete-url="${URLUtils.url('DigitalRiver-TaxIdentifierDelete')}"></div>
+                        </div>
+                    </div>
+                </div>
+                <iscomment>End of DigitalRiver tax identifier</iscomment>
+
+                <div class="dr-accordion-card">
+
+                    <iscomment> Do not display payment section for zero dollar orders </iscomment>
+                    <div class="dr-accordion-card-header ${pdict.order.totals.isZeroTotal ? 'digitalriver-hide' : ''}" id="headingPayment">
+                        <h2 class="mb-0">
+                            <span class="btn btn-link dr-accordion-btn" data-toggle="collapse" data-target="#collapse-payment" aria-expanded="false" aria-controls="collapse-payment">
+                                ${Resource.msg('button.payment', 'digitalriver', null)}
+                            </span>
+                        </h2>
+                    </div>
+                
+                    <div id="collapse-payment" class="collapse" aria-labelledby="headingPayment" data-parent="#accordionBilling">
+                        <div class="dr-accordion-card-body">
+            </isif>
+
+            <!-------------------------------------------------------------------------->
+            <!-- Payment Options                                                      -->
+            <!-------------------------------------------------------------------------->
+            <fieldset>
+                <isif condition="${pdict.digitalRiverUseDropInFeature}">
+                    <isinclude template="digitalriver/checkout/billing/paymentOptions" />
+                <iselse/>
+                    <isinclude template="checkout/billing/paymentOptions" />
+                </isif>
+            </fieldset>
+            
+            <iscomment> DigitalRiver accordion section </iscomment>
+            <isif condition="${pdict.digitalRiverUseDropInFeature}">
+                </div></div></div></div>
+            </isif>
+
+        </form>
+        <isinclude template="digitalriver/checkout/billing/drTaxCertificateModal" />
+    </div>
+</div>

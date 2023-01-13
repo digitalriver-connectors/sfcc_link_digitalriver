@@ -1,0 +1,27 @@
+<isset name="complianceId" value="${pdict.complianceId || 'compliance'}" scope="page" />
+<isset name="complianceEntity" value="${pdict.complianceEntity || require('*/cartridge/scripts/digitalRiver/drTaxHelper').getComplianceEntity()}" scope="page" />
+<isset name="siteLocaleInArray" value="${request.getLocale().split('_')}" scope="page" />
+<div id="${complianceId}"></div>
+
+<script>
+if (typeof DigitalRiver !== 'undefined') {
+    var DRLocale = "<isprint value="${request.getLocale().replace('_', '-')}" encoding="htmldoublequote" />";
+    var DRapiKey = "<isprint value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drPublicKey')}" encoding="htmlsinglequote" />";
+    
+    var complianceOptions = {
+        classes: {
+            base: 'DRElement'
+        },
+        compliance: {
+            businessEntityCode: "<isprint value="${complianceEntity}" encoding="htmldoublequote" />",
+            country: "<isprint value="${siteLocaleInArray[1]}" encoding="htmldoublequote" />" || "", // 'de' or empty string
+            language: "<isprint value="${siteLocaleInArray[0]}" encoding="htmldoublequote" />"
+        }
+    }
+    var ${complianceId}_digitalRiver = new DigitalRiver(DRapiKey, {
+        locale: DRLocale
+    });
+    var ${complianceId}_compliance = ${complianceId}_digitalRiver.createElement("compliance", complianceOptions);
+    ${complianceId}_compliance.mount("${complianceId}");
+}
+</script>

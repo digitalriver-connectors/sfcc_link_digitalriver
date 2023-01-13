@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences xmlns="http://www.demandware.com/xml/impex/preferences/2007-03-31">
+    <custom-preferences>
+        <all-instances>
+            <preference preference-id="drDigitalProductTaxCodes">
+                <value>4512.100</value>
+                <value>55111509.12</value>
+                <value>55111512.100</value>
+                <value>55111507.120</value>
+                <value>55111506.120</value>
+                <value>55111513.120</value>
+                <value>55111502.120</value>
+                <value>70.360</value>
+                <value>81112201.121</value>
+                <value>8111</value>
+                <value>70.60</value>
+                <value>70.100</value>
+                <value>70.120</value>
+                <value>81112201.120</value>
+                <value>70.150</value>
+                <value>811121</value>
+                <value>81112201.420</value>
+                <value>81112201.410</value>
+                <value>81112201.200</value>
+                <value>70.300</value>
+                <value>70.280</value>
+                <value>811118.100</value>
+                <value>70.120_A</value>
+                <value>70.220</value>
+                <value>70.222</value>
+                <value>81112105</value>
+                <value>81112106</value>
+                <value>4323.320_C</value>
+                <value>4323.320_D</value>
+                <value>4323.320_A</value>
+                <value>4323.320_B</value>
+                <value>95.210</value>
+                <value>95.222</value>
+                <value>95.220</value>
+                <value>95.100</value>
+                <value>95.212</value>
+            </preference>
+        </all-instances>
+        <development/>
+        <staging/>
+        <production/>
+    </custom-preferences>
+</preferences>
+

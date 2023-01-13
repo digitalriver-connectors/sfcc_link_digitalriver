@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tax xmlns="http://www.demandware.com/xml/impex/tax/2007-02-14">
+    <tax-classes>
+        <tax-class class-id="39101629.100">
+            <display-name>Energy Star - Light Bulbs</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4010.100">
+            <display-name>Energy Star - Air Conditioner</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4010.200">
+            <display-name>Energy Star - Dehumidifier</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="40101609.100">
+            <display-name>Energy Star - Ceiling Fan</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="42">
+            <display-name>Medical Equipment</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="43211509">
+            <display-name>Mobile Devices</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4321_A">
+            <display-name>Computers</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4321_B">
+            <display-name>Computer Peripheral Devices</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4321_C">
+            <display-name>Computer Supplies</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4321_S">
+            <display-name>Computer Supplies - Subscription</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4323.310_A">
+            <display-name>Physical Software (Non-Gaming)</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.310_B">
+            <display-name>Backup Media (CD/DVD) - One Disc per Order</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.310_C">
+            <display-name>Backup Media (CD/DVD) - One Disc per Product</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.310_D">
+            <display-name>Physical Media Kits</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.310_E">
+            <display-name>Physical Software (Gaming Only)</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.320_A">
+            <display-name>Downloadable Software (Non-Gaming, Includes Software Subscriptions)</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.320_B">
+            <display-name>Extended Download Service</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.320_C">
+            <display-name>Downloadable Media Kits</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="4323.320_D">
+            <display-name>Downloadable Software (Gaming Only)</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="441216">
+            <display-name>School Supplies</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4512">
+            <display-name>Consumer Electronics (Photographic, Filming, or Video Equipment)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="4512.100">
+            <display-name>Digital Image</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="461815.100">
+            <display-name>Safety Clothing (Not Suitable for Everyday Use)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="47">
+            <display-name>Miscellaneous Supplies</display-name>
+            <description>Food, Beverage &amp; Household</description>
+        </tax-class>
+
+        <tax-class class-id="49">
+            <display-name>Sports and Recreation Equipment</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="50">
+            <display-name>Food - General</display-name>
+            <description>Food, Beverage &amp; Household</description>
+        </tax-class>
+
+        <tax-class class-id="51191905">
+            <display-name>Non-Prescription Vitamins</display-name>
+            <description>Food, Beverage &amp; Household</description>
+        </tax-class>
+
+        <tax-class class-id="5124">
+            <display-name>Non-Prescription Drugs</display-name>
+            <description>Food, Beverage &amp; Household</description>
+        </tax-class>
+
+        <tax-class class-id="52141501.100">
+            <display-name>Energy Star - Refrigerator</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52141505.100">
+            <display-name>Energy Star - Dishwasher</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52141506.100">
+            <display-name>Energy Star - Freezer</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52141545.100">
+            <display-name>Energy Star - Stove</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52141601.100">
+            <display-name>Energy Star - Washer</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52141602.100">
+            <display-name>Energy Star - Dryer</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="5216">
+            <display-name>Consumer Electronics (Non-Computer)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52161500_A">
+            <display-name>Consumer Electronics (T.V., Monitor, Display) - Size (= or &gt;15"&lt;35")</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52161500_B">
+            <display-name>Consumer Electronics (T.V., Monitor, Display) - Size (= or &gt;35")</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="52161500_C">
+            <display-name>Consumer Electronics (T.V., Monitor, Display) - Size (&gt;4"&lt;15")</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="531027">
+            <display-name>Uniforms</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="531029.100">
+            <display-name>Apparel &amp; Footwear (Everyday Use)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="531029.200">
+            <display-name>Apparel &amp; Footwear (Athletic Use)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="53121603">
+            <display-name>Backpacks</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="531316.150">
+            <display-name>Automatic Blood Pressure Monitors</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="5510">
+            <display-name>Printed Media (Non-Subscription)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="55101504.100">
+            <display-name>Newspapers (Includes Subscription)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="55101506.100">
+            <display-name>Magazines (Includes Subscriptions)</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="55101509">
+            <display-name>Books - Educational and Vocational Texts</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="55101510">
+            <display-name>Books - General Purpose</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="55111502.120">
+            <display-name>eBooks</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="55111506.120">
+            <display-name>Electronic Magazines (Includes Subscriptions)</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="55111507.120">
+            <display-name>Electronic Newspapers (Includes Subscriptions)</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="55111509.12">
+            <display-name>Virtual Goods</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="55111512.100">
+            <display-name>Music</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="55111513.120">
+            <display-name>Educational / Vocational Texts</display-name>
+            <description>Downloadable Goods (Non-Software)</description>
+        </tax-class>
+
+        <tax-class class-id="6010">
+            <display-name>School Instructional Materials</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="601410">
+            <display-name>Video Game Consoles and Accessories</display-name>
+            <description>Physical Goods</description>
+        </tax-class>
+
+        <tax-class class-id="70.100">
+            <display-name>General Services</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.120">
+            <display-name>Gift Cards</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.120_A">
+            <display-name>Virtual Currency</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.150">
+            <display-name>Non-warranty Repairs</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.220">
+            <display-name>Membership Dues - General</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.222">
+            <display-name>Membership Dues &amp; Professional Organization</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.280">
+            <display-name>Software Training</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.300">
+            <display-name>Seminar Classes</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.360">
+            <display-name>Installation Service Charges Provided by the Seller of TPP</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="70.60">
+            <display-name>Consulting Services</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="8111">
+            <display-name>Computer Services</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="811118.100">
+            <display-name>Technical Support</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="811121">
+            <display-name>Online Data Storage</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112105">
+            <display-name>Web Hosting</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112106">
+            <display-name>Software as a Service</display-name>
+            <description>Software (Downloadable &amp; Physical)</description>
+        </tax-class>
+
+        <tax-class class-id="81112201.120">
+            <display-name>Mandatory Maintenance Agreements - Services and Upgrades, for Downloadable and Physical Products</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112201.121">
+            <display-name>Mandatory Maintenance Agreements - Services and Upgrades, Only for Downloadable</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112201.200">
+            <display-name>Optional Maintenance Agreements - Services Only, for Downloadable and Physical Products</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112201.410">
+            <display-name>Optional Maintenance Agreements - Services and Upgrades, for Physical Products</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="81112201.420">
+            <display-name>Optional Maintenance Agreements - Services and Upgrades, for Downloadable Products</display-name>
+            <description>Services &amp; Miscellaneous</description>
+        </tax-class>
+
+        <tax-class class-id="95.100">
+            <display-name>Mandatory Warranties</display-name>
+            <description>Warranties</description>
+        </tax-class>
+
+        <tax-class class-id="95.210">
+            <display-name>Optional Warranties - Purchased at Time of Sale of for Consumer Goods, Labor Only</display-name>
+            <description>Warranties</description>
+        </tax-class>
+
+        <tax-class class-id="95.212">
+            <display-name>Optional Warranties - Purchased at Time of Sale of for Consumer Goods, Parts &amp; Labor</display-name>
+            <description>Warranties</description>
+        </tax-class>
+
+        <tax-class class-id="95.220">
+            <display-name>Optional Warranties - NOT Purchased at Time of Sale of for Consumer Goods, Labor Only</display-name>
+            <description>Warranties</description>
+        </tax-class>
+
+        <tax-class class-id="95.222">
+            <display-name>Optional Warranties - NOT Purchased at Time of Sale of for Consumer Goods, Parts &amp; Labor</display-name>
+            <description>Warranties</description>
+        </tax-class>
+
+        <tax-class class-id="exempt">
+            <display-name>Exempt</display-name>
+            <description>This is tax class for tax exempt products.</description>
+        </tax-class>
+
+        <tax-class class-id="standard" default="true">
+            <display-name>Standard</display-name>
+            <description>Standard tax class used if no specific tax class is set for a taxable product or service.</description>
+        </tax-class>
+
+    </tax-classes>
+    <tax-jurisdictions>
+        <tax-jurisdiction jurisdiction-id="CA">
+            <display-name>CA</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-11111">
+            <display-name>CA Ottawa</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-22222">
+            <display-name>CA Montreal</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-33333">
+            <display-name>CA Quebec</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE">
+            <display-name>DE</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-11111">
+            <display-name>DE Berlin</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-22222">
+            <display-name>DE Hamburg</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-33333">
+            <display-name>DE Frankfurt</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="Default" default="true">
+            <display-name>Default</display-name>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US">
+            <display-name>US</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-11111">
+            <display-name>US New York</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-22222">
+            <display-name>US Washington</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-33333">
+            <display-name>US Boston</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-44444">
+            <display-name>US Chicago</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="44444"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-55555">
+            <display-name>US Los Angeles</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="55555"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-66666">
+            <display-name>US San Francisco</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="66666"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-77777">
+            <display-name>US Dallas</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="77777"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-88888">
+            <display-name>US New Orleans</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="88888"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+    </tax-jurisdictions>
+    <tax-rates>
+        <tax-rate jurisdiction-id="US-11111" class-id="standard">0.04</tax-rate>
+
+        <tax-rate jurisdiction-id="US-88888" class-id="standard">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-33333" class-id="standard">0.12</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-33333" class-id="standard">0.15</tax-rate>
+
+        <tax-rate jurisdiction-id="US-33333" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="US" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="US-66666" class-id="standard">0.0775</tax-rate>
+
+        <tax-rate jurisdiction-id="Default" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="US-55555" class-id="standard">0.0725</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-22222" class-id="standard">0.11</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-22222" class-id="standard">0.14</tax-rate>
+
+        <tax-rate jurisdiction-id="CA" class-id="standard">0.13</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-11111" class-id="standard">0.1</tax-rate>
+
+        <tax-rate jurisdiction-id="US-22222" class-id="standard">0.0575</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-11111" class-id="standard">0.13</tax-rate>
+
+        <tax-rate jurisdiction-id="DE" class-id="standard">0.1</tax-rate>
+
+        <tax-rate jurisdiction-id="US-77777" class-id="standard">0.06</tax-rate>
+
+        <tax-rate jurisdiction-id="US-44444" class-id="standard">0.0625</tax-rate>
+
+        <tax-rate jurisdiction-id="US-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-88888" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-66666" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="Default" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-55555" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-77777" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-44444" class-id="exempt">0</tax-rate>
+
+    </tax-rates>
+</tax>

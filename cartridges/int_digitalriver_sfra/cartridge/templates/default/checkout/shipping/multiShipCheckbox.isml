@@ -1,0 +1,3 @@
+<isif condition="${pdict.order.items.items.length > 1}">
+    <iscomment> Multishipping is not supported by DigitalRiver cartridge</iscomment>
+</isif>
