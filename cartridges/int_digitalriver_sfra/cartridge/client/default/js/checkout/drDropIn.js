@@ -146,7 +146,7 @@ function initEvents() {
                 });
             }
         });
-        if ($('.data-checkout-stage').data('checkout-stage') === 'payment') { // for cases when page is refreshed by customer in the process of checkout
+        if ($('.data-checkout-stage').data('checkout-stage') === 'payment' || $('.DR-place-order').data('dr-redirect-error')) { // for cases when page is refreshed by customer in the process of checkout and for redirect errors
             initDropIn($dropinContainer.data('config-url'));
         }
         $('body').on('digitalRiver:updateDropIn', function (e, digitalRiverConfiguration) {

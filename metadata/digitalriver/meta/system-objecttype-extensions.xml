@@ -68,6 +68,13 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="drOrderID">
+                <display-name xml:lang="x-default">Digital River Order Id</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="DigitalRiverAttributes">
@@ -76,6 +83,7 @@
                 <attribute attribute-id="drCheckoutData"/>
                 <attribute attribute-id="drDropInResponse"/>
                 <attribute attribute-id="drPaymentSessionId"/>
+                <attribute attribute-id="drOrderID"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -97,6 +105,12 @@
                 <min-length>0</min-length>
             </attribute-definition>
             <attribute-definition attribute-id="drOrderID">
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drPaymentSessionId">
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -195,6 +209,7 @@
                 <attribute attribute-id="drCheckoutID"/>
                 <attribute attribute-id="drCheckoutData"/>
                 <attribute attribute-id="drOrderID"/>
+                <attribute attribute-id="drPaymentSessionId"/>
                 <attribute attribute-id="drDropInResponse"/>
                 <attribute attribute-id="drOrderStatus"/>
                 <attribute attribute-id="drFraudStatus"/>
@@ -769,6 +784,14 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="drDropInPaymentRedirect">
+                <display-name xml:lang="x-default">Digital River Drop In payment redirect option </display-name>
+                <description xml:lang="x-default"> Digital River Drop In payment redirect option </description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Digital River">
@@ -790,6 +813,7 @@
                 <attribute attribute-id="drDefaultEntity"/>
                 <attribute attribute-id="drDigitalProductTaxCodes"/>
                 <attribute attribute-id="drReplacePromotions"/>
+                <attribute attribute-id="drDropInPaymentRedirect"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

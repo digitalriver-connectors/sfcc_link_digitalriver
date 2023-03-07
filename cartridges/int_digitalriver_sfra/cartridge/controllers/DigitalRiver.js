@@ -215,13 +215,15 @@ server.get('DropInConfig', function (req, res, next) {
     var currentSite = require('dw/system/Site').getCurrent();
     var BasketMgr = require('dw/order/BasketMgr');
     var URLUtils = require('dw/web/URLUtils');
+    var reqRedirectUrl = 'https://' + req.host; // adding code to get the hostname
 
     var digitalRiverConfiguration = {
         currentLocaleId: req.locale.id.replace('_', '-'),
         APIKey: currentSite.getCustomPreferenceValue('drPublicKey'),
         dropInConfiguration: dropinHelper.getConfiguration({
             basket: BasketMgr.getCurrentBasket(),
-            customer: req.currentCustomer.raw
+            customer: req.currentCustomer.raw,
+            reqUrl: reqRedirectUrl  // adding host name
         }),
         cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString()
     };
@@ -412,6 +414,11 @@ server.post('PurchaseType', function (req, res, next) {
     var billTo;
 
     var billingFormErrors = COHelpers.validateBillingForm(billingForm.addressFields);
+    var stateCode;
+    if(billingForm.addressFields && billingForm.addressFields.states)
+    {
+        stateCode = billingForm.addressFields.states.stateCode.value;
+     }
     if (!Object.keys(billingFormErrors).length) {
         var billingAddress = {
             firstName: billingForm.addressFields.firstName.value,
@@ -420,9 +427,11 @@ server.post('PurchaseType', function (req, res, next) {
             address2: billingForm.addressFields.address2.value,
             city: billingForm.addressFields.city.value,
             postalCode: billingForm.addressFields.postalCode.value,
-            countryCode: billingForm.addressFields.country,
-            stateCode: billingForm.addressFields.states.stateCode.value
+            countryCode: billingForm.addressFields.country        
         };
+        if(stateCode && stateCode != ''){
+            billingAddress['stateCode'] = stateCode;
+         }
 
         COHelpers.copyBillingAddressToBasket(billingAddress, currentBasket);
 
@@ -488,6 +497,72 @@ server.post('PurchaseType', function (req, res, next) {
         digitalRiverComplianceOptions: digitalRiverComplianceOptions
     });
 
+    return next();
+});
+
+/**
+ *  @function
+ * DigitalRiver-DRPlaceOrder
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next call in the middleware chain
+* Route to handle DR order submission and redirect prior to placing Salesforce order (CheckoutServices-PlaceOrder)
+*/
+server.post('DRPlaceOrder', function (req, res, next) {
+    var BasketMgr = require('dw/order/BasketMgr');
+    var Transaction = require('dw/system/Transaction');
+    var URLUtils = require('dw/web/URLUtils');
+    var drCheckoutAPI = require('*/cartridge/scripts/services/digitalRiverCheckout');
+    
+    var viewData = res.getViewData();
+    var currentBasket = BasketMgr.getCurrentBasket();
+    var checkoutId = currentBasket.custom.drCheckoutID;
+    var Resource = require('dw/web/Resource');
+
+    var DRResult = drCheckoutAPI.createOrder(checkoutId);
+    var checkoutHelper = require('*/cartridge/scripts/digitalRiver/drCheckoutHelper');
+    if (DRResult.ok) {
+        //update checkout with DR order variables
+        Transaction.wrap(function () {
+            currentBasket.custom.drOrderID = DRResult.object.id; // eslint-disable-line no-param-reassign
+            currentBasket.custom.drPaymentSessionId = DRResult.object.payment.session.id; // eslint-disable-line no-param-reassign   
+        });
+
+        if (DRResult.object.payment.session.state === 'pending_redirect'  && DRResult.object.payment.session.nextAction.data.redirectUrl.length > 0) {
+            //handle the redirect
+            var paymentRedirectUrl = DRResult.object.payment.session.nextAction.data.redirectUrl;
+
+            if (!viewData.error) {
+                viewData.continueUrl = paymentRedirectUrl;
+                viewData.placeFinalOrder = false;
+            }
+        }
+        else {
+            //happy path flow.  continue with Salesforce order placement
+            viewData.continueUrl = URLUtils.url('CheckoutServices-PlaceOrder').toString();
+            viewData.placeFinalOrder = true;
+        }
+        res.json({
+            error: false,
+            orderID: '',
+            orderToken: '',
+            continueUrl: viewData.continueUrl
+        });
+    
+    }
+    else {
+        viewData.error = true;
+        viewData.fieldErrors = [];
+        viewData.serverErrors = [Resource.msg('error.technical', 'checkout', null)];
+        res.json({
+            error:true,
+            errorStage: {
+            stage: 'payment'  
+             },
+           errorMessage: Resource.msg('error.technical', 'checkout', null)
+        });
+        checkoutHelper.resetBasketOnError(req, res); // calling checkout on DR side
+    }
     return next();
 });
 

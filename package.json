@@ -1,13 +1,14 @@
 {
   "name": "int_digitalriver_sfra",
-  "version": "22.4.0",
-  "description": "Digital River's Payment link cartridge providing support for credit card and PayPal checkouts",
+  "version": "23.1.0",
+  "description": "Digital River link cartridge supporting Digital River's payments, tax, fraud and compliance services",
   "main": "index.js",
   "engines": {
     "node": ">=4.0"
   },
   "scripts": {
     "test": "sgmf-scripts --test test/unit/**/*.js",
+    "cover": "sgmf-scripts --cover 'test/unit'",
     "test:integration": "sgmf-scripts --integration 'test/integration/**/*.js'",
     "compile:scss": "sgmf-scripts --compile css",
     "compile:js": "sgmf-scripts --compile js",
@@ -20,11 +21,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SalesforceCommerceCloud/link_digitalriver.git"
+    "url": "git+https://github.com/digitalriver-connectors/sfcc_link_digitalriver.git"
   },
-  "author": "Astound Commerce",
+  "author": "Digital River",
   "license": "MIT",
-  "homepage": "https://github.com/SalesforceCommerceCloud/link_digitalriver#readme",
+  "homepage": "https://github.com/digitalriver-connectors/sfcc_link_digitalriver#readme",
   "devDependencies": {
     "@babel/core": "^7.6.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
@@ -66,14 +67,14 @@
     "mocha-junit-reporter": "^1.23.1",
     "moment-timezone": "^0.5.26",
     "node-sass": "^4.12.0",
-    "postcss-loader": "^2.1.6",
     "popper.js": "^1.14.7",
+    "postcss-loader": "^2.1.6",
     "properties-parser": "^0.3.1",
     "proxyquire": "1.7.4",
     "request-promise": "^4.2.4",
     "sass-loader": "^7.3.1",
     "selenium-standalone": "^6.16.0",
-    "sgmf-scripts": "^2.3.0",
+    "sgmf-scripts": "^2.4.2",
     "shelljs": "^0.8.3",
     "should": "^13.2.3",
     "sinon": "^1.17.7",
@@ -90,9 +91,13 @@
   "dependencies": {
     "bootstrap": "4.3.1",
     "cleave.js": "^1.5.3",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
     "flag-icon-css": "^2.9.0",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.5.1"
+    "http": "^0.0.1-security",
+    "jquery": "^3.5.1",
+    "querystring-es3": "^0.2.1"
   },
   "browserslist": [
     "last 2 versions",

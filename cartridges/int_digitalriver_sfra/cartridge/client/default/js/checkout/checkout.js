@@ -366,58 +366,68 @@ var drHelper = require('./drHelper');
 
                     return defer;
                 } else if (stage === 'placeOrder') {
+                    $('#checkout-main').spinner().start();
                     // --- Digital River Retrieve Stored Card ---
                     var placeOrder = function (defer) { // eslint-disable-line no-shadow
-                        // disable the placeOrder button here
-                        $('body').trigger('checkout:disableButton', '.next-step-button button');
-                        $.ajax({
-                            url: $('.place-order').data('action'),
-                            method: 'POST',
-                            success: function (data) {
-                                // enable the placeOrder button here
-                                $('body').trigger('checkout:enableButton', '.next-step-button button');
-                                if (data.error) {
-                                    if (data.cartError) {
-                                        window.location.href = data.redirectUrl;
-                                        defer.reject();
-                                    } else {
-                                        if (data.digitalRiverConfiguration) {
-                                            $('body').trigger('digitalRiver:updateDropIn', data.digitalRiverConfiguration);
+                        //Digital River - 2.6 - Redirect Flow
+                        if (!$('.DR-place-order').data('dr-order-placed') && !$('.DR-place-order').data('dr-redirect-success'))
+                        {
+                            drHelper.handleDROrderPlacement(defer, placeOrder);
+                        }
+                        //End Digital River - 2.6 - Redirect Flow
+                        else {
+                            $('.DR-place-order').data('dr-order-placed',"false");
+                            // disable the placeOrder button here
+                            $('body').trigger('checkout:disableButton', '.next-step-button button');
+                            $.ajax({
+                                url: $('.place-order').data('action'),
+                                method: 'POST',
+                                success: function (data) {
+                                    // enable the placeOrder button here
+                                    $('body').trigger('checkout:enableButton', '.next-step-button button');
+                                    if (data.error) {
+                                        if (data.cartError) {
+                                            window.location.href = data.redirectUrl;
+                                            defer.reject();
+                                        } else {
+                                            if (data.digitalRiverConfiguration) {
+                                                $('body').trigger('digitalRiver:updateDropIn', data.digitalRiverConfiguration);
+                                            }
+                                            // go to appropriate stage and display error message
+                                            defer.reject(data);
                                         }
-                                        // go to appropriate stage and display error message
-                                        defer.reject(data);
+                                    } else {
+                                        var redirect = $('<form>')
+                                            .appendTo(document.body)
+                                            .attr({
+                                                method: 'POST',
+                                                action: data.continueUrl
+                                            });
+
+                                        $('<input>')
+                                            .appendTo(redirect)
+                                            .attr({
+                                                name: 'orderID',
+                                                value: data.orderID
+                                            });
+
+                                        $('<input>')
+                                            .appendTo(redirect)
+                                            .attr({
+                                                name: 'orderToken',
+                                                value: data.orderToken
+                                            });
+                                        redirect.submit();
+                                        defer.resolve(data);
+                                        
                                     }
-                                } else {
-                                    var redirect = $('<form>')
-                                        .appendTo(document.body)
-                                        .attr({
-                                            method: 'POST',
-                                            action: data.continueUrl
-                                        });
-
-                                    $('<input>')
-                                        .appendTo(redirect)
-                                        .attr({
-                                            name: 'orderID',
-                                            value: data.orderID
-                                        });
-
-                                    $('<input>')
-                                        .appendTo(redirect)
-                                        .attr({
-                                            name: 'orderToken',
-                                            value: data.orderToken
-                                        });
-
-                                    redirect.submit();
-                                    defer.resolve(data);
+                                },
+                                error: function () {
+                                    // enable the placeOrder button here
+                                    $('body').trigger('checkout:enableButton', $('.next-step-button button'));
                                 }
-                            },
-                            error: function () {
-                                // enable the placeOrder button here
-                                $('body').trigger('checkout:enableButton', $('.next-step-button button'));
-                            }
-                        });
+                            });
+                        }
                     };
                     drHelper.retrieveStoredCard(drStoredPayment, defer, placeOrder);
                     return defer;
@@ -503,10 +513,16 @@ var drHelper = require('./drHelper');
                     }
                 });
 
+                //Digital River - 2.6 - Redirect Flow
+                $(document).ready(function () {
+                    drHelper.handleDROrderRedirect(members);
+                });
+
                 //
                 // Set the form data
                 //
                 plugin.data('formData', formData);
+
             },
 
             /**
@@ -588,7 +604,9 @@ var drHelper = require('./drHelper');
                 members.currentStage = checkoutStages.indexOf(stageName);
                 updateUrl(members.currentStage);
                 $(plugin).attr('data-checkout-stage', checkoutStages[members.currentStage]);
-            }
+            },
+
+            
         };
 
         //

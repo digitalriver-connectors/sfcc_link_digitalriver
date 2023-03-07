@@ -5,12 +5,30 @@
 * @param {Object} params - object with current basket, session id
 * @returns {Object} - configuration for DropIn
 */
-function getConfiguration(params) {
+function getConfiguration(params) { 
+    var baseUrl = params.reqUrl;
+    var URLUtils = require('dw/web/URLUtils');
     var currentBasket = params.basket ? params.basket : require('dw/order/BasketMgr').getCurrentBasket();
     var currentCustomer = params.customer ? params.customer : null;
     var email = currentBasket.getCustomerEmail() || currentBasket.getCustomer().getProfile().getEmail();
     var configuration = {};
-    if (email && currentBasket.custom.drPaymentSessionId) {
+    var checkoutHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
+    var drPaymentSessionId = currentBasket.custom.drPaymentSessionId;
+    //Redirect Flow 2.6 - START
+    if (email && currentBasket.custom.drPaymentSessionId && checkoutHelpers.getIsRedirectFlow()) {
+        configuration = {
+            sessionId: currentBasket.custom.drPaymentSessionId, // used value from digitalRiverCheckout.createCheckout()
+            options: {
+                redirect: {
+                    disableAutomaticRedirects: checkoutHelpers.getIsRedirectFlow(),
+                    returnUrl: baseUrl + URLUtils.url('Checkout-Begin', 'drPaymentSessionId', drPaymentSessionId).toString(),
+                    cancelUrl: baseUrl + URLUtils.url('Checkout-Begin', 'drPaymentSessionId', drPaymentSessionId).toString()
+                },
+                showSavePaymentAgreement: (currentCustomer && currentCustomer.authenticated)
+            }
+        };
+    //Redirect Flow 2.6 Stop
+    } else if (email && currentBasket.custom.drPaymentSessionId) {
         configuration = {
             sessionId: currentBasket.custom.drPaymentSessionId, // used value from digitalRiverCheckout.createCheckout()
             options: {

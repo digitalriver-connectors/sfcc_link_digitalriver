@@ -11,14 +11,7 @@ server.prepend(
     csrfProtection.generateToken,
     function (req, res, next) {
         var BasketMgr = require('dw/order/BasketMgr');
-        var drTaxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
         var currentBasket = BasketMgr.getCurrentBasket();
-        var currentStage = req.querystring.stage;
-
-        if (!currentStage || currentStage === 'shipping') {
-            drTaxHelper.resetBasketCheckoutData(currentBasket);
-        }
-
         var drCheckoutData = JSON.parse(currentBasket.custom.drCheckoutData);
         var viewData = {
             amountRemainingToBeContributed: drCheckoutData && drCheckoutData.amountRemainingToBeContributed,

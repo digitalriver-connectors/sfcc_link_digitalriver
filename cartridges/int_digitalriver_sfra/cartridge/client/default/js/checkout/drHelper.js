@@ -165,6 +165,95 @@ function checkAllowedFilesType(fileList) {
     return true;
 }
 
+/** Digital River - 2.6 - Redirect flow logic
+ * @param {Object} defer - deferred object
+ * @param {function} placeOrderCallBack - place order callback function
+ */
+function handleDROrderPlacement(defer, placeOrderCallBack) {
+    $('.DR-place-order').data('dr-order-placed', false);
+    $.ajax({
+        url: $('.DR-place-order').data('action'),
+        method: 'POST',
+        success: function (data) {
+            // enable the placeOrder button here
+            $('body').trigger('checkout:enableButton', '.next-step-button button');
+            if (data.error) {
+                $('#checkout-main').spinner().stop();
+                if (data.cartError) {
+                    window.location.href = data.redirectUrl;
+                    defer.reject();
+                } else {
+                    if (data.digitalRiverConfiguration) {
+                        $('body').trigger('digitalRiver:updateDropIn', data.digitalRiverConfiguration);
+                    }
+                    // go to appropriate stage and display error message
+                    defer.reject(data);
+                }
+            } else {
+                //DR order successfully placed. Go back to main place order logic by calling nextStage again
+                if(data.placeFinalOrder)
+                {
+                    $('.DR-place-order').data('dr-order-placed', true);
+                    //members.nextStage();
+                    placeOrderCallBack(defer);
+                }
+                else {
+                // handle the response
+                    var redirect = $('<form>')
+                        .appendTo(document.body)
+                        .attr({
+                            method: 'POST',
+                            action: data.continueUrl
+                        });
+
+                    $('<input>')
+                        .appendTo(redirect)
+                        .attr({
+                            name: 'orderID',
+                            value: data.orderID
+                        });
+
+                    $('<input>')
+                        .appendTo(redirect)
+                        .attr({
+                            name: 'orderToken',
+                            value: data.orderToken
+                        });
+                    redirect.submit();
+                    defer.resolve();
+                    //placeOrderCallBack(defer);
+                
+                }
+                                          
+            }
+        },
+        error: function () {
+            // enable the placeOrder button here
+            $('body').trigger('checkout:enableButton', $('.next-step-button button'));
+        }
+    }); 
+}
+
+/** Digital River - 2.6 - Redirect flow logic
+ * @param {Object} members - used to control checkout flow
+ */
+function handleDROrderRedirect(members)
+{
+    if($('.DR-place-order').data('dr-redirect-success'))
+    {
+        $('.DR-place-order').data('dr-redirect-success',"false");
+        $('.DR-place-order').data('dr-order-placed',"true");
+        members.gotoStage('placeOrder');
+        members.nextStage();
+    }
+    else if($('.DR-place-order').data('dr-redirect-error'))
+    {
+        $('.error-message').show();
+        members.gotoStage('payment');
+    }
+}
+
+
 module.exports = {
     renderDRConfirm: renderDRConfirm,
     renderDRCompliance: renderDRCompliance,
@@ -172,5 +261,7 @@ module.exports = {
     updateComplianceEntity: updateComplianceEntity,
     checkoutError: checkoutError,
     clearError: clearError,
-    checkAllowedFilesType: checkAllowedFilesType
+    checkAllowedFilesType: checkAllowedFilesType,
+    handleDROrderPlacement: handleDROrderPlacement,
+    handleDROrderRedirect: handleDROrderRedirect
 };

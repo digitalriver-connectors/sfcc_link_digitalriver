@@ -342,6 +342,45 @@ function deleteSource(checkoutId, sourceId) {
     return result;
 }
 
+/**
+ * Refresh the order in Digital River's systems
+ *
+ * @param {string} drOrderId - id use to refresh order
+ * @returns {Object} Digital River response object
+ */
+function refreshOrder(drOrderId) {
+    var drRefreshSvc = digitalRiver.createDigitalRiverService('/orders/' + drOrderId + '/refresh');
+    drRefreshSvc.setRequestMethod('POST');
+    var result = drRefreshSvc.call();
+    if (result.ok) {
+        logger.info('orderId {0} refreshed', drOrderId);
+    } else {
+        logger.error('Error while source refresh: {0}', JSON.stringify(result.errorMessage));
+    }
+    return result;
+}
+
+/**
+ * updating the order in Digital River's systems with upstreamId
+ *
+ * @param {string} drOrderId - id use to update order
+ * @param {string} sfOrderId - salesforce order id
+ * @returns {Object} Digital River response object
+ */
+function updateDROrderWithUpstreamId(drOrderId, sfOrderId) {
+    var body = {
+        upstreamId: sfOrderId
+    };
+    var drRefreshSvc = digitalRiver.createDigitalRiverService('/orders/' + drOrderId );
+    drRefreshSvc.setRequestMethod('POST');
+    var result = drRefreshSvc.call(body);
+    if (result.ok) {
+        logger.info('updated upstreamId {0} ', sfOrderId);
+    } else {
+        logger.error('Error while updating upstreamId to the order: {0}', JSON.stringify(result.errorMessage));
+    }
+    return result;
+}
 module.exports = {
     createCheckout: createCheckout,
     updateCheckout: updateCheckout,
@@ -349,5 +388,7 @@ module.exports = {
     createTestCheckout: createTestCheckout,
     getCheckout: getCheckout,
     attachSource: attachSource,
-    deleteSource: deleteSource
+    deleteSource: deleteSource,
+    refreshOrder: refreshOrder,
+    updateDROrderWithUpstreamId: updateDROrderWithUpstreamId
 };

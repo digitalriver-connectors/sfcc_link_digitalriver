@@ -225,6 +225,9 @@ server.get('CertificateList',
         var drCustomerId = req.currentCustomer.raw.profile.custom.globalCommerceCustID;
         var drTaxCertificates = getTaxCertificateList(drCustomerId);
 
+        var reqRedirectUrl = 'https://' + req.host; // adding code to get the hostname
+
+
         var context = new HashMap();
         context.put('digitalRiverTaxCertificate', drTaxCertificates);
 
@@ -250,7 +253,8 @@ server.get('CertificateList',
                 APIKey: currentSite.getCustomPreferenceValue('drPublicKey'),
                 dropInConfiguration: dropinHelper.getConfiguration({
                     basket: BasketMgr.getCurrentBasket(),
-                    customer: req.currentCustomer.raw
+                    customer: req.currentCustomer.raw,
+                    reqUrl: reqRedirectUrl  // adding host name
                 }),
                 cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString()
             };

@@ -1,0 +1,10 @@
+<!--
+    Digital River - 2.6 Redirect Flow
+-->
+<input class="DR-place-order" type="hidden" name="DR-place-order" value="DR-place-order" 
+data-action="${URLUtils.url('DigitalRiver-DRPlaceOrder')}"
+data-dr-order-placed="false" 
+data-dr-redirect-success="${pdict.drRedirectSuccess }"
+data-dr-redirect-error="${pdict.drRedirectError }"
+data-dr-payment-session-id="${pdict.drPaymentSessionId }"
+/>

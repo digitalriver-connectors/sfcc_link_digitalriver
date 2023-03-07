@@ -1,10 +1,9 @@
 'use strict';
+var addressHelpers = require('base/checkout/address');
 
-var shippingHelpers = require('base/checkout/shipping');
+var base = require('base/checkout/shipping');
 
-var output = Object.assign({}, shippingHelpers);
-
-output.methods.updateMultiShipInformation = function (order) {
+function updateMultiShipInformation(order) {
     var $checkoutMain = $('#checkout-main');
     var $checkbox = $('[name=usingMultiShipping]');
     var $submitShippingBtn = $('button.submit-shipping');
@@ -23,6 +22,50 @@ output.methods.updateMultiShipInformation = function (order) {
     }
 
     $('body').trigger('shipping:updateMultiShipInformation', { order: order });
-};
+}
 
-module.exports = output;
+/**
+ * Digital River - 2.6 - Redirect flow - updated timeout, don't call for successful redirect
+ * Update list of available shipping methods whenever user modifies shipping address details.
+ * @param {jQuery} $shippingForm - current shipping form
+ */
+function updateShippingMethodList($shippingForm) {
+    // delay for autocomplete!
+    setTimeout(function () {
+        var $shippingMethodList = $shippingForm.find('.shipping-method-list');
+        var urlParams = addressHelpers.methods.getAddressFieldsFromUI($shippingForm);
+        var shipmentUUID = $shippingForm.find('[name=shipmentUUID]').val();
+        var url = $shippingMethodList.data('actionUrl');
+        urlParams.shipmentUUID = shipmentUUID;
+        if(!$('.DR-place-order').data('dr-redirect-success'))
+        {
+            $shippingMethodList.spinner().start();
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                data: urlParams,
+                success: function (data) {
+                    if (data.error) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        $('body').trigger('checkout:updateCheckoutView',
+                            {
+                                order: data.order,
+                                customer: data.customer,
+                                options: { keepOpen: true }
+                            });
+
+                        $shippingMethodList.spinner().stop();
+                    }
+                }
+            });
+        }
+    }, 3000);
+}
+
+
+base.methods.updateMultiShipInformation = updateMultiShipInformation;
+base.methods.updateShippingMethodList = updateShippingMethodList;
+
+module.exports = base;

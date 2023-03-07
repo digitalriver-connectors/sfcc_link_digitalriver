@@ -39,6 +39,7 @@ server.append(
             var OrderModel = require('*/cartridge/models/order');
             var Locale = require('dw/util/Locale');
             var Resource = require('dw/web/Resource');
+            var reqRedirectUrl = 'https://' + req.host; // adding code to get the hostname
             // if enabled drop-in, update view data with email address
             var currentSite = require('dw/system/Site').getCurrent();
             var digitalRiverUseDropInFeature = currentSite.getCustomPreferenceValue('drUseDropInFeature');
@@ -87,7 +88,8 @@ server.append(
                 dropInConfiguration: useDropIn
                     ? dropinHelper.getConfiguration({
                         basket: currentBasket,
-                        customer: req.currentCustomer.raw
+                        customer: req.currentCustomer.raw,
+                        reqUrl: reqRedirectUrl  // adding host name
                     })
                     : null,
                 cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString(),

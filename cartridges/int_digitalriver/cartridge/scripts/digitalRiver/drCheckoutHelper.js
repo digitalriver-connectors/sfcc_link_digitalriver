@@ -73,8 +73,61 @@ function getAggregatePriceItem(item, currencyCode) {
     return aggregatePrice;
 }
 
+/**
+ * reset the basket and create a new DR checkout when an error occurs
+ */
+function resetBasketOnError(req, res) {
+    var URLUtils = require('dw/web/URLUtils');
+    var Resource = require('dw/web/Resource');
+    var Transaction = require('dw/system/Transaction');
+    var currentSite = require('dw/system/Site').getCurrent();
+    var currentBasket = require('dw/order/BasketMgr').getCurrentBasket();
+    var taxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
+    var dropinHelper = require('*/cartridge/scripts/digitalRiver/dropinHelper');
+    var drCheckoutAPI = require('*/cartridge/scripts/services/digitalRiverCheckout');
+    var reqRedirectUrl = 'https://' + req.host; // adding code to get the hostname
+
+    res.setViewData({
+        errorStage: {
+            stage: 'payment'
+        }
+    });
+
+    if (currentBasket) {
+        var drCheckout = drCheckoutAPI.createCheckout(currentBasket, currentBasket.custom.drTaxIdentifierType, true);
+
+        if (drCheckout.ok) {
+            taxHelper.saveCheckoutDataToBasket(drCheckout.object, currentBasket, true);
+
+            var digitalRiverConfiguration = {
+                currentLocaleId: req.locale.id.replace('_', '-'),
+                APIKey: currentSite.getCustomPreferenceValue('drPublicKey'),
+                dropInConfiguration: dropinHelper.getConfiguration({
+                    basket: currentBasket,
+                    customer: req.currentCustomer.raw,
+                    reqUrl: reqRedirectUrl  // adding host name
+                }),
+                cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment',).toString(),
+                paymentErrorMessage: Resource.msg('error.checkout.paynowerror', 'digitalriver', null)
+            };
+
+            res.setViewData({
+                digitalRiverConfiguration: digitalRiverConfiguration
+            });
+        }
+        
+        Transaction.wrap(function () {
+            currentBasket.custom.drOrderID = null;
+        });
+    }
+
+
+    return true;
+}
+
 module.exports = {
     checkDigitalProductsOnly: checkDigitalProductsOnly,
     getCountry: getCountry,
-    getAggregatePriceItem: getAggregatePriceItem
+    getAggregatePriceItem: getAggregatePriceItem,
+    resetBasketOnError: resetBasketOnError
 };

@@ -341,6 +341,7 @@ function resetBasketCheckoutData(basket) {
         basket.custom.drCheckoutID = null; // eslint-disable-line no-param-reassign
         basket.custom.drPaymentSessionId = null; // eslint-disable-line no-param-reassign
         basket.custom.drCheckoutData = null; // eslint-disable-line no-param-reassign
+        basket.custom.drOrderID = null;
     });
 }
 

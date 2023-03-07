@@ -45,7 +45,9 @@
                 <!----------------------------------------------------------------------------------->
 
                 <div class="alert alert-danger error-message" role="alert">
-                    <p class="error-message-text"></p>
+                    <p class="error-message-text">
+                    <isif condition="${pdict.errorMessage}">${pdict.errorMessage}</isif>
+                    </p>
                 </div>
 
                 <isif condition="${pdict.drCustomerError}">
@@ -115,6 +117,7 @@
                             <button class="btn btn-primary btn-block place-order" data-action="${URLUtils.url('CheckoutServices-PlaceOrder')}"
                                     type="submit" name="submit" value="place-order">${Resource.msg('button.place.order', 'checkout', null)}
                             </button>
+                            <isinclude template="digitalriver/checkout/placeOrder/drPlaceOrder" />
                         </div>
                     </div>
                 </div>
