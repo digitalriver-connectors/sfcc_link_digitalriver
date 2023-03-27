@@ -18,6 +18,7 @@
                 <isinclude template="checkout/confirmation/confirmationDetails" />
                 <iscomment> Include DR invoice & credit memo links </iscomment>
                 <isinclude url="${URLUtils.url('DigitalRiver-InvoiceCredit', 'id', pdict.order.drOrderID)}" />
+                <isinclude url="${URLUtils.url('DigitalRiver-OfflineRefund', 'id', pdict.order.drOrderID, 'sfOrderID', pdict.order.orderNumber)}" />
                 <div class="my-account">
                     <a href="${pdict.exitLinkUrl}" title="${Resource.msg('link.orderdetails.myaccount','account',null)}" aria-label="${Resource.msg('link.orderdetails.myaccount','account',null)}">
                         ${pdict.exitLinkText}

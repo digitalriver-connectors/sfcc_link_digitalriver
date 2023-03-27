@@ -412,7 +412,10 @@ server.post('PurchaseType', function (req, res, next) {
     var isDigitalCart = checkoutHelper.checkDigitalProductsOnly(currentBasket.productLineItems);
     var billingForm = server.forms.getForm('billing');
     var billTo;
-
+    var organization;
+    if (purchaseType === 'business') {
+        organization = req.form.organizationName;
+    }        
     var billingFormErrors = COHelpers.validateBillingForm(billingForm.addressFields);
     var stateCode;
     if(billingForm.addressFields && billingForm.addressFields.states)
@@ -449,6 +452,10 @@ server.post('PurchaseType', function (req, res, next) {
                 name: billing.fullName,
                 email: currentBasket.getCustomerEmail()
             };
+            
+            if (purchaseType === 'business' && isDigitalCart && organization !== '') {
+                billTo.organization = organization;
+            }
         }
     }
 
@@ -466,6 +473,12 @@ server.post('PurchaseType', function (req, res, next) {
     }
     if (billTo) {
         checkoutUpdateBody.billTo = billTo;
+    }
+    if (purchaseType === 'business' && !isDigitalCart && organization !== '') {
+        var shipTo = {
+            organization: organization
+        }
+        checkoutUpdateBody.shipTo = shipTo;
     }
 
     var checkoutResult = drCheckoutAPI.updateCheckout(checkoutId, checkoutUpdateBody);
@@ -498,6 +511,38 @@ server.post('PurchaseType', function (req, res, next) {
     });
 
     return next();
+});
+
+server.get('OfflineRefund', server.middleware.include, function (req, res, next) {
+    var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+    var refundCallResult = drOrderAPI.getRefunds(req.querystring.id);
+    var refundIds = [];
+    var refundLinks;
+    if (refundCallResult.ok) {
+        refundLinks = refundCallResult.object.data;
+        refundLinks.forEach(function (refundLink) {
+            refundIds.push(refundLink.id);
+        });
+    }
+    res.render('digitalriver/offlineRefund', {
+        refundIds: refundIds,
+        orderID:req.querystring.sfOrderID
+    });
+
+    return next();
+});
+
+server.get('DisplayOfflineRefund', function (req, res, next) {
+    var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+    var refundCallResult = drOrderAPI.getRefundDetailsByRefundId(req.querystring.refundId);
+    if (refundCallResult.ok) {
+        var drOrderId = refundCallResult.object.orderId;
+        res.render('/digitalriver/offlineRefundForm', {
+        token: refundCallResult.object.tokenInformation.token,
+        orderID: req.querystring.orderID
+            });
+    }
+    next();
 });
 
 /**

@@ -122,8 +122,9 @@ server.post('SaveCertificate',
         var filesInput = request.httpParameterMap.processMultipart(function (field, ct, oname) {
             // Check file extension
             var idx = oname ? oname.lastIndexOf('.') : -1;
-            var fileExt = idx < 0 ? '' : oname.slice(++idx);
-            if (['gif', 'jpg', 'pdf'].indexOf(fileExt) === -1) {
+            var fileExt = idx < 0 ? '' : oname.slice(++idx).toLowerCase();
+
+            if (['csv', 'jpg', 'jpeg', 'pdf', 'png'].indexOf(fileExt) === -1) {
                 wrongFileExtension = true;
                 return null;
             }

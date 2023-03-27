@@ -82,9 +82,47 @@ function createFulfillment(body) {
     return callResult;
 }
 
+/**
+* Sends API call to Digital River to retrieve refund detail for an orderId with pending information 
+* @param {string} orderId dr order id 
+* @returns {dw.svc.Result} call result 
+*/
+function getRefunds(orderId) {
+    var drOrderService = digitalRiver.createDigitalRiverService('/refunds?orderId=' + orderId+'&state=pending_information');
+    drOrderService.setRequestMethod('GET');
+    logger.info('Sending API request to retrieve order to {0}', drOrderService.getURL());
+    var callResult = drOrderService.call();
+    if (callResult.ok) {
+        logger.info('Order successfully retrieved');
+    } else {
+        logger.error('Error while while retrieving order: {0}', orderId);
+    }
+    return callResult;
+}
+
+/**
+* Sends API call to Digital River to retrieve refund detail for refundId
+* @param {string} orderId dr order id 
+* @returns {dw.svc.Result} call result 
+*/
+function getRefundDetailsByRefundId(refundId) {
+    var drOrderService = digitalRiver.createDigitalRiverService('/refunds/' + refundId);
+    drOrderService.setRequestMethod('GET');
+    logger.info('Sending API request to retrieve order to {0}', drOrderService.getURL());
+    var callResult = drOrderService.call();
+    if (callResult.ok) {
+        logger.info('Order successfully retrieved');
+    } else {
+        logger.error('Error while while retrieving order: {0}', refundId);
+    }
+    return callResult;
+}
+
 module.exports = {
     getOrders: getOrders,
     getOrder: getOrder,
     createFileLink: createFileLink,
-    createFulfillment: createFulfillment
+    createFulfillment: createFulfillment,
+    getRefunds: getRefunds,
+    getRefundDetailsByRefundId: getRefundDetailsByRefundId
 };

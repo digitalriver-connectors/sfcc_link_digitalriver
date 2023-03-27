@@ -93,7 +93,7 @@
             <label class="custom-file-label" for="imageFile">
                 ${Resource.msg('label.input.file.choose','digitalriver',null)}
             </label>
-            <input type="file" class="custom-file-input form-control" id="imageFile" accept=".gif,.jpg,.pdf"
+            <input type="file" class="custom-file-input form-control" id="imageFile" accept=".csv,.jpg,.jpeg,.pdf,.png"
                 <isprint value="${pdict.certificateForm.imageFile.attributes}" encoding="htmlsinglequote" /> />
             <div class="invalid-feedback"></div>
         </div>

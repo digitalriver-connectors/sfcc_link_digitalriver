@@ -61,7 +61,7 @@ function updateShippingMethodList($shippingForm) {
                 }
             });
         }
-    }, 3000);
+    }, 300);
 }
 
 

@@ -35,15 +35,31 @@
                 </div>
             </div>
 
+            <div id="organizationNameSection" class="form-group required dr-organization-name ${pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}" style="padding-top: 15px; padding-bottom: 15px;">
+                <label class="form-control-label" for="OrganizationName"> 
+                    ${Resource.msg('label.purchaseType.organizationName', 'digitalriver', null)} 
+                </label>
+                <input type="text" id="organizationName" name="organizationName" class="form-control OrganizationName" value="" 
+                 ${pdict.digitalRiverCustomerType === 'business' ? 'required="required"': ''}
+                >
+                <div class="invalid-feedback"></div>
+            </div>
+
             <div
                 class="us-tax-certificate-list ${digitalRiverTaxExemptEnable && pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}"
                 data-url="${URLUtils.url('TaxCertificates-CertificateList')}"
                 data-tax-exempt="${JSON.stringify(pdict.digitalRiverTaxExemptData)}"
             >
+            <!--
                 <button class="btn btn-block btn-primary add-new-certificate" type="button">
                     ${Resource.msg('label.taxcertificate.addcertificate', 'digitalriver', null)}
                 </button>
-                <isinclude template="digitalriver/certificate/drTaxCertificateTable" />
+               --> 
+                ${Resource.msg('label.taxcertificate.addonmyaccount','digitalriver',null)}
+                <a href="${URLUtils.url('Account-Show')}" class="normal" aria-label="${Resource.msg('label.addressbook.myaccount','account',null)}">
+                    ${Resource.msg('link.header.myaccount','account',null)}</a>
+                ${Resource.msg('label.taxcertificate.pagemyaccount','digitalriver',null)}
+                
             </div>
         </div>
     </fieldset>

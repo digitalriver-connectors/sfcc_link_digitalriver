@@ -155,11 +155,11 @@ function clearError() {
  * @returns {boolean} - result of checking
  */
 function checkAllowedFilesType(fileList) {
-    var allowedFileExt = ['gif', 'jpg', 'pdf'];
+    var allowedFileExt = ['csv', 'jpg', 'jpeg', 'pdf', 'png'];
     for (var i = 0; i < fileList.length; i++) {
         var fileName = fileList[i].name;
         var idx = fileName ? fileName.lastIndexOf('.') : -1;
-        var fileExt = idx < 0 ? '' : fileName.slice(++idx);
+        var fileExt = idx < 0 ? '' : (fileName.slice(++idx)).toLowerCase();
         if (allowedFileExt.indexOf(fileExt) === -1) return false;
     }
     return true;

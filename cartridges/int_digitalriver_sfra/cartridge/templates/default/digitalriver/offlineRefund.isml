@@ -1,0 +1,22 @@
+<div id="offline-refund">
+    <div class="card confirm-details">
+        <div class="card-header">
+            <h2 class="card-header-custom">${Resource.msg('heading.refunds', 'digitalriver', null)}</h2>
+        </div>
+
+        <isif condition="${pdict.refundIds.length >0}">
+        <h5 class=" ml-3 mt-2 text-muted">${Resource.msg('label.enter.form.details', 'digitalriver', null)}</h5>
+        <div id="refundLinks" class="card-body">
+            <ul>
+                <isloop iterator="${pdict.refundIds}" var="refundId">
+                <li>
+                    <a href="${URLUtils.url('DigitalRiver-DisplayOfflineRefund', 'refundId', refundId, 'orderID', pdict.orderID)}">${Resource.msg('label.refunds', 'digitalriver', null)} ${refundId} </a>
+                </li>
+                </isloop>
+            </ul>
+        </div>
+        <iselse/>
+            <div class="card-body">${Resource.msg('msg.no.refund.data', 'digitalriver', null)}</div>
+        </isif>
+    </div>
+</div>

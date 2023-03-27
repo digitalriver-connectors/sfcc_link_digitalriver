@@ -183,6 +183,17 @@ function loadTaxIdentifierConfig() {
     });
 }
 
+function toggleOrganizationInputField() {
+    var isBusinessType = $('#typeBusiness').prop('checked');
+    if (isBusinessType) {
+        $('#organizationNameSection').removeClass( "dr-organization-name hidden" ).addClass( "dr-organization-name show" );
+        $("#organizationName").attr("required", true);
+    } else {
+        $("#organizationName").attr("required", false);
+        $('#organizationNameSection').removeClass( "dr-organization-name show" ).addClass( "dr-organization-name hidden" );
+    }
+}
+
 /**
  * Initiates events listener for add-payment button that will mount drop-in on click
  */
@@ -201,6 +212,7 @@ function initEvents() {
 
     $('input[type=radio][name=purchaseType]').change(function () {
         purchaseTypeChanged = true;
+        toggleOrganizationInputField();
     });
 
     // update purchase type, billing address and mount tax identifier on billing apply
@@ -213,6 +225,12 @@ function initEvents() {
         if (purchaseTypeChanged) {
             billingAddressForm += '&purchaseType=' + purchaseType;
         }
+
+        if (purchaseType === 'business') {
+            var organizationName = $('#organizationName').prop('value');
+            billingAddressForm += '&organizationName=' + organizationName;
+        }
+
         if (billingConutryChanged) {
             billingAddressForm += '&billingCountryChanged=true';
         }
