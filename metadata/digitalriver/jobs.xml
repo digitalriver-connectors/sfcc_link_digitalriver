@@ -98,4 +98,158 @@
         <rules/>
         <triggers/>
     </job>
+
+     <job job-id="DigitalRiver_DynamicPricing" priority="0">
+        <description>Creates price books by converting the prices dynamically from base price book</description>
+        <parameters>
+            <parameter name="BaseSalePriceBookPath">DigitalRiver/baseSalePriceBook</parameter>
+            <parameter name="BaseListPriceBookPath">DigitalRiver/baseListPriceBook</parameter>
+            <parameter name="DynamicPricingExportFolder">DigitalRiver/PriceBooks</parameter>
+        </parameters>
+        <split sequential="false">
+            <flow>
+                <context site-id="Sites"/>
+                <step step-id="ExportListPriceBook" type="ExportPriceBook" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="PriceBookID">usd-m-list-prices</parameter>
+                        <parameter name="ExportFile">DigitalRiver/baseListPriceBook</parameter>
+                        <parameter name="OverwriteExportFile">true</parameter>
+                    </parameters>
+                </step>
+            </flow>
+            <flow>
+                <context site-id="Sites"/>
+                <step step-id="ExportSalePriceBook" type="ExportPriceBook" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="PriceBookID">usd-m-sale-prices</parameter>
+                        <parameter name="ExportFile">DigitalRiver/baseSalePriceBook</parameter>
+                        <parameter name="OverwriteExportFile">true</parameter>
+                    </parameters>
+                </step>
+            </flow>
+        </split>
+        <split sequential="false">
+            <flow>
+                <context site-id="RefArch"/>
+                <step step-id="ProcessPriceBooks" type="custom.DigitalRiverProcessPriceBooks" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="BaseListPriceBookPath" job-parameter-ref="BaseListPriceBookPath"/>
+                        <parameter name="BaseSalePriceBookPath" job-parameter-ref="BaseSalePriceBookPath"/>
+                        <parameter name="DynamicPricingExportFolder" job-parameter-ref="DynamicPricingExportFolder"/>
+                        <parameter name="CountryCode"></parameter>
+                    </parameters>
+                </step>
+            </flow>
+        </split>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="ImportPriceBooks" type="ImportPriceBook" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="WorkingFolder">DigitalRiver/PriceBooks</parameter>
+                    <parameter name="NoFilesFoundHandling">NO_FILES_FOUND</parameter>
+                    <parameter name="ImportMode">Merge</parameter>
+                    <parameter name="ImportFailedHandling">WARN</parameter>
+                    <parameter name="AfterImportFileHandling">Archive</parameter>
+                    <parameter name="ArchiveFolder">archive</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="ReindexProducts" type="SearchReindex" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="Product related search indexes">true</parameter>
+                    <parameter name="Active data search index">false</parameter>
+                    <parameter name="Content search index">false</parameter>
+                    <parameter name="Indexer Type">Full Index Rebuild</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules>
+            <on-running runtime-threshold="60m" enabled="false">
+                <mark-job-as-hanging/>
+            </on-running>
+        </rules>
+        <triggers>
+            <run-once enabled="false">
+                <date>2023-04-13Z</date>
+                <time>09:18:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+     <job job-id="DigitalRiver_DynamicPricing_ProductOptions" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="ExportCatalog" type="ExportCatalog" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="CatalogID">electronics-m-catalog</parameter>
+                    <parameter name="ExportCategories">false</parameter>
+                    <parameter name="ExportProducts">false</parameter>
+                    <parameter name="ExportCategoryAssignments">false</parameter>
+                    <parameter name="ExportProductOptions">true</parameter>
+                    <parameter name="ExportRecommendations">false</parameter>
+                    <parameter name="ExportVariationAttributes">false</parameter>
+                    <parameter name="ExportFile">DigitalRiver/drProductOptionsCatalog</parameter>
+                    <parameter name="OverwriteExportFile">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="ProcessProductOptions" type="custom.DigitalRiverProcessProductOptions" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="BaseCatalogPath">DigitalRiver/drProductOptionsCatalog</parameter>
+                    <parameter name="ExportFolderPath">DigitalRiver/convertedProductOptions</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="Sites"/>
+            <step step-id="ImportCatalog" type="ImportCatalog" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="WorkingFolder">DigitalRiver/convertedProductOptions</parameter>
+                    <parameter name="NoFilesFoundHandling">NO_FILES_FOUND</parameter>
+                    <parameter name="ImportMode">Merge</parameter>
+                    <parameter name="ImportFailedHandling">WARN</parameter>
+                    <parameter name="AfterImportFileHandling">Archive</parameter>
+                    <parameter name="ArchiveFolder">archive</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="ReindexProducts" type="SearchReindex" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="Product related search indexes">true</parameter>
+                    <parameter name="Active data search index">false</parameter>
+                    <parameter name="Content search index">false</parameter>
+                    <parameter name="Indexer Type">Full Index Rebuild</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules>
+            <on-running runtime-threshold="60m" enabled="false">
+                <mark-job-as-hanging/>
+            </on-running>
+        </rules>
+        <triggers>
+            <run-once enabled="false">
+                <date>2023-04-26Z</date>
+                <time>14:48:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
 </jobs>

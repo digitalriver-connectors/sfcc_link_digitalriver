@@ -5,6 +5,10 @@
             "script": "./cartridge/scripts/hooks/cart/calculate.js"
         },
         {
+            "name": "dw.order.calculateShipping",
+            "script": "./cartridge/scripts/hooks/cart/calculate.js"
+        },
+        {
             "name": "app.payment.processor.digital_river",
             "script": "./cartridge/scripts/hooks/payment/processor/digital_river"
         },
@@ -35,6 +39,10 @@
         {
             "name": "app.payment.processor.digital_river_zero_payment",
             "script": "./cartridge/scripts/hooks/payment/processor/digital_river_zero_payment"
+        },
+        {
+            "name": "dw.system.request.onRequest",
+            "script": "./cartridge/scripts/hooks/request"
         }
     ]
 }

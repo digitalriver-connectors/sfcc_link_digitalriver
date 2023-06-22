@@ -8,7 +8,7 @@ var scssFiles = require('sgmf-scripts').createScssPath();
 
 const cwd = process.cwd();
 const packageJson = require(path.join(cwd, './package.json'));
-var packageName = packageJson.packageName || packageJson.name;
+var packageName = process.argv[process.argv.indexOf('--cartridgeName') + 1];
 
 var bootstrapPackages = {
     Alert     : 'exports-loader?Alert!bootstrap/js/src/alert',

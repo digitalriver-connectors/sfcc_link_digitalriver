@@ -47,18 +47,25 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
     var ipAddress = request.httpHeaders.get('true-client-ip') || request.getHttpRemoteAddress();
 
     // Preparing shipping-related data
+    var shipment = currentBasket.shipments[0];
     var shipping = currentBasket.shipments[0].shippingAddress;
-    var shipFrom = {
-        address: {
-            line1: Site.current.getCustomPreferenceValue('drShipFromAddress1'),
-            line2: Site.current.getCustomPreferenceValue('drShipFromAddress2'),
-            city: Site.current.getCustomPreferenceValue('drShipFromCity'),
-            postalCode: Site.current.getCustomPreferenceValue('drShipFromPostalCode'),
-            state: Site.current.getCustomPreferenceValue('drShipFromState'),
-            country: Site.current.getCustomPreferenceValue('drShipFromCountry')
 
-        }
-    };
+    var shipFrom;
+    if (shipment.shippingMethodID.indexOf('DRDefaultShp') > -1 && shipment.custom.drSQShipFrom) {
+        shipFrom = JSON.parse(shipment.custom.drSQShipFrom);
+    } else {
+        shipFrom = {
+            address: {
+                line1: Site.current.getCustomPreferenceValue('drShipFromAddress1'),
+                line2: Site.current.getCustomPreferenceValue('drShipFromAddress2'),
+                city: Site.current.getCustomPreferenceValue('drShipFromCity'),
+                postalCode: Site.current.getCustomPreferenceValue('drShipFromPostalCode'),
+                state: Site.current.getCustomPreferenceValue('drShipFromState'),
+                country: Site.current.getCustomPreferenceValue('drShipFromCountry')
+            }
+        };
+    }
+
     var shipTo;
     if (shipping) {
         shipTo = {
@@ -91,19 +98,30 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
         };
     }
 
-    var shipment = currentBasket.shipments[0];
-
     // Applying shipping adjustments shipping cost amount
     var shippingPriceAdjustments = shipment.shippingPriceAdjustments.toArray();
     var shippingAmount = shippingPriceAdjustments.reduce(function (sum, adjustment) {
         return sum.add(adjustment.price);
     }, currentBasket.getShippingTotalPrice());
 
-    var shippingChoice = {
-        amount: shippingAmount.value,
-        description: shipment.shippingMethod.description,
-        serviceLevel: shipment.shippingMethodID
-    };
+    var shippingChoice;
+
+    if (shipment.shippingMethodID.indexOf('DRDefaultShp') > -1) {
+        shippingChoice = {
+            id: shipment.custom.drSQId,
+            description: shipment.custom.drSQDescription,
+            amount: shippingAmount.value,
+            shippingTerms: shipment.custom.drSQShippingTerms,
+            serviceLevel: shipment.custom.drSQServiceLevel
+        };
+    } else {
+        shippingChoice = {
+            amount: shippingAmount.value,
+            description: shipment.shippingMethod.description,
+            serviceLevel: shipment.shippingMethodID
+        };
+    }
+
 
     // Preparing products data
     var items = currentBasket.allProductLineItems;
@@ -254,13 +272,11 @@ function updateCheckout(checkoutId, body) {
     var result = drCheckoutSvc.call(body);
     if (result.ok) {
         logger.info('Successfully updated for checkout {0}', result.object.id);
+    } else if (result.error >= 500 && result.error < 600) {
+        logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', result.error, result.errorMessage);
+        result = digitalRiver.drServiceRetryLogic(drCheckoutSvc, body, true);
     } else {
-        if (result.error >= 500 && result.error < 600) {
-            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', result.error, result.errorMessage);
-            result = digitalRiver.drServiceRetryLogic(drCheckoutSvc, body, true);
-        } else {
-            logger.error('Error while updating checkout: {0}', JSON.stringify(result.errorMessage));
-        }
+        logger.error('Error while updating checkout: {0}', JSON.stringify(result.errorMessage));
     }
     return result;
 }
@@ -371,7 +387,7 @@ function updateDROrderWithUpstreamId(drOrderId, sfOrderId) {
     var body = {
         upstreamId: sfOrderId
     };
-    var drRefreshSvc = digitalRiver.createDigitalRiverService('/orders/' + drOrderId );
+    var drRefreshSvc = digitalRiver.createDigitalRiverService('/orders/' + drOrderId);
     drRefreshSvc.setRequestMethod('POST');
     var result = drRefreshSvc.call(body);
     if (result.ok) {

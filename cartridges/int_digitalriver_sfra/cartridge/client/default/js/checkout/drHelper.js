@@ -190,14 +190,12 @@ function handleDROrderPlacement(defer, placeOrderCallBack) {
                     defer.reject(data);
                 }
             } else {
-                //DR order successfully placed. Go back to main place order logic by calling nextStage again
-                if(data.placeFinalOrder)
-                {
+                // DR order successfully placed. Go back to main place order logic by calling nextStage again
+                if (data.placeFinalOrder) {
                     $('.DR-place-order').data('dr-order-placed', true);
-                    //members.nextStage();
+                    // members.nextStage();
                     placeOrderCallBack(defer);
-                }
-                else {
+                } else {
                 // handle the response
                     var redirect = $('<form>')
                         .appendTo(document.body)
@@ -221,38 +219,31 @@ function handleDROrderPlacement(defer, placeOrderCallBack) {
                         });
                     redirect.submit();
                     defer.resolve();
-                    //placeOrderCallBack(defer);
-                
+                    // placeOrderCallBack(defer);
                 }
-                                          
             }
         },
         error: function () {
             // enable the placeOrder button here
             $('body').trigger('checkout:enableButton', $('.next-step-button button'));
         }
-    }); 
+    });
 }
 
 /** Digital River - 2.6 - Redirect flow logic
  * @param {Object} members - used to control checkout flow
  */
-function handleDROrderRedirect(members)
-{
-    if($('.DR-place-order').data('dr-redirect-success'))
-    {
-        $('.DR-place-order').data('dr-redirect-success',"false");
-        $('.DR-place-order').data('dr-order-placed',"true");
+function handleDROrderRedirect(members) {
+    if ($('.DR-place-order').data('dr-redirect-success')) {
+        $('.DR-place-order').data('dr-redirect-success', 'false');
+        $('.DR-place-order').data('dr-order-placed', 'true');
         members.gotoStage('placeOrder');
         members.nextStage();
-    }
-    else if($('.DR-place-order').data('dr-redirect-error'))
-    {
+    } else if ($('.DR-place-order').data('dr-redirect-error')) {
         $('.error-message').show();
         members.gotoStage('payment');
     }
 }
-
 
 module.exports = {
     renderDRConfirm: renderDRConfirm,

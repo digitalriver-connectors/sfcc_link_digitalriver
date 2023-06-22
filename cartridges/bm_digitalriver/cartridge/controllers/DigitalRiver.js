@@ -160,6 +160,161 @@ function TriggerAllSkusJob() {
     triggerJob(JOBTYPES.allProducts);
 }
 
+/**
+ * This function renders a object as a json response
+ * @param {Object} object object
+ */
+function renderJSON(object) {
+    ISML.renderTemplate('digitalriverbm/util/json', {
+        jsonObject: object
+    });
+}
+
+var supportedCountriesAndCurrenciesJSON = require('*/cartridge/supportedCountriesAndCurrencies.json');
+var countriesJSON = require('*/cartridge/config/countries.json');
+var supportedCountries = supportedCountriesAndCurrenciesJSON.countries;
+var supportedCurrencies = supportedCountriesAndCurrenciesJSON.currencies;
+var currentSite = Site.getCurrent();
+
+/**
+ * Renders the template for the CountryCurrencyPairs page
+ * @param {Object} supportedCountries - an object containing the supported countries
+ * @param {Object} supportedCurrencies - an object containing the supported currencies
+ * @param {Object} countryCurrencyPairs - an object containing the country-currency pairs
+ */
+function CountryCurrencyPairs() {
+    var countryCurrencyPairsNames = [];
+    var countryCurrencyPairsCodes = [];
+    var countryCurrencyPairs = JSON.parse(Site.getCurrent().getCustomPreferenceValue('drCountryCurrencyPairs')) || {};
+    Object.keys(countryCurrencyPairs).forEach(function (country) {
+        countryCurrencyPairs[country].forEach(function (currency) {
+            countryCurrencyPairsNames.push(supportedCountries[country].name + ' - ' + supportedCurrencies[currency].name);
+            countryCurrencyPairsCodes.push(country + '-' + currency);
+        });
+    });
+    var supportedPairs = {};
+    for (var i = 0; i < countriesJSON.length; i++) {
+        let countryCode = countriesJSON[i].id.split('_')[1];
+        if (Object.hasOwnProperty.call(supportedCountries, countryCode) && countriesJSON[i].alternativeCurrencyCodes) {
+            supportedPairs[countryCode] = countriesJSON[i].alternativeCurrencyCodes;
+            if (supportedPairs[countryCode].indexOf(countriesJSON[i].currencyCode) === -1) {
+                supportedPairs[countryCode].unshift(countriesJSON[i].currencyCode);
+            }
+        }
+    }
+    ISML.renderTemplate('digitalriverbm/manageSupportedCountryandCurrency', {
+        supportedPairs: JSON.stringify(supportedPairs),
+        supportedCountriesAndCurrencies: JSON.stringify(supportedCountriesAndCurrenciesJSON),
+        countryCurrencyPairsNames: JSON.stringify(countryCurrencyPairsNames),
+        countryCurrencyPairsCodes: JSON.stringify(countryCurrencyPairsCodes)
+    });
+}
+
+
+/**
+ * Adds a country-currency pair to the list of supported countries and currencies
+ * @param {dw.system.Site} currentSite - the current site object
+ * @param {dw.web.HttpParameterMap} data - the request data
+ * @param {string} country - the country code
+ * @param {string} currency - the currency code
+ */
+function AddCountryCurrency() {
+    var logger = require('*/cartridge/scripts/digitalRiver/drLogger').getLogger('digitalriver.dynamicpricing');
+    var data;
+    var country;
+    var currency;
+    var supportedCountriesAndCurrencies;
+    try {
+        data = request.httpParameterMap;
+        country = data.country.stringValue;
+        currency = data.currency.stringValue;
+        supportedCountriesAndCurrencies = JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs')) || {};
+        if (!Object.hasOwnProperty.call(supportedCountriesAndCurrencies, country)) {
+            supportedCountriesAndCurrencies[country] = [currency];
+        } else if (supportedCountriesAndCurrencies[country].indexOf(currency) === -1) {
+            supportedCountriesAndCurrencies[country].push(currency);
+        } else {
+            logger.error('Currency already exists for the country {0}', supportedCountries[country].name);
+            renderJSON({
+                error: 'Currency already exists for the country ' + supportedCountries[country].name,
+                success: false
+            });
+            return;
+        }
+        Transaction.wrap(function () {
+            currentSite.setCustomPreferenceValue('drCountryCurrencyPairs', JSON.stringify(supportedCountriesAndCurrencies));
+        });
+    } catch (error) {
+        logger.error('Supported country-currency pair could not be added {0}', error.message + error.stack);
+        renderJSON({
+            error: error,
+            success: false
+        });
+        return;
+    }
+    logger.info('Supported country-currency pair added ({0})', `${country}-${currency}`);
+    renderJSON({
+        success: true
+    });
+    return;
+}
+
+/**
+ * Deletes a country-currency pair from the list of supported countries and currencies
+ * @param {dw.web.HttpParameterMap} data - the http parameter map
+ * @param {string} countryCurrencyPair - the country-currency pair to be deleted
+ * @param {string} country - the country to be deleted
+ * @param {string} currency - the currency to be deleted
+ * @param {Object} supportedCountriesAndCurrencies - the list of supported countries and currencies
+ */
+function DeleteCountryCurrency() {
+    var logger = require('*/cartridge/scripts/digitalRiver/drLogger').getLogger('digitalriver.dynamicpricing');
+    var data;
+    var deletedCountryCurrencyPair;
+    var country;
+    var currency;
+    var supportedCountriesAndCurrencies;
+    try {
+        data = request.httpParameterMap;
+        deletedCountryCurrencyPair = data.deletedCountryCurrencyPair.stringValue;
+        country = deletedCountryCurrencyPair.split('-')[0];
+        currency = deletedCountryCurrencyPair.split('-')[1];
+        supportedCountriesAndCurrencies = JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs')) || {};
+        if (Object.hasOwnProperty.call(supportedCountriesAndCurrencies, country)) {
+            var index = supportedCountriesAndCurrencies[country].indexOf(currency);
+            if (index > -1) {
+                supportedCountriesAndCurrencies[country].splice(index, 1);
+            }
+            if (supportedCountriesAndCurrencies[country].length === 0) {
+                delete supportedCountriesAndCurrencies[country];
+            }
+        } else {
+            logger.error('Country {0} does not exist in the list of supported countries and currencies', supportedCountries[country].name);
+            renderJSON({
+                error: Resource.msgf('dr.error.country.not.found', 'digitalriver', null, supportedCountries[country].name),
+                success: false
+
+            });
+            return;
+        }
+        Transaction.wrap(function () {
+            currentSite.setCustomPreferenceValue('drCountryCurrencyPairs', JSON.stringify(supportedCountriesAndCurrencies));
+        });
+    } catch (error) {
+        logger.error('Supported country-currency pair could not be deleted {0}', error.message + error.stack);
+        renderJSON({
+            error: error,
+            success: false
+
+        });
+        return;
+    }
+    renderJSON({
+        success: true
+    });
+    return;
+}
+
 module.exports.Start = Start;
 exports.Start.public = true;
 
@@ -174,3 +329,12 @@ exports.TriggerDeltaSkuUpdateJob.public = true;
 
 module.exports.TriggerAllSkusJob = TriggerAllSkusJob;
 exports.TriggerAllSkusJob.public = true;
+
+module.exports.CountryCurrencyPairs = CountryCurrencyPairs;
+exports.CountryCurrencyPairs.public = true;
+
+module.exports.AddCountryCurrency = AddCountryCurrency;
+exports.AddCountryCurrency.public = true;
+
+module.exports.DeleteCountryCurrency = DeleteCountryCurrency;
+exports.DeleteCountryCurrency.public = true;

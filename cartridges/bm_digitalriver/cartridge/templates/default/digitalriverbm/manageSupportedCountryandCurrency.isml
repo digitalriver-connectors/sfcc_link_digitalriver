@@ -1,0 +1,54 @@
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addCss('/css/supportedCountriesAndCurrencies.css');
+</isscript>
+
+<isdecorate template="application/MenuFrame">
+    <isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
+    <isif condition="${currentSite.getCustomPreferenceValue('drUseDropInFeature')}">
+        <isif condition="${currentSite.getCustomPreferenceValue('drEnableDynamicPricing')}">
+            <div class="drbm-dp-title">
+                ${Resource.msg('dr.bm.dynamicpricing.title', 'digitalriver', null)}
+            </div>
+
+            <input type="hidden" id="countryCurrencyPairsNames" value="${pdict.countryCurrencyPairsNames}" />
+            <input type="hidden" id="countryCurrencyPairsCodes" value="${pdict.countryCurrencyPairsCodes}" />
+            <input type="hidden" id="supportedPairs" value="${pdict.supportedPairs}" />
+
+            <select id="country-select" class="drbm-dp-select">
+                <option value="">${Resource.msg('dr.select.country', 'digitalriver', null)}</option>
+            </select>
+
+            <select id="currency-select" class="drbm-dp-select">
+                <option value="">${Resource.msg('dr.select.currency', 'digitalriver', null)}</option>
+            </select>
+
+            <button type="button" id="add-country-currency" class="drbm-dp-button"
+                data-add-url="${URLUtils.https('DigitalRiver-AddCountryCurrency')}"
+                data-delete-url="${URLUtils.https('DigitalRiver-DeleteCountryCurrency')}"
+                data-supported-countries-currencies="${pdict.supportedCountriesAndCurrencies}">
+                ${Resource.msg('dr.add.country.currency', 'digitalriver', null)}
+            </button>
+
+            <div class="error hidden">
+                ${Resource.msg('dr.error.country.currency', 'digitalriver', null)}
+            </div>
+
+            <div id="selected-country-currency-list" class="selected-country-currency-list"></div>
+        <iselse/>
+            <div class="error">
+                ${Resource.msg('dr.error.dynamic.pricing.disabled', 'digitalriver', null)}
+            </div>
+        </isif>
+    <iselse/>
+        <div class="error">
+            ${Resource.msg('dr.error.digital.river.disabled', 'digitalriver', null)}
+        </div>
+    </isif>
+</isdecorate>
+
+<isloop items="${require('*/cartridge/scripts/assets.js').styles}" var="style">
+    <link rel="stylesheet" href="${style}" />
+</isloop>
+
+<script src="${URLUtils.staticURL('/js/supportedCountriesAndCurrencies.js')}" type="text/javascript"></script>

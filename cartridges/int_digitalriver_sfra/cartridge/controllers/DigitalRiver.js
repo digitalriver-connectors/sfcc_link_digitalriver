@@ -1,4 +1,4 @@
-/* globals request */
+/* globals request session*/
 'use strict';
 
 var server = require('server');
@@ -105,9 +105,9 @@ server.get('TaxIdentifierConfig', function (req, res, next) {
     // basket model
     var usingMultiShipping = req.session.privacyCache.get('usingMultiShipping');
     var basketModel = new OrderModel(
-            currentBasket,
-            { usingMultiShipping: usingMultiShipping, countryCode: currentLocale.country, containerView: 'basket' }
-        );
+        currentBasket,
+        { usingMultiShipping: usingMultiShipping, countryCode: currentLocale.country, containerView: 'basket' }
+    );
     var drCountry = checkoutHelper.getCountry(currentBasket);
     var taxIdConfig = {
         order: basketModel,
@@ -223,7 +223,7 @@ server.get('DropInConfig', function (req, res, next) {
         dropInConfiguration: dropinHelper.getConfiguration({
             basket: BasketMgr.getCurrentBasket(),
             customer: req.currentCustomer.raw,
-            reqUrl: reqRedirectUrl  // adding host name
+            reqUrl: reqRedirectUrl // adding host name
         }),
         cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString()
     };
@@ -346,18 +346,18 @@ server.get('InvoiceCredit', server.middleware.include, function (req, res, next)
 
         if (invoicePDFs) {
             invoiceIds = invoicePDFs
-            .map(function (invoice) {
-                return invoice.id;
-            })
-            .join(',');
+                .map(function (invoice) {
+                    return invoice.id;
+                })
+                .join(',');
         }
 
         if (creditMemoPDFs) {
             creditMemoIds = creditMemoPDFs
-            .map(function (creditMemo) {
-                return creditMemo.id;
-            })
-            .join(',');
+                .map(function (creditMemo) {
+                    return creditMemo.id;
+                })
+                .join(',');
         }
     }
 
@@ -415,13 +415,12 @@ server.post('PurchaseType', function (req, res, next) {
     var organization;
     if (purchaseType === 'business') {
         organization = req.form.organizationName;
-    }        
+    }
     var billingFormErrors = COHelpers.validateBillingForm(billingForm.addressFields);
     var stateCode;
-    if(billingForm.addressFields && billingForm.addressFields.states)
-    {
+    if (billingForm.addressFields && billingForm.addressFields.states) {
         stateCode = billingForm.addressFields.states.stateCode.value;
-     }
+    }
     if (!Object.keys(billingFormErrors).length) {
         var billingAddress = {
             firstName: billingForm.addressFields.firstName.value,
@@ -430,11 +429,11 @@ server.post('PurchaseType', function (req, res, next) {
             address2: billingForm.addressFields.address2.value,
             city: billingForm.addressFields.city.value,
             postalCode: billingForm.addressFields.postalCode.value,
-            countryCode: billingForm.addressFields.country        
+            countryCode: billingForm.addressFields.country
         };
-        if(stateCode && stateCode != ''){
-            billingAddress['stateCode'] = stateCode;
-         }
+        if (stateCode && stateCode != '') {
+            billingAddress.stateCode = stateCode;
+        }
 
         COHelpers.copyBillingAddressToBasket(billingAddress, currentBasket);
 
@@ -452,7 +451,7 @@ server.post('PurchaseType', function (req, res, next) {
                 name: billing.fullName,
                 email: currentBasket.getCustomerEmail()
             };
-            
+
             if (purchaseType === 'business' && isDigitalCart && organization !== '') {
                 billTo.organization = organization;
             }
@@ -475,10 +474,14 @@ server.post('PurchaseType', function (req, res, next) {
         checkoutUpdateBody.billTo = billTo;
     }
     if (purchaseType === 'business' && !isDigitalCart && organization !== '') {
-        var shipTo = {
-            organization: organization
+        var shipping = currentBasket.shipments[0].shippingAddress;
+        if (shipping) {
+            var shipTo = {
+                organization: organization,
+                name: shipping.fullName
+            };
+            checkoutUpdateBody.shipTo = shipTo;
         }
-        checkoutUpdateBody.shipTo = shipTo;
     }
 
     var checkoutResult = drCheckoutAPI.updateCheckout(checkoutId, checkoutUpdateBody);
@@ -526,7 +529,7 @@ server.get('OfflineRefund', server.middleware.include, function (req, res, next)
     }
     res.render('digitalriver/offlineRefund', {
         refundIds: refundIds,
-        orderID:req.querystring.sfOrderID
+        orderID: req.querystring.sfOrderID
     });
 
     return next();
@@ -538,9 +541,9 @@ server.get('DisplayOfflineRefund', function (req, res, next) {
     if (refundCallResult.ok) {
         var drOrderId = refundCallResult.object.orderId;
         res.render('/digitalriver/offlineRefundForm', {
-        token: refundCallResult.object.tokenInformation.token,
-        orderID: req.querystring.orderID
-            });
+            token: refundCallResult.object.tokenInformation.token,
+            orderID: req.querystring.orderID
+        });
     }
     next();
 });
@@ -558,7 +561,7 @@ server.post('DRPlaceOrder', function (req, res, next) {
     var Transaction = require('dw/system/Transaction');
     var URLUtils = require('dw/web/URLUtils');
     var drCheckoutAPI = require('*/cartridge/scripts/services/digitalRiverCheckout');
-    
+
     var viewData = res.getViewData();
     var currentBasket = BasketMgr.getCurrentBasket();
     var checkoutId = currentBasket.custom.drCheckoutID;
@@ -567,23 +570,22 @@ server.post('DRPlaceOrder', function (req, res, next) {
     var DRResult = drCheckoutAPI.createOrder(checkoutId);
     var checkoutHelper = require('*/cartridge/scripts/digitalRiver/drCheckoutHelper');
     if (DRResult.ok) {
-        //update checkout with DR order variables
+        // update checkout with DR order variables
         Transaction.wrap(function () {
             currentBasket.custom.drOrderID = DRResult.object.id; // eslint-disable-line no-param-reassign
-            currentBasket.custom.drPaymentSessionId = DRResult.object.payment.session.id; // eslint-disable-line no-param-reassign   
+            currentBasket.custom.drPaymentSessionId = DRResult.object.payment.session.id; // eslint-disable-line no-param-reassign
         });
 
-        if (DRResult.object.payment.session.state === 'pending_redirect'  && DRResult.object.payment.session.nextAction.data.redirectUrl.length > 0) {
-            //handle the redirect
+        if (DRResult.object.payment.session.state === 'pending_redirect' && DRResult.object.payment.session.nextAction.data.redirectUrl.length > 0) {
+            // handle the redirect
             var paymentRedirectUrl = DRResult.object.payment.session.nextAction.data.redirectUrl;
 
             if (!viewData.error) {
                 viewData.continueUrl = paymentRedirectUrl;
                 viewData.placeFinalOrder = false;
             }
-        }
-        else {
-            //happy path flow.  continue with Salesforce order placement
+        } else {
+            // happy path flow.  continue with Salesforce order placement
             viewData.continueUrl = URLUtils.url('CheckoutServices-PlaceOrder').toString();
             viewData.placeFinalOrder = true;
         }
@@ -593,22 +595,172 @@ server.post('DRPlaceOrder', function (req, res, next) {
             orderToken: '',
             continueUrl: viewData.continueUrl
         });
-    
-    }
-    else {
+    } else {
         viewData.error = true;
         viewData.fieldErrors = [];
         viewData.serverErrors = [Resource.msg('error.technical', 'checkout', null)];
         res.json({
-            error:true,
+            error: true,
             errorStage: {
-            stage: 'payment'  
-             },
-           errorMessage: Resource.msg('error.technical', 'checkout', null)
+                stage: 'payment'
+            },
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
         checkoutHelper.resetBasketOnError(req, res); // calling checkout on DR side
     }
     return next();
 });
+
+/**
+ * Changes the country and currency of the current basket
+ * @param {dw.system.Request} req - The system request object
+ * @param {string} country - The country code
+ * @param {string} currency - The currency code
+ * @param {string} salePriceBookName - The sale price book name
+ * @param {string} listPriceBookName - The list price book name
+ */
+function changeCountryCurrency(req, country, currency, salePriceBookName, listPriceBookName) {
+    var PriceBookMgr = require('dw/catalog/PriceBookMgr');
+    var Currency = require('dw/util/Currency');
+    var BasketMgr = require('dw/order/BasketMgr');
+    var Transaction = require('dw/system/Transaction');
+    var currentBasket = BasketMgr.getCurrentBasket();
+
+    req.session.setCurrency(Currency.getCurrency(currency));
+    var allApplicablePriceBooks = PriceBookMgr.getAllPriceBooks().toArray().filter(function (priceBook) {
+        return ((salePriceBookName !== null && priceBook.ID === salePriceBookName) || (listPriceBookName !== null && priceBook.ID === listPriceBookName));
+    });
+    if (allApplicablePriceBooks) {
+        PriceBookMgr.setApplicablePriceBooks(allApplicablePriceBooks);
+                session.privacy.currencyCode = currency; //eslint-disable-line
+                session.privacy.countryCode = country; //eslint-disable-line
+        if (currentBasket && currency && currentBasket.currencyCode !== currency) {
+            Transaction.wrap(function () {
+                currentBasket.updateCurrency();
+            });
+        }
+    }
+}
+
+server.get('CountryCurrencySelector', function (req, res, next) {
+    var Site = require('dw/system/Site');
+    var PriceBookMgr = require('dw/catalog/PriceBookMgr');
+    var supportedCountriesAndCurrenciesJSON = require('*/cartridge/supportedCountriesAndCurrencies.json');
+    var currentSite = Site.getCurrent();
+    var saleNamePattern = currentSite.getCustomPreferenceValue('drSaleConvertedPriceBookNaming');
+    var listNamePattern = currentSite.getCustomPreferenceValue('drListConvertedPriceBookNaming');
+    if (currentSite.getCustomPreferenceValue('drEnableDynamicPricing') && currentSite.getCustomPreferenceValue('drUseDropInFeature')) {
+        var countryCurrencyPairs = currentSite.getCustomPreferenceValue('drCountryCurrencyPairs')
+        ? JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs'))
+        : null;
+        if (!session.privacy.currencyCode || !session.privacy.countryCode) {
+            var selectedCountry;
+            var selectedCurrency;
+            var countryIndex = Object.keys(countryCurrencyPairs).indexOf(req.locale.id.split('_')[1]);
+            if (session.privacy.countryCode) {
+                selectedCountry = session.privacy.countryCode;
+            } else if (countryIndex > -1) {
+                selectedCountry = Object.keys(countryCurrencyPairs)[countryIndex];
+            } else {
+                selectedCountry = Object.keys(countryCurrencyPairs)[0];
+            }
+
+            var currencyIndex = countryCurrencyPairs[selectedCountry].indexOf(req.locale.currencyCode);
+            if (session.privacy.currencyCode) {
+                selectedCurrency = session.privacy.currencyCode;
+            } else if (currencyIndex > -1) {
+                selectedCurrency = countryCurrencyPairs[selectedCountry][currencyIndex];
+            } else {
+                selectedCurrency = countryCurrencyPairs[selectedCountry][0];
+            }
+
+            var salePBName = saleNamePattern ? saleNamePattern.replace('{COUNTRY}', selectedCountry).replace('{CURRENCY}', selectedCurrency) : null;
+            var listPBName = listNamePattern ? listNamePattern.replace('{COUNTRY}', selectedCountry).replace('{CURRENCY}', selectedCurrency) : null;
+            changeCountryCurrency(req, selectedCountry, selectedCurrency, salePBName, listPBName);
+        }
+
+        // If price book doesn't exist remove from the country-currency selection list
+        for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i++) {
+            let country = Object.keys(countryCurrencyPairs)[i];
+            let currencies = countryCurrencyPairs[country];
+            for (let j = 0; j < currencies.length; j++) {
+                var salePriceBookName = saleNamePattern ? saleNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currencies[j]) : null;
+                var listPriceBookName = listNamePattern ? listNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currencies[j]) : null;
+                var applicablePriceBooks = [];
+                if (salePriceBookName && PriceBookMgr.getPriceBook(salePriceBookName)) {
+                    applicablePriceBooks.push(salePriceBookName);
+                }
+                if (listPriceBookName && PriceBookMgr.getPriceBook(listPriceBookName)) {
+                    applicablePriceBooks.push(listPriceBookName);
+                }
+                if (applicablePriceBooks.length < 1) {
+                    countryCurrencyPairs[country].splice(j, 1);
+                    j--;
+                    if (currencies.length === 0) {
+                        delete countryCurrencyPairs[country];
+                        i--;
+                    }
+                }
+            }
+        }
+
+        countryCurrencyPairs = JSON.stringify(countryCurrencyPairs);
+        var currentCurrency = session.privacy.currencyCode;
+        var currentCountry = session.privacy.countryCode;
+        var template = '/digitalriver/dynamicPricingSelector';
+        res.render(template,
+            {
+                enableScript: req.querystring.mobile,
+                countryCurrencyPairs: countryCurrencyPairs,
+                supportedCountriesAndCurrencies: JSON.stringify(supportedCountriesAndCurrenciesJSON),
+                currentCurrency: currentCurrency,
+                currentCountry: currentCountry
+            });
+    }
+
+    next();
+});
+
+// eslint-disable-next-line consistent-return
+server.get('SelectCountryCurrency', function (req, res, next) {
+    var Site = require('dw/system/Site');
+    var currentSite = Site.getCurrent();
+    var URLUtils = require('dw/web/URLUtils');
+    var country = req.querystring.country;
+    var currency = req.querystring.currency;
+    var saleNamePattern = currentSite.getCustomPreferenceValue('drSaleConvertedPriceBookNaming');
+    var listNamePattern = currentSite.getCustomPreferenceValue('drListConvertedPriceBookNaming');
+    var salePriceBookName = saleNamePattern ? saleNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currency) : null;
+    var listPriceBookName = listNamePattern ? listNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currency) : null;
+
+    if (!country || !currency || (!salePriceBookName && !listPriceBookName)) {
+        res.json({ error: true });
+        return next();
+    }
+
+    if (req.setLocale(req.locale.id)) {
+        changeCountryCurrency(req, country, currency, salePriceBookName, listPriceBookName);
+        var QueryString = server.querystring;
+        var queryStringObj = new QueryString(req.querystring.queryString || '');
+        if (Object.hasOwnProperty.call(queryStringObj, 'lang')) {
+            delete queryStringObj.lang;
+        }
+        var redirectUrl = URLUtils.url(req.querystring.action).toString();
+        var qsConnector = redirectUrl.indexOf('?') >= 0 ? '&' : '?';
+
+        redirectUrl = Object.keys(queryStringObj).length === 0
+            ? redirectUrl += queryStringObj.toString()
+            : redirectUrl += qsConnector + queryStringObj.toString();
+
+        res.json({
+            success: true,
+            redirectUrl: redirectUrl
+        });
+    } else {
+        res.json({ error: true });
+    }
+    next();
+});
+
 
 module.exports = server.exports();

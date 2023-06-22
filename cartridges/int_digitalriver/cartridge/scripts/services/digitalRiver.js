@@ -17,7 +17,8 @@ function defaultCreateRequest(svc, args) {
     svc.addHeader('Content-Type', 'application/json');
     svc.addHeader('Accept', 'application/json');
     svc.setAuthentication('NONE');
-    svc.addHeader('Authorization', 'Bearer ' + Site.current.getCustomPreferenceValue('drAPIKey'));
+    var drAPIKey = Site.current.preferences ? Site.current.getCustomPreferenceValue('drAPIKey') : System.getPreferences().getCustom().drAPIKey;
+    svc.addHeader('Authorization', 'Bearer ' + drAPIKey);
     return JSON.stringify(args);
 }
 /**
@@ -101,10 +102,10 @@ function createDigitalRiverService(relativePath, serviceConfig) {
 /**
  * @param {object} drServicePath  - url path to Digital River endpoint
  * @param {object} body - Passing request body
- * @param {boolean} isBody - check request body includes data 
+ * @param {boolean} isBody - check request body includes data
  * @returns return the oject
  */
- function drServiceRetryLogic(drServicePath, body, isBody) {
+function drServiceRetryLogic(drServicePath, body, isBody) {
     var counterLimit = require('*/cartridge/customData.json').retryLogicCount;
     var counter = 0;
     var callResult;

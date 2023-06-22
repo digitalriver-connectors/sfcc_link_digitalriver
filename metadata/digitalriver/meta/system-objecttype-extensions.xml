@@ -201,7 +201,7 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>true</externally-managed-flag>
             </attribute-definition>
-    
+
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="DigitalRiverAttributes">
@@ -630,7 +630,7 @@
                 <min-length>0</min-length>
             </attribute-definition>
         </custom-attribute-definitions>
-            <group-definitions>
+        <group-definitions>
             <attribute-group group-id="Digital River">
                 <display-name xml:lang="x-default">Digital River</display-name>
                 <attribute attribute-id="digitalRiverID"/>
@@ -645,8 +645,8 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
-	
-	<type-extension type-id="Profile">
+
+    <type-extension type-id="Profile">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="globalCommerceCustID">
                 <display-name xml:lang="x-default">Global Commerce Customer ID</display-name>
@@ -792,6 +792,68 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="drEnableDynamicPricing">
+                <display-name xml:lang="x-default">Digital River Enable Dynamic Pricing</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShippingMethodAvailability">
+                <display-name xml:lang="x-default">Digital River Shipping Method Availability</display-name>
+                <description xml:lang="x-default">Shipping Method(s) that will be available for the customer.</description>
+                <type>enum-of-string</type>
+                <externally-managed-flag>false</externally-managed-flag>
+                <select-multiple-flag>false</select-multiple-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Native SFCC methods only</display>
+                        <value>native</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">DR Shipping Quotes methods only</display>
+                        <value>quotes</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Native SFCC and DR Shipping Quotes methods</display>
+                        <value>both</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="drBatchSize">
+                <display-name xml:lang="x-default">Digital River Batch Size</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>50</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="drListConvertedPriceBookNaming">
+                <display-name xml:lang="x-default">Digital River List Converted Price Book Naming</display-name>
+                <description xml:lang="x-default">Example patterns: dr-list-{COUNTRY}-{CURRENCY}, {COUNTRY}-m-list-{CURRENCY}&#13;
+&#13;
+Please add a text and add {COUNTRY} and {CURRENCY} placeholders in the text. &#13;
+Later these placeholders will be replaced in the code with the given country code and currency code.</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSaleConvertedPriceBookNaming">
+                <display-name xml:lang="x-default">Digital River Sale Converted Price Book Naming</display-name>
+                <description xml:lang="x-default">Example patterns: dr-sale-{COUNTRY}-{CURRENCY}, {COUNTRY}-m-sale-{CURRENCY}&#13;
+&#13;
+Please add a text and add {COUNTRY} and {CURRENCY} placeholders in the text. &#13;
+Later these placeholders will be replaced in the code with the given country code and currency code.</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drCountryCurrencyPairs">
+                <display-name xml:lang="x-default">Digital River Country Currency Pairs</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Digital River">
@@ -814,6 +876,11 @@
                 <attribute attribute-id="drDigitalProductTaxCodes"/>
                 <attribute attribute-id="drReplacePromotions"/>
                 <attribute attribute-id="drDropInPaymentRedirect"/>
+                <attribute attribute-id="drEnableDynamicPricing"/>
+                <attribute attribute-id="drShippingMethodAvailability"/>
+                <attribute attribute-id="drListConvertedPriceBookNaming"/>
+                <attribute attribute-id="drSaleConvertedPriceBookNaming"/>
+                <attribute attribute-id="drBatchSize"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -870,4 +937,104 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
+
+    <type-extension type-id="Shipment">
+        <custom-attribute-definitions>
+             <attribute-definition attribute-id="drSQDescription">
+                <display-name xml:lang="x-default">Digital River Shipping Option Description</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQId">
+                <display-name xml:lang="x-default">Digital River Shipping Option ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drUniqueID">
+                <display-name xml:lang="x-default">Digital River Shiping Option Unique ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQServiceLevel">
+                <display-name xml:lang="x-default">DR  Quotes Service Level</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQShipFrom">
+                <display-name xml:lang="x-default">Digital River Shipping Option Ship From</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQShippingTerms">
+                <display-name xml:lang="x-default">Digital River Shipping Option Shipping Terms</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQEstimatedArrivalTime">
+                <display-name xml:lang="x-default">Digital River Shipping Option Estimated Arrival Time</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSQTotalAmount">
+                <display-name xml:lang="x-default">Digital River Shipping Option Total Amount</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="DigitalRiver">
+                <display-name xml:lang="x-default">Digital River Quotes Information</display-name>
+                <attribute attribute-id="drSQId"/>
+                <attribute attribute-id="drSQDescription"/>
+                <attribute attribute-id="drSQShippingTerms"/>
+                <attribute attribute-id="drSQEstimatedArrivalTime"/>
+                <attribute attribute-id="drSQTotalAmount"/>
+                <attribute attribute-id="drSQServiceLevel"/>
+                <attribute attribute-id="drSQShipFrom"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="OrganizationPreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="drAPIKey">
+                <display-name xml:lang="x-default">Digital River API Key</display-name>
+                <type>password</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drBaseCurrencyCode">
+                <display-name xml:lang="x-default">Digital River Base Currency Code</display-name>
+                <description xml:lang="x-default">Base currency code that will be used for Dynamic Pricing Product Options. Example values: USD, EUR, GBP</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Digital River">
+                <display-name xml:lang="x-default">Digital River</display-name>
+                <attribute attribute-id="drAPIKey"/>
+                <attribute attribute-id="drBaseCurrencyCode"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
 </metadata>

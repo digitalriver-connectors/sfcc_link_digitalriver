@@ -1,6 +1,6 @@
 {
   "name": "int_digitalriver_sfra",
-  "version": "23.1.1",
+  "version": "23.2.0",
   "description": "Digital River link cartridge supporting Digital River's payments, tax, fraud and compliance services",
   "main": "index.js",
   "engines": {
@@ -10,8 +10,8 @@
     "test": "sgmf-scripts --test test/unit/**/*.js",
     "cover": "sgmf-scripts --cover 'test/unit'",
     "test:integration": "sgmf-scripts --integration 'test/integration/**/*.js'",
-    "compile:scss": "sgmf-scripts --compile css",
-    "compile:js": "sgmf-scripts --compile js",
+    "compile:scss": "sgmf-scripts --compile css --cartridgeName int_digitalriver_sfra && sgmf-scripts --compile css --cartridgeName bm_digitalriver",
+    "compile:js": "sgmf-scripts --compile js --cartridgeName int_digitalriver_sfra && sgmf-scripts --compile js --cartridgeName bm_digitalriver",
     "compile:fonts": "node bin/Makefile compileFonts",
     "build": "npm run compile:js && npm run compile:scss",
     "lint": "npm run lint:css && npm run lint:js",
@@ -109,7 +109,7 @@
     ]
   },
   "paths": {
-    "base": "../storefront-reference-architecture/cartridges/app_storefront_base/",
+    "base": "../storefront-reference-architecture/cartridges/app_storefront_base",
     "dr_sfra": "./cartridges/int_digitalriver_sfra/",
     "dr_customer_credit": "./cartridges/int_digitalriver_customercredit"
   }

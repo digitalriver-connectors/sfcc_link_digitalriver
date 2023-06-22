@@ -9,7 +9,47 @@ var Status = require('dw/system/Status');
 var Money = require('dw/value/Money');
 var collections = require('*/cartridge/scripts/util/collections');
 var taxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
+var ShippingMgr = require('dw/order/ShippingMgr');
+var Transaction = require('dw/system/Transaction');
 
+/**
+ * Calculates the shipping cost for the given basket
+ * @param {dw.order.Basket} basket - the target Basket object
+ * @returns {dw.system.Status} the status of the operation
+ */
+output.calculateShipping = function (basket) {
+    var status = new Status(Status.OK);
+    try {
+        Transaction.wrap(function () {
+            for (let i = 0; i < basket.shipments.length; i++) {
+                var shipment = basket.shipments[i];
+                if (shipment && shipment.shippingMethodID && shipment.shippingMethodID.indexOf('DRDefaultShp') > -1) {
+                    ShippingMgr.applyShippingCost(basket);
+                    var priceStringified = shipment.custom.drSQTotalAmount;
+                    var shippingPrice;
+                    if (priceStringified) {
+                        if (shipment.shippingMethodID === 'DRDefaultShpJPY') {
+                            shippingPrice = parseFloat(priceStringified.replace(/[^\d.]/g, ''));
+                        } else {
+                            shippingPrice = Number(priceStringified.replace(/[^0-9,.-]+/g, '').replace(',', '.'));
+                        }
+                        var shippingLineItem = shipment.shippingLineItems[0];
+                        shippingLineItem.setPriceValue(shippingPrice);
+                        var taxRate = shippingLineItem.getTaxRate();
+                        var updatedTax = shippingPrice * taxRate;
+                        shippingLineItem.updateTaxAmount(new dw.value.Money(updatedTax, basket.currencyCode));
+                    }
+                } else {
+                    ShippingMgr.applyShippingCost(basket);
+                }
+            }
+            basket.updateTotals();
+        });
+    } catch (e) {
+        status = new Status(Status.ERROR);
+    }
+    return status;
+};
 /**
  * Function extends original calculateTax hook to update basket items with taxes provided by Digital River
  * @param {dw.order.Basket} basket The basket containing the elements for which taxes need to be calculated

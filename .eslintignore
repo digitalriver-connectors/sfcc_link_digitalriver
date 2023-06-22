@@ -6,6 +6,7 @@ coverage/
 doc/
 bin/
 cartridges/int_digitalriver_sfra/cartridge/static/
+cartridges/bm_digitalriver/cartridge/static/
 codecept.conf.js
 cartridges/*/cartridge/static/
 test/

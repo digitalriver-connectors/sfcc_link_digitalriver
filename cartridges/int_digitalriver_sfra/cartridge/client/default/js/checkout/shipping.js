@@ -37,8 +37,7 @@ function updateShippingMethodList($shippingForm) {
         var shipmentUUID = $shippingForm.find('[name=shipmentUUID]').val();
         var url = $shippingMethodList.data('actionUrl');
         urlParams.shipmentUUID = shipmentUUID;
-        if(!$('.DR-place-order').data('dr-redirect-success'))
-        {
+        if (!$('.DR-place-order').data('dr-redirect-success')) {
             $shippingMethodList.spinner().start();
             $.ajax({
                 url: url,
@@ -64,7 +63,23 @@ function updateShippingMethodList($shippingForm) {
     }, 300);
 }
 
+function updateShippingList() {
+    var baseObj = this;
+    var handler = function (e) {
+        if (baseObj.methods && baseObj.methods.updateShippingMethodList) {
+            baseObj.methods.updateShippingMethodList($(e.currentTarget.form));
+        } else {
+            updateShippingMethodList($(e.currentTarget.form));
+        }
+    };
 
+    $(document).on('focusout', '.shippingZipCode', handler);
+
+    $('select[name$="shippingAddress_addressFields_states_stateCode"]')
+            .on('change', handler);
+}
+
+base.updateShippingList = updateShippingList;
 base.methods.updateMultiShipInformation = updateMultiShipInformation;
 base.methods.updateShippingMethodList = updateShippingMethodList;
 

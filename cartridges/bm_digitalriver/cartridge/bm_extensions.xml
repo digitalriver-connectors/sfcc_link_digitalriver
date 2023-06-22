@@ -35,4 +35,17 @@
 		<icon>images/dr-favicon.ico</icon>
 	</menuaction>
 
+	<menuaction id="dr-supported-country-currency-pairs" menupath="digitalriver" position="200" site="true">
+		<name xml:lang="x-default">Configure Supported Country Currency Pairs</name>
+		<short_description xml:lang="x-default">Configure Supported Country Currency Pairs</short_description>
+		<description xml:lang="x-default">Configure Supported Country Currency Pairs</description>
+		<exec pipeline="DigitalRiver" node="CountryCurrencyPairs" />
+		<sub-pipelines>
+			<pipeline name="DigitalRiver-CountryCurrencyPairs" />
+			<pipeline name="DigitalRiver-AddCountryCurrency" />
+			<pipeline name="DigitalRiver-DeleteCountryCurrency" />
+		</sub-pipelines>
+		<icon>images/dr-favicon.ico</icon>
+	</menuaction>
+
 </extensions>

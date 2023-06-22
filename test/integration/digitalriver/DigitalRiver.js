@@ -1028,4 +1028,26 @@ describe('Controller DigitalRiver', function () {
                 });
         });
     });
+
+    describe('DigitalRiver-SelectCountryCurrency', function () {
+        this.timeout(10000);
+
+        it('should return json success true', function () {
+            var myRequest = {
+                url: config.baseUrl + '/DigitalRiver-SelectCountryCurrency?country=US&currency=USD',
+                method: 'GET',
+                rejectUnauthorized: false,
+                resolveWithFullResponse: true,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            return request(myRequest)
+                .then(function (response) {
+                    assert.equal(response.statusCode, 200);
+                    var bodyAsJson = JSON.parse(response.body);
+                    assert.isTrue(bodyAsJson.success);
+                });
+        });
+    });
 });

@@ -115,7 +115,7 @@ function resetBasketOnError(req, res) {
                 digitalRiverConfiguration: digitalRiverConfiguration
             });
         }
-        
+
         Transaction.wrap(function () {
             currentBasket.custom.drOrderID = null;
         });
@@ -125,9 +125,97 @@ function resetBasketOnError(req, res) {
     return true;
 }
 
+/**
+ * Converts ShippingMethods to ShippingMethodModels
+ * @param {dw.util.Collection} shippingMethods - ShippingMethods from ShippingShipmentModel
+ * @param {dw.order.Shipment} shipment - the associated Shipment object
+ * @returns {dw.util.ArrayList} - an array of ShippingMethodModels
+ */
+function convertShippingMethodsToModel(shippingMethods, shipment) {
+    var collections = require('*/cartridge/scripts/util/collections');
+    var ShippingMethodModel = require('*/cartridge/models/shipping/shippingMethod');
+
+    var filteredMethods = [];
+    var drShippingMethod;
+    collections.forEach(shippingMethods, function (shippingMethod) {
+        if (!shippingMethod.custom.storePickupEnabled) {
+            if (shippingMethod.ID.indexOf('DRDefaultShp') < 0) {
+                var model = new ShippingMethodModel(shippingMethod, shipment);
+                model.isDR = false;
+                model.apiShippingMethod = shippingMethod;
+                filteredMethods.push(model);
+            } else {
+                drShippingMethod = shippingMethod;
+            }
+        }
+    });
+    var isAllDigitalProducts = checkDigitalProductsOnly(shipment.productLineItems);
+    if (isAllDigitalProducts) {
+        filteredMethods = filteredMethods.filter(function (shippingMethod) {
+            return shippingMethod.ID.includes('DigitalProductShipment');
+        });
+    }
+    return {
+        filteredMethods: filteredMethods,
+        drShippingMethod: drShippingMethod
+    };
+}
+
+/**
+ * Populates the custom prefs of a shipment with the details of a given shipping method
+ * @param {dw.order.Shipment} shipmentArg - the target Shipment object
+ * @param {dw.order.ShippingMethod} shippingMethod - the associated ShippingMethod object
+ */
+function populateShipmentCustomPref(shipmentArg, shippingMethod) {
+    var shipment = shipmentArg;
+    shipment.custom.drSQId = "";
+    shipment.custom.drUniqueID = "";
+    shipment.custom.drSQDescription = "";
+    shipment.custom.drSQServiceLevel = "";
+    shipment.custom.drSQShipFrom = "";
+    shipment.custom.drSQShippingTerms = "";
+    shipment.custom.drSQEstimatedArrivalTime = "";
+    shipment.custom.drSQTotalAmount = "";
+    if (shippingMethod.isDR) {
+        shipment.custom.drSQId = shippingMethod.drID;
+        shipment.custom.drUniqueID = shippingMethod.ID
+        shipment.custom.drSQDescription = shippingMethod.description;
+        shipment.custom.drSQServiceLevel = shippingMethod.displayName;
+        shipment.custom.drSQShipFrom = shippingMethod.shipFrom;
+        shipment.custom.drSQShippingTerms = shippingMethod.shippingTerms;
+        shipment.custom.drSQEstimatedArrivalTime = shippingMethod.estimatedArrivalTime;
+        shipment.custom.drSQTotalAmount = shippingMethod.shippingCost;
+    }
+}
+
+/**
+ * Returns a boolean indicating whether the current page is a checkout page
+ * @param {dw.web.HttpParameterMap} request - the current request
+ * @returns {boolean} - true if the current page is a checkout page, false otherwise
+ */
+function isAllowedEndpoint() {
+    var httpPath = request.httpPath.split('/');
+    var pageURL  = httpPath.pop();
+    var checkoutOnly = false;
+    var array = [
+        "Checkout-Begin",
+        "CheckoutShippingServices-UpdateShippingMethodsList",
+        "CheckoutShippingServices-SelectShippingMethod",
+        "CheckoutShippingServices-SubmitShipping"
+    ];
+
+    if (array.indexOf(pageURL) > -1) {
+        checkoutOnly = true;
+    }
+    return checkoutOnly;
+}
+
 module.exports = {
     checkDigitalProductsOnly: checkDigitalProductsOnly,
     getCountry: getCountry,
     getAggregatePriceItem: getAggregatePriceItem,
-    resetBasketOnError: resetBasketOnError
+    resetBasketOnError: resetBasketOnError,
+    convertShippingMethodsToModel: convertShippingMethodsToModel,
+    populateShipmentCustomPref: populateShipmentCustomPref,
+    isAllowedEndpoint: isAllowedEndpoint
 };

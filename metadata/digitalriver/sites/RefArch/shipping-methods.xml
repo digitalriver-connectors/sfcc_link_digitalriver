@@ -156,4 +156,82 @@
         <currency>NOK</currency>
     </shipping-method>
 
+    <shipping-method method-id="DRDefaultShpAUD" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping AUD</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>AUD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DRDefaultShpCAD" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping CAD</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>CAD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DRDefaultShpEUR" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping EUR</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>EUR</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DRDefaultShpUSD" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping USD</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>USD</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DRDefaultShpGBP" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping GBP</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>GBP</currency>
+    </shipping-method>
+
+    <shipping-method method-id="DRDefaultShpJPY" default="false">
+        <display-name xml:lang="x-default">Digital River Shipping JPY</display-name>
+        <online-flag>true</online-flag>
+        <tax-class-id>standard</tax-class-id>
+        <price-table>
+            <amount order-value="0">0</amount>
+        </price-table>
+        <custom-attributes>
+            <custom-attribute attribute-id="storePickupEnabled">false</custom-attribute>
+        </custom-attributes>
+        <currency>JPY</currency>
+    </shipping-method>
+
 </shipping>

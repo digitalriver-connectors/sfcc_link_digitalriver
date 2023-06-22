@@ -1,5 +1,106 @@
 {
     "step-types": {
+        "chunk-script-module-step": [
+            {
+                "@type-id": "custom.DigitalRiverProcessPriceBooks",
+                "@supports-parallel-execution": "true",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "The Digital River step responsible for processing creating and updating price books with dynamic pricing",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drDynamicPricing.js",
+                "before-step-function": "beforeStep",
+                "after-step-function": "afterStep",
+                "write-function": "write",
+                "read-function": "read",
+                "process-function": "process",
+                "chunk-size": 20,
+                "transactional": "false",
+                "parameters": {
+                    "parameter": [
+                        {
+                            "@name": "BaseListPriceBookPath",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The path of the exported list base price book XML file"
+                        },
+                        {
+                            "@name": "BaseSalePriceBookPath",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The path of the exported sale base price book XML file"
+                        },
+                        {
+                            "@name": "DynamicPricingExportFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The path for the price books that will be exported"
+                        },
+                        {
+                            "@name": "CountryCode",
+                            "@type": "string",
+                            "@required": "false",
+                            "description": "Country code that will be used to process the price book. If not provided it will export price books for all supported country-currency pairs"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Processing of price books failed."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Processing of price books finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.DigitalRiverProcessProductOptions",
+                "@supports-parallel-execution": "true",
+                "@supports-site-context": "false",
+                "@supports-organization-context": "true",
+                "description": "The Digital River step responsible for processing creating and updating product options with dynamic pricing",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drProductOptions.js",
+                "before-step-function": "beforeStep",
+                "after-step-function": "afterStep",
+                "write-function": "write",
+                "read-function": "read",
+                "process-function": "process",
+                "chunk-size": 20,
+                "transactional": "false",
+                "parameters": {
+                    "parameter": [
+                        {
+                            "@name": "BaseCatalogPath",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The path of the exported catalog XML file"
+                        },
+                        {
+                            "@name": "ExportFolderPath",
+                            "@type": "string",
+                            "@required": "true",
+                            "description": "The folder that the converted product options catalog will be exported to"
+                        }
+
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Processing of product options failed."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Processing of product options finished successfully."
+                        }
+                    ]
+                }
+            }
+        ],
         "script-module-step": [
             {
                 "@type-id": "custom.deltaSkuUpdate",

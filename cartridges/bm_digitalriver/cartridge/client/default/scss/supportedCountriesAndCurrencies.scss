@@ -1,0 +1,56 @@
+.hidden {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+.drbm-dp-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1em;
+}
+
+.drbm-dp-button,
+.drbm-dp-remove-btn {
+    background-color: #d9d9d9;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: 0.0625em solid #d9d9d9;
+    border-radius: 0.188em;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.drbm-dp-button {
+    color: #00629b;
+}
+
+.drbm-dp-remove-btn {
+    color: #b91010;
+}
+
+.drbm-dp-input {
+    width: 40rem;
+}
+
+.drbm-dp-select {
+    width: 25em;
+}
+
+.drbm-dp-input,
+.drbm-dp-select {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #d9d9d9;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+.drbm-dp-input:focus,
+.drbm-dp-select:focus {
+    border: 0.1rem solid #555;
+}
