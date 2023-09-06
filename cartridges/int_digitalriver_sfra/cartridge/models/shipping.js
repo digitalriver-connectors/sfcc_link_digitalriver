@@ -53,7 +53,7 @@ function ShippingModel(shipment, address) {
     var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
     var Transaction = require('dw/system/Transaction');
 
-    this.applicableShippingMethods = shippingHelpers.getApplicableShippingMethods(shipment, address);
+    //this.applicableShippingMethods = shippingHelpers.getApplicableShippingMethods(shipment, address);
     if (!this.applicableShippingMethods || empty(this.applicableShippingMethods)) {
         var basket = BasketMgr.getCurrentBasket();
         if (basket) {

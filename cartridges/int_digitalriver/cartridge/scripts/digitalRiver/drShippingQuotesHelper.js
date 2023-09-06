@@ -4,6 +4,7 @@ var Site = require('dw/system/Site');
 var BasketMgr = require('dw/order/BasketMgr');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var URLUtils = require('dw/web/URLUtils');
+var Money = require('dw/value/Money');
 
 var formatCurrency = require('*/cartridge/scripts/util/formatting').formatCurrency;
 var logger = require('*/cartridge/scripts/digitalRiver/drLogger').getLogger('digitalriver.shippingquotes');
@@ -40,6 +41,13 @@ function createBody() {
             return null;
         }
 
+        
+        // 7-10-2023 Fix for issue where API calls are beign made in native mode
+        var drShippingMethodAvailability = Site.getCurrent().getCustomPreferenceValue('drShippingMethodAvailability').value;
+        if (drShippingMethodAvailability === 'native') {
+            return null;
+        }
+
         // Ship From:
         var shipFrom = {
             address: {
@@ -51,6 +59,8 @@ function createBody() {
                 country: Site.current.getCustomPreferenceValue('drShipFromCountry')
             }
         };
+
+
 
         // Packages:
         var productDetailsObj;
@@ -65,6 +75,7 @@ function createBody() {
             var product;
             var item = items[i];
             var productID = item.productID;
+
             if (!item.optionProductLineItem) {
                 var productUrl = URLUtils.abs('Product-Show', 'pid', productID).toString();
                 product = ProductMgr.getProduct(productID);
@@ -197,7 +208,31 @@ function modifyShippingQuotes(quotes) {
     return quotes;
 }
 
+/**
+ * Function will check if theres any free shipping options available. If yes then adds that shipping method as free.
+ * @param {dw.util.Collection} shippingQuotes - the applicable shipping methods
+ * @returns {dw.util.Collection} an array of shipping quotes objects
+ */
+function applyDRFreeShipping(shippingQuotes) {
+    var freeShippingOptions = Site.getCurrent().getCustomPreferenceValue('drShippingOptionsFreeShippingOption');
+    var currentBasket = require('dw/order/BasketMgr').getCurrentBasket();
+
+    if (freeShippingOptions != null && shippingQuotes != null) {
+        freeShippingOptions = freeShippingOptions.replace(/\s+/g, '');
+        var drFreeShippingList = [];
+        drFreeShippingList = freeShippingOptions.split(',');
+        for (var j = 0; j < shippingQuotes.length; j++) {
+            if (drFreeShippingList.includes(shippingQuotes[j].drID)) {
+                var freeShippingCost = new Money(0, currentBasket.currencyCode);
+                shippingQuotes[j].shippingCost = freeShippingCost.toFormattedString();
+            }
+        }
+    }
+    return shippingQuotes;
+}
+
 module.exports = {
     getShippingQuotes: getShippingQuotes,
-    modifyShippingQuotes: modifyShippingQuotes
+    modifyShippingQuotes: modifyShippingQuotes,
+    applyDRFreeShipping: applyDRFreeShipping
 };

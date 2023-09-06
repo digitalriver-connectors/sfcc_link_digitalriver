@@ -797,6 +797,7 @@
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="drShippingMethodAvailability">
                 <display-name xml:lang="x-default">Digital River Shipping Method Availability</display-name>
@@ -818,6 +819,7 @@
                         <value>both</value>
                     </value-definition>
                 </value-definitions>
+                <default-value>native</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="drBatchSize">
                 <display-name xml:lang="x-default">Digital River Batch Size</display-name>
@@ -854,6 +856,14 @@ Later these placeholders will be replaced in the code with the given country cod
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
+            <attribute-definition attribute-id="drShippingOptionsFreeShippingOption">
+                <display-name xml:lang="x-default">DR Shipping Options - Free Shipping Option</display-name>
+                <description xml:lang="x-default">Add single value or a comma delimited list of values. &#13;Example patterns: shipping_Option1, shiping_Option2.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Digital River">
@@ -881,6 +891,7 @@ Later these placeholders will be replaced in the code with the given country cod
                 <attribute attribute-id="drListConvertedPriceBookNaming"/>
                 <attribute attribute-id="drSaleConvertedPriceBookNaming"/>
                 <attribute attribute-id="drBatchSize"/>
+                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -962,7 +973,7 @@ Later these placeholders will be replaced in the code with the given country cod
                 <min-length>0</min-length>
             </attribute-definition>
             <attribute-definition attribute-id="drSQServiceLevel">
-                <display-name xml:lang="x-default">DR  Quotes Service Level</display-name>
+                <display-name xml:lang="x-default">Digital River Shipping Option Service Level</display-name>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>

@@ -201,7 +201,12 @@ function isAllowedEndpoint() {
         "Checkout-Begin",
         "CheckoutShippingServices-UpdateShippingMethodsList",
         "CheckoutShippingServices-SelectShippingMethod",
-        "CheckoutShippingServices-SubmitShipping"
+        "CheckoutShippingServices-SubmitShipping",
+        "DigitalRiver-PurchaseType",
+        "DigitalRiver-TaxIdentifierConfig",
+        "DigitalRiver-TaxIdentifierApply",
+        "DigitalRiver-TaxIdentifierDelete",
+        "CheckoutServices-SubmitPayment"
     ];
 
     if (array.indexOf(pageURL) > -1) {

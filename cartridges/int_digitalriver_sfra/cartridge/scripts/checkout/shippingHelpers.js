@@ -104,6 +104,7 @@ function getApplicableShippingMethods(shipment, address) {
     var checkoutPageOnly = checkoutHelper.isAllowedEndpoint();
     if (checkoutPageOnly) {
         var shippingQuotes = ShippingQuotesHelper.getShippingQuotes(shippingMethods, shipment, convertedMethods.drShippingMethod);
+        shippingQuotes = ShippingQuotesHelper.applyDRFreeShipping(shippingQuotes);
         modifiedShippingQuotes = ShippingQuotesHelper.modifyShippingQuotes(shippingQuotes);
     }
 

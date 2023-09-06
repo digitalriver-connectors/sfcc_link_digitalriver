@@ -118,7 +118,7 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
         shippingChoice = {
             amount: shippingAmount.value,
             description: shipment.shippingMethod.description,
-            serviceLevel: shipment.shippingMethodID
+            serviceLevel: shipment.shippingMethodID + '_' + shipment.shippingMethod.displayName
         };
     }
 
