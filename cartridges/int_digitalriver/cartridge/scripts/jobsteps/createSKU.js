@@ -37,13 +37,13 @@ function sendProductData(product) {
     var drSkuAPI = require('*/cartridge/scripts/services/digitalRiverSKU');
     var status = new Status(Status.OK);
     var body = {
-        eccn: product.custom.drECCN.value,
         countryOfOrigin: product.custom.drCountryOfOrigin,
-        taxCode: product.taxClassID,
         name: product.name
     };
 
     var additionalAttributes = {
+        eccn: product.custom.drECCN.value,
+        taxCode: (product.taxClassID && product.taxClassID.toLowerCase() !== 'standard') ? product.taxClassID : null,
         partNumber: product.custom.drPartNumber,
         hsCode: product.custom.drHsCode,
         weight: product.custom.drWeight ? Number(product.custom.drWeight.toFixed(4)) : null,
@@ -142,22 +142,29 @@ var runSending = function (onlyModified) {
     while (products.hasNext()) {
         var product = products.next();
         var sendProduct = true;
-        var isUpdatedProduct = updateDigitalProductProperty(product);
-
-        if (!isUpdatedProduct) {
-            status = new Status(Status.ERROR);
-            break;
-        }
 
         // send to DigitalRiver only the products with the non-empty required attributes
-        sendProduct = product.custom.drECCN && !empty(product.custom.drECCN.value);
-        sendProduct = sendProduct && !empty(product.custom.drCountryOfOrigin) && !empty(product.name);
+        sendProduct = !empty(product.custom.drCountryOfOrigin) && !empty(product.name);
 
-        // Check the taxClassID before sending the product,
-        // if taxClass is ‘standard’ or empty(undefined) do not send such products.
-        sendProduct = sendProduct
-          && !empty(product.getTaxClassID())
-          && product.getTaxClassID().toLowerCase() !== 'standard';
+        // When skugroupid is empty:
+        // 1. update drDigitalProduct property
+        // 2. check eccn and tax code properties are populated
+        if (empty(product.custom.drSkuGroupId)) {
+            var isUpdatedProduct = updateDigitalProductProperty(product);
+            if (!isUpdatedProduct) {
+                status = new Status(Status.ERROR);
+                break;
+            }
+
+            // Check drECCN before sending the product
+            sendProduct = sendProduct && product.custom.drECCN && !empty(product.custom.drECCN.value);
+
+            // Check the taxClassID before sending the product,
+            // if taxClass is ‘standard’ or empty(undefined) do not send such products.
+            sendProduct = sendProduct
+              && !empty(product.getTaxClassID())
+              && product.getTaxClassID().toLowerCase() !== 'standard';
+        }
 
         if (sendProduct) {
             if (onlyModified) { // run job to send only updated products
