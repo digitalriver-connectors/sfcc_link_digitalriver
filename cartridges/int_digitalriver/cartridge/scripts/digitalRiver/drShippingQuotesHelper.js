@@ -41,7 +41,7 @@ function createBody() {
             return null;
         }
 
-        
+
         // 7-10-2023 Fix for issue where API calls are beign made in native mode
         var drShippingMethodAvailability = Site.getCurrent().getCustomPreferenceValue('drShippingMethodAvailability').value;
         if (drShippingMethodAvailability === 'native') {
@@ -59,7 +59,6 @@ function createBody() {
                 country: Site.current.getCustomPreferenceValue('drShipFromCountry')
             }
         };
-
 
 
         // Packages:
@@ -134,6 +133,43 @@ function createBody() {
     return body;
 }
 
+/* eslint-disable radix */
+
+/**
+* Gets the shipping cost for the given Digital River ID and term
+* @param {string} drID - Digital River ID
+* @param {string} drTerm - Digital River term
+* @param {string} defaultCurrency - default currency
+* @param {number} defaultPrice - default price
+* @returns {string} - formatted currency
+*/
+function getShippingQuotesCost(drID, drTerm, defaultCurrency, defaultPrice) {
+    var drFlatRateConfiguration = Site.getCurrent().getCustomPreferenceValue('drFlatRateConfiguration');
+
+    if (!empty(drID) && !empty(drTerm) && !empty(drFlatRateConfiguration)) {
+        var lines = drFlatRateConfiguration.split('\n');
+
+        for (var i = 0; i < lines.length; i++) {
+            var items = lines[i].trim().split('|');
+            if (items.length === 6) {
+                var id = items[3];
+                var term = items[4];
+                var price = parseFloat(items[2]);
+                var currency = items[5];
+
+                var minPrice = parseFloat(items[0]);
+                var maxPrice = parseFloat(items[1]);
+
+                if (id === drID && term === drTerm && currency.toLowerCase() === defaultCurrency.toLowerCase() && (isNaN(minPrice) || defaultPrice >= minPrice) && (isNaN(maxPrice) || defaultPrice <= maxPrice)) {
+                    return formatCurrency(price, defaultCurrency);
+                }
+            }
+        }
+    }
+
+    return formatCurrency(defaultPrice, defaultCurrency);
+}
+
 /**
  * Gets the shipping quotes from the ShippingQuotesService API
  * @param {dw.util.Collection} shippingMethods - the applicable shipping methods
@@ -182,7 +218,7 @@ function getShippingQuotes(shippingMethods, shipment, drShippingMethod) {
                 obj.estimatedArrivalTime = shippingQuotes[i].estimatedDelivery || null;
                 obj.shippingTerms = shippingQuotes[i].shippingTerms || null;
                 obj.selected = uniqueID === shipment.custom.drUniqueID;
-                obj.shippingCost = formatCurrency(shippingQuotes[i].totalAmount, body.currency);
+                obj.shippingCost = getShippingQuotesCost(obj.drID, obj.shippingTerms, body.currency, shippingQuotes[i].totalAmount);
                 obj.isDR = true;
                 obj.apiShippingMethod = drShippingMethod;
                 obj.shipFrom = JSON.stringify(shippingQuotes[i].shipFrom);

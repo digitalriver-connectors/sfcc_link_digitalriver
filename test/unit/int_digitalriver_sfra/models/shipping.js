@@ -31,9 +31,10 @@ var shipment = {
         "apiShippingMethod": {},
         "shipFrom": "{\"address\":{\"line1\":\"1999 Bishop Grandin Blvd.\",\"line2\":\"Unit 408\",\"city\":\"London\",\"postalCode\":\"EC1A 1BB\",\"country\":\"GB\"}}"
     },
-    "applicableShippingMethods": {
+    "applicableShippingMethods": [{
         "ID": "ups_worldwide_express-256.16",
         "drID": "ups_worldwide_express",
+        "default": false,
         "displayName": "UPS Worldwide Express®",
         "description": "UPS Worldwide Express®",
         "estimatedArrivalTime": null,
@@ -42,7 +43,7 @@ var shipment = {
         "isDR": true,
         "apiShippingMethod": {},
         "shipFrom": "{\"address\":{\"line1\":\"1999 Bishop Grandin Blvd.\",\"line2\":\"Unit 408\",\"city\":\"London\",\"postalCode\":\"EC1A 1BB\",\"country\":\"GB\"}}"
-    }
+    }]
 };
 
 var applicableShippingMethodsStub = [
@@ -62,9 +63,8 @@ var applicableShippingMethodsStub = [
 ]
 
 var BaseShippingModelMock = function (shipment) {
-    var parentOutputMock = shipment.parentOutputMock || {};
-    for (var key in parentOutputMock) { // eslint-disable-line
-        this[key] = JSON.parse(JSON.stringify(parentOutputMock[key]));
+    for (var key in shipment) { // eslint-disable-line
+        this[key] = shipment[key];
     }
 };
 

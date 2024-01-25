@@ -77,7 +77,8 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
                 state: shipping.stateCode,
                 country: shipping.countryCode.value
             },
-            name: shipping.fullName
+            name: shipping.fullName,
+            phone: shipping.phone
         };
     }
     // Preparing billing-related data
@@ -94,7 +95,8 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
                 country: billing.countryCode.value
             },
             name: billing.fullName,
-            email: currentBasket.getCustomerEmail()
+            email: currentBasket.getCustomerEmail(),
+            phone: billing.phone
         };
     }
 

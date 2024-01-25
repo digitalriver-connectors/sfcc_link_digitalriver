@@ -1,0 +1,14 @@
+<div id="zigzag-return">
+    <div class="card return-details">
+        <div class="card-header">
+            <h2 class="card-header-custom">${Resource.msg('heading.returns', 'digitalriver', null)}</h2>
+        </div>
+        <isif condition="${pdict.returnLinkAvailable}">
+            <div class="card-body">${Resource.msg('msg.return.beforeUrlLink', 'digitalriver', null)} 
+            <a href="${pdict.drReturnsLink}" target="_blank">${Resource.msg('label.return.urlLinkText', 'digitalriver', null)}</a>
+        ${Resource.msg('msg.return.afterUrlLink', 'digitalriver', null)}</div>
+        <iselse/>
+            <div class="card-body">${Resource.msg('msg.return.notAvailable', 'digitalriver', null)}</div>
+        </isif>
+    </div>
+</div>

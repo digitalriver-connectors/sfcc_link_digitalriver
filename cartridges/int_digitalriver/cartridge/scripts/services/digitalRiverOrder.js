@@ -118,11 +118,33 @@ function getRefundDetailsByRefundId(refundId) {
     return callResult;
 }
 
+
+/**
+* Sends API call to Digital River to retrieve return portal url
+* @param {string} drOrderId Digital River orderId
+* @param {string} orderNumber salesforceOrderNumber
+* @param {string} postalCode postal code of the shipping address
+* @returns {dw.svc.Result} call result 
+*/
+function getReturnPortalUrl(drOrderId, orderNumber, postalCode) {
+    var drOrderService = digitalRiver.createDigitalRiverService('/global-returns/orders/create-return-portal-url?orderId=' + drOrderId +'&upstreamOrderId=' + orderNumber + '&postalCode=' + postalCode);
+    drOrderService.setRequestMethod('GET');
+    logger.info('Sending API request to get DR return portal url to {0}', drOrderService.getURL());
+    var callResult = drOrderService.call();
+    if (callResult.ok) {
+        logger.info('Return portal url successfully retrieved');
+    } else {
+        logger.error('Error while while retrieving return portal url for order: {0}', drOrderId);
+    }
+    return callResult;
+}
+
 module.exports = {
     getOrders: getOrders,
     getOrder: getOrder,
     createFileLink: createFileLink,
     createFulfillment: createFulfillment,
     getRefunds: getRefunds,
-    getRefundDetailsByRefundId: getRefundDetailsByRefundId
+    getRefundDetailsByRefundId: getRefundDetailsByRefundId,
+    getReturnPortalUrl: getReturnPortalUrl
 };

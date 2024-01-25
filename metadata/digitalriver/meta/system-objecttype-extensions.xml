@@ -544,6 +544,32 @@
                 <externally-defined-flag>false</externally-defined-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="drTaxItemBreadcrumb">
+              <display-name xml:lang="x-default">Digital River Item Breadcrumb</display-name>
+              <description xml:lang="x-default">See https://docs.digitalriver.com/digital-river-api/using-our-services/item-classification for more details on this attribute.</description>
+              <type>string</type>
+              <localizable-flag>false</localizable-flag>
+              <site-specific-flag>false</site-specific-flag>
+              <mandatory-flag>false</mandatory-flag>
+              <visible-flag>false</visible-flag>
+              <externally-managed-flag>false</externally-managed-flag>
+              <order-required-flag>false</order-required-flag>
+              <externally-defined-flag>false</externally-defined-flag>
+              <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drTaxDescription">
+              <display-name xml:lang="x-default">Digital River Tax Description</display-name>
+              <description xml:lang="x-default">See https://docs.digitalriver.com/digital-river-api/using-our-services/item-classification for more details on this attribute.</description>
+              <type>text</type>
+              <localizable-flag>false</localizable-flag>
+              <site-specific-flag>false</site-specific-flag>
+              <mandatory-flag>false</mandatory-flag>
+              <visible-flag>false</visible-flag>
+              <externally-managed-flag>false</externally-managed-flag>
+              <order-required-flag>false</order-required-flag>
+              <externally-defined-flag>false</externally-defined-flag>
+              <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="drAttributes">
@@ -559,6 +585,8 @@
                 <attribute attribute-id="drManagedFulfillment"/>
                 <attribute attribute-id="drManufacturerId"/>
                 <attribute attribute-id="drSkuGroupId"/>
+                <attribute attribute-id="drTaxItemBreadcrumb"/>
+                <attribute attribute-id="drTaxDescription"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -864,6 +892,21 @@ Later these placeholders will be replaced in the code with the given country cod
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="drFlatRateConfiguration">
+                <display-name xml:lang="x-default">DR Flat Rate Shipping Configuration</display-name>
+                <description xml:lang="x-default"> Add one entry per line in the following format: Min Price|Max Price|Desired Shipping Price|Dr Shipping Id|DR Shipping Terms|Currency </description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="drGlobalReturnsPortalEnabled">
+                <display-name xml:lang="x-default">Digital River Global Returns Portal Enabled </display-name>
+                <description xml:lang="x-default"> Enables a link to the DR Global Returns portal from the Order Details page </description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Digital River">
@@ -888,10 +931,13 @@ Later these placeholders will be replaced in the code with the given country cod
                 <attribute attribute-id="drDropInPaymentRedirect"/>
                 <attribute attribute-id="drEnableDynamicPricing"/>
                 <attribute attribute-id="drShippingMethodAvailability"/>
+                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
+                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
                 <attribute attribute-id="drListConvertedPriceBookNaming"/>
                 <attribute attribute-id="drSaleConvertedPriceBookNaming"/>
                 <attribute attribute-id="drBatchSize"/>
-                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
+                <attribute attribute-id="drGlobalReturnsPortalEnabled"/>
+                <attribute attribute-id="drFlatRateConfiguration"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

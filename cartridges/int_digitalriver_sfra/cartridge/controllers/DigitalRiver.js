@@ -449,7 +449,8 @@ server.post('PurchaseType', function (req, res, next) {
                     country: billing.countryCode.value
                 },
                 name: billing.fullName,
-                email: currentBasket.getCustomerEmail()
+                email: currentBasket.getCustomerEmail(),
+                phone: billing.phone
             };
 
             if (purchaseType === 'business' && isDigitalCart && organization !== '') {
@@ -760,6 +761,41 @@ server.get('SelectCountryCurrency', function (req, res, next) {
         res.json({ error: true });
     }
     next();
+});
+
+/**
+ *  @function
+ * DigitalRiver-DRReturnsLink
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next call in the middleware chain
+* Route to display the DR returns link on the order detail page
+*/
+server.get('DRReturnsLink', function (req, res, next) {
+     var OrderMgr = require('dw/order/OrderMgr');
+
+    var thisOrder = OrderMgr.searchOrder(
+        'custom.drOrderID={0}',
+        req.querystring.id
+    );
+    
+
+    var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+    var returnPortalUrlResult = drOrderAPI.getReturnPortalUrl(req.querystring.id, thisOrder.orderNo, thisOrder.shipments[0].shippingAddress.postalCode.toString());
+    var url = '';
+    var returnLinkAvailable;
+    if (returnPortalUrlResult.ok) {
+        url = returnPortalUrlResult.object.url;
+        returnLinkAvailable = true;
+    } else {
+        returnLinkAvailable = false;
+    }
+    res.render('digitalriver/drReturnsLink',{
+        drReturnsLink: url,
+        returnLinkAvailable: returnLinkAvailable
+    });
+
+    return next();
 });
 
 

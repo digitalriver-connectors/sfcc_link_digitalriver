@@ -5,6 +5,7 @@ var Site = require('dw/system/Site');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var Transaction = require('dw/system/Transaction');
 var logger = require('dw/system').Logger.getLogger('DigitalRiver', '');
+var productDetailsHelper = require('*/cartridge/scripts/digitalRiver/drProductDetailsHelper');
 
 var maxNumberOfLoggedErrors = 100;
 var numberOfPublishedErrors;
@@ -50,7 +51,11 @@ function sendProductData(product) {
         weightUnit: product.custom.drWeight ? (product.custom.drWeightUnit.value || 'oz') : null,
         managedFulfillment: product.custom.drManagedFulfillment.value,
         manufacturerId: product.custom.drManufacturerId,
-        skuGroupId: product.custom.drSkuGroupId
+        skuGroupId: product.custom.drSkuGroupId,
+        description: productDetailsHelper.getProductTaxDesc(product),
+        itemBreadcrumb: productDetailsHelper.getProductItemBreadcrumb(product),
+        image: productDetailsHelper.getProductImageUrl(product),
+        url: productDetailsHelper.getProductUrl(product.ID)
     };
 
     Object.keys(additionalAttributes).forEach(function (key) {
