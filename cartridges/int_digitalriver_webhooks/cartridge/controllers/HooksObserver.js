@@ -26,7 +26,7 @@ function Debug() {
         DRLogger.error(checkSignature.errorMessage);
         // handle hook with error log
         hookHandlerResponse = drHooksHandler.default(hookType, hook.data);
-    } else if (drHooksHandler[hookType]) {    // signature is ok, handle hooks
+    } else if (drHooksHandler[hookType]) { // signature is ok, handle hooks
         hookHandlerResponse = drHooksHandler[hookType](hook.data);
     } else {
         hookHandlerResponse = drHooksHandler.default(hookType, hook.data);

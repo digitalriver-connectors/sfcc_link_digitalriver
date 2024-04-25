@@ -1,30 +1,26 @@
 <isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
-<isif
-  condition="${Object.keys(JSON.parse(pdict.countryCurrencyPairs)).length > 0 && currentSite.getCustomPreferenceValue(
-           'drEnableDynamicPricing') && currentSite.getCustomPreferenceValue('drUseDropInFeature')}">
-  <input type="hidden" name="scc-modal-header" value="${Resource.msg('scc-modal-header', 'digitalriver', null)}">
+<isif condition="${Object.keys(JSON.parse(pdict.countryCurrencyPairs)).length > 0 && currentSite.getCustomPreferenceValue(
+        'drEnableDynamicPricing') && currentSite.getCustomPreferenceValue('drUseDropInFeature')}">
+    <input type="hidden" name="scc-modal-header" value="${Resource.msg('scc-modal-header', 'digitalriver', null)}">
 
-  <input type="hidden" name="scc-modal-data" class="scc-modal-data"
-    data-url="${URLUtils.url('DigitalRiver-SelectCountryCurrency')}"
-    data-country-currency-pairs="${pdict.countryCurrencyPairs}"
-    data-supported-countries-currencies="${pdict.supportedCountriesAndCurrencies}"
-    data-select-resource="${Resource.msg('button.select', 'digitalriver', null)}"
-    data-select-cancel="${Resource.msg('button.cancel', 'digitalriver', null)}"
-    data-label-country="${Resource.msg('label.country', 'digitalriver', null)}"
-    data-label-currency="${Resource.msg('label.currency', 'digitalriver', null)}"
-    data-selected-country="${pdict.currentCountry}"
-    data-selected-currency="${pdict.currentCurrency}">
+    <input type="hidden" name="scc-modal-data" class="scc-modal-data"
+        data-url="${URLUtils.url('DigitalRiver-SelectCountryCurrency')}"
+        data-country-currency-pairs="${pdict.countryCurrencyPairs}"
+        data-supported-countries-currencies="${pdict.supportedCountriesAndCurrencies}"
+        data-select-resource="${Resource.msg('button.select', 'digitalriver', null)}"
+        data-select-cancel="${Resource.msg('button.cancel', 'digitalriver', null)}"
+        data-label-country="${Resource.msg('label.country', 'digitalriver', null)}"
+        data-label-currency="${Resource.msg('label.currency', 'digitalriver', null)}"
+        data-selected-country="${pdict.currentCountry}" data-selected-currency="${pdict.currentCurrency}">
 
-  <div class="form-container m-2">
-    <a class="change-scc-button pdp-link"
-      href=""
-      >
-      ${Resource.msg('change.currency.or.country', 'digitalriver', null)}
-    </a>
-  </div>
+    <div class="form-container m-2">
+        <a class="change-scc-button pdp-link" href="">
+            ${Resource.msg('change.currency.or.country', 'digitalriver', null)}
+        </a>
+    </div>
 
-  <isif condition="${pdict.enableScript}">
-      <script defer src="${URLUtils.staticURL('/js/drDynamicPricingSelector.js')}"></script>
-  </isif>
-  <link rel="stylesheet" href="${URLUtils.staticURL('/css/drDynamicPricingSelector.css')}" />
+    <isif condition="${pdict.enableScript}">
+        <script defer src="${URLUtils.staticURL('/js/drDynamicPricingSelector.js')}"></script>
+    </isif>
+    <link rel="stylesheet" href="${URLUtils.staticURL('/css/drDynamicPricingSelector.css')}" />
 </isif>

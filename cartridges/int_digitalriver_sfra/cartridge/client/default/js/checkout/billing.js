@@ -22,22 +22,24 @@ function updateBillingAddressSelector(order, customer) {
             null,
             false,
             order,
-            { type: 'billing' }));
+            { type: 'billing' }
+        ));
 
         // Separator -
-        $billingAddressSelector.append(addressHelpers.methods.optionValueForAddress(
-            order.resources.shippingAddresses, false, order, {
-                // className: 'multi-shipping',
-                type: 'billing'
-            }
-        ));
+        $billingAddressSelector.append(addressHelpers.methods.optionValueForAddress(order.resources.shippingAddresses, false, order, {
+            // className: 'multi-shipping',
+            type: 'billing'
+        }));
 
         shippings.forEach(function (aShipping) {
             var isSelected = order.billing.matchingAddressId === aShipping.UUID;
             hasSelectedAddress = hasSelectedAddress || isSelected;
             // Shipping Address option
             $billingAddressSelector.append(
-                addressHelpers.methods.optionValueForAddress(aShipping, isSelected, order,
+                addressHelpers.methods.optionValueForAddress(
+                    aShipping,
+                    isSelected,
+                    order,
                     {
                         // className: 'multi-shipping',
                         type: 'billing'
@@ -47,8 +49,7 @@ function updateBillingAddressSelector(order, customer) {
         });
 
         if (customer.addresses && customer.addresses.length > 0) {
-            $billingAddressSelector.append(addressHelpers.methods.optionValueForAddress(
-                order.resources.accountAddresses, false, order));
+            $billingAddressSelector.append(addressHelpers.methods.optionValueForAddress(order.resources.accountAddresses, false, order));
             customer.addresses.forEach(function (address) {
                 var isSelected = order.billing.matchingAddressId === address.ID;
                 hasSelectedAddress = hasSelectedAddress || isSelected;
@@ -149,8 +150,10 @@ function clearBillingAddressFormValues() {
  */
 function updateBillingAddressSummary(order) {
     // update billing address summary
-    addressHelpers.methods.populateAddressSummary('.billing .address-summary',
-        order.billing.billingAddress.address);
+    addressHelpers.methods.populateAddressSummary(
+        '.billing .address-summary',
+        order.billing.billingAddress.address
+    );
 
     // update billing parts of order summary
     $('.order-summary-email').text(order.orderEmail);

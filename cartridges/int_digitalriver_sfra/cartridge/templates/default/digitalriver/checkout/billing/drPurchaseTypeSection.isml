@@ -1,11 +1,7 @@
-<isset
-    name="digitalRiverTaxExemptEnable"
-    value="${pdict.digitalRiverTaxExemptData.drUseUSTaxExemptions
-        && pdict.digitalRiverTaxExemptData.loggedInCustomer
-        && pdict.digitalRiverTaxExemptData.hasGlobalCommerceCustID
-        && pdict.digitalRiverTaxExemptData.validCountry}"
-    scope="page"
-/>
+<isset name="digitalRiverTaxExemptEnable"
+    value="${pdict.digitalRiverTaxExemptData.drUseUSTaxExemptions && pdict.digitalRiverTaxExemptData.loggedInCustomer && pdict
+        .digitalRiverTaxExemptData.hasGlobalCommerceCustID && pdict.digitalRiverTaxExemptData.validCountry}"
+    scope="page" />
 
 <div class="purchase-type-selector" data-url="${URLUtils.url('DigitalRiver-PurchaseType')}">
     <fieldset class="address-selector-block-ss">
@@ -16,8 +12,8 @@
 
             <div class="row leading-lines purchase-method-list">
                 <div class="form-check col-9 start-lines">
-                    <input id="typeIndividual" name="purchaseType" type="radio" value="individual" class="form-check-input"
-                    ${pdict.digitalRiverCustomerType === 'business' ? '' : 'checked="checked"'}/>
+                    <input id="typeIndividual" name="purchaseType" type="radio" value="individual"
+                        class="form-check-input" ${pdict.digitalRiverCustomerType === 'business' ? '' : 'checked="checked"'} />
                     <label class="form-check-label tax-method-option" for="typeIndividual">
                         <span class="display-name">
                             ${Resource.msg('label.purchase.individual', 'digitalriver', null)}
@@ -26,7 +22,7 @@
                 </div>
                 <div class="form-check col-9 start-lines">
                     <input id="typeBusiness" name="purchaseType" type="radio" value="business" class="form-check-input"
-                    ${pdict.digitalRiverCustomerType === 'business' ? 'checked="checked"': ''}/>
+                        ${pdict.digitalRiverCustomerType === 'business' ? 'checked="checked"' : ''} />
                     <label class="form-check-label tax-method-option" for="typeBusiness">
                         <span class="display-name">
                             ${Resource.msg('label.purchase.business', 'digitalriver', null)}
@@ -35,31 +31,31 @@
                 </div>
             </div>
 
-            <div id="organizationNameSection" class="form-group required dr-organization-name ${pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}" style="padding-top: 15px; padding-bottom: 15px;">
-                <label class="form-control-label" for="OrganizationName"> 
-                    ${Resource.msg('label.purchaseType.organizationName', 'digitalriver', null)} 
+            <div id="organizationNameSection"
+                class="form-group required dr-organization-name ${pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}"
+                style="padding-top: 15px; padding-bottom: 15px;">
+                <label class="form-control-label" for="OrganizationName">
+                    ${Resource.msg('label.purchaseType.organizationName', 'digitalriver', null)}
                 </label>
-                <input type="text" id="organizationName" name="organizationName" class="form-control OrganizationName" value="" 
-                 ${pdict.digitalRiverCustomerType === 'business' ? 'required="required"': ''}
-                >
+                <input type="text" id="organizationName" name="organizationName" class="form-control OrganizationName"
+                    value="" ${pdict.digitalRiverCustomerType === 'business' ? 'required="required"' : ''}>
                 <div class="invalid-feedback"></div>
             </div>
 
-            <div
-                class="us-tax-certificate-list ${digitalRiverTaxExemptEnable && pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}"
+            <div class="us-tax-certificate-list ${digitalRiverTaxExemptEnable && pdict.digitalRiverCustomerType === 'business' ? '' : 'hidden'}"
                 data-url="${URLUtils.url('TaxCertificates-CertificateList')}"
-                data-tax-exempt="${JSON.stringify(pdict.digitalRiverTaxExemptData)}"
-            >
-            <!--
-                <button class="btn btn-block btn-primary add-new-certificate" type="button">
+                data-tax-exempt="${JSON.stringify(pdict.digitalRiverTaxExemptData)}">
+                <!--
+                    <button class="btn btn-block btn-primary add-new-certificate" type="button">
                     ${Resource.msg('label.taxcertificate.addcertificate', 'digitalriver', null)}
-                </button>
-               --> 
-                ${Resource.msg('label.taxcertificate.addonmyaccount','digitalriver',null)}
-                <a href="${URLUtils.url('Account-Show')}" class="normal" aria-label="${Resource.msg('label.addressbook.myaccount','account',null)}">
-                    ${Resource.msg('link.header.myaccount','account',null)}</a>
-                ${Resource.msg('label.taxcertificate.pagemyaccount','digitalriver',null)}
-                
+                    </button>
+               -->
+                ${Resource.msg('label.taxcertificate.addonmyaccount', 'digitalriver', null)}
+                <a href="${URLUtils.url('Account-Show')}" class="normal"
+                    aria-label="${Resource.msg('label.addressbook.myaccount', 'account', null)}">
+                    ${Resource.msg('link.header.myaccount', 'account', null)}</a>
+                ${Resource.msg('label.taxcertificate.pagemyaccount', 'digitalriver', null)}
+
             </div>
         </div>
     </fieldset>

@@ -89,7 +89,7 @@ server.append(
                     ? dropinHelper.getConfiguration({
                         basket: currentBasket,
                         customer: req.currentCustomer.raw,
-                        reqUrl: reqRedirectUrl  // adding host name
+                        reqUrl: reqRedirectUrl // adding host name
                     })
                     : null,
                 cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString(),
@@ -142,7 +142,6 @@ server.append(
                 digitalRiverTaxIdConfig: taxIdConfig
             });
         });
-
 
         return next();
     }

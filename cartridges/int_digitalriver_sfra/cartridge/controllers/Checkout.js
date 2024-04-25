@@ -5,7 +5,6 @@ server.extend(module.superModule);
 
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
-
 // Main entry point for Checkout
 
 server.prepend(
@@ -55,30 +54,28 @@ server.prepend(
 
         var currentBasket = BasketMgr.getCurrentBasket();
 
-        //Digital River - 2.6 - Redirect flow       
+        // Digital River - 2.6 - Redirect flow
         var drCheckoutAPI = require('*/cartridge/scripts/services/digitalRiverCheckout');
-        
+
         var drPaymentSessionID = req.querystring.drPaymentSessionId;
         var drOrderID = currentBasket.custom.drOrderID;
         var isRedirectSuccess = false;
         var isRedirectFailure = false;
-        
-        if(drPaymentSessionID && (drPaymentSessionID == currentBasket.custom.drPaymentSessionId) && drOrderID.length > 0){
 
+        if (drPaymentSessionID && (drPaymentSessionID === currentBasket.custom.drPaymentSessionId) && drOrderID.length > 0) {
             var drOrderRefreshResponse = drCheckoutAPI.refreshOrder(drOrderID);
-            if (drOrderRefreshResponse.object.state === 'accepted'|| drOrderRefreshResponse.object.state === 'in_review'
+            if (drOrderRefreshResponse.object.state === 'accepted' || drOrderRefreshResponse.object.state === 'in_review'
                 || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending')
-                || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending_funds') ) {
-                //handle success scenario, proceed with placing the order
-                res.setViewData({ 
+                || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending_funds')) {
+                // handle success scenario, proceed with placing the order
+                res.setViewData({
                     drRedirectError: false,
                     drRedirectSuccess: true
                 });
                 isRedirectSuccess = true;
-            }
-            else {
-                //handle failure scenario          
-                res.setViewData({ 
+            } else {
+                // handle failure scenario
+                res.setViewData({
                     errorMessage: Resource.msg('error.order.redirect.failure', 'digitalriver', null),
                     error: true,
                     drRedirectError: true,
@@ -88,10 +85,10 @@ server.prepend(
                 checkoutHelper.resetBasketOnError(req, res);
             }
         }
-        //End Digital River - 2.6 - Redirect flow
+        // End Digital River - 2.6 - Redirect flow
 
         var currentStage = req.querystring.stage;
-        if ((!currentStage || currentStage === 'shipping') && !isRedirectSuccess  && !isRedirectFailure) {
+        if ((!currentStage || currentStage === 'shipping') && !isRedirectSuccess && !isRedirectFailure) {
             drTaxHelper.resetBasketCheckoutData(currentBasket);
         }
 
@@ -109,8 +106,9 @@ server.prepend(
             digitalRiverUseTaxIdentifier: useTaxIdentifier
         };
         res.setViewData(viewData);
-        
+
         return next();
-    });
+    }
+);
 
 module.exports = server.exports();

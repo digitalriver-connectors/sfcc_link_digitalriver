@@ -33,7 +33,8 @@ function getTaxCertificateList(drCustomerId) {
     return drTaxCertificates;
 }
 
-server.get('List',
+server.get(
+    'List',
     userLoggedIn.validateLoggedIn,
     function (req, res, next) {
         var customerHelper = require('*/cartridge/scripts/digitalRiver/drCustomerHelper');
@@ -59,7 +60,8 @@ server.get('List',
     }
 );
 
-server.get('AddCertificate',
+server.get(
+    'AddCertificate',
     csrfProtection.generateToken,
     userLoggedIn.validateLoggedIn,
     function (req, res, next) {
@@ -91,7 +93,8 @@ server.get('AddCertificate',
     }
 );
 
-server.post('SaveCertificate',
+server.post(
+    'SaveCertificate',
     csrfProtection.validateAjaxRequest,
     userLoggedIn.validateLoggedInAjax,
     function (req, res, next) {
@@ -122,7 +125,7 @@ server.post('SaveCertificate',
         var filesInput = request.httpParameterMap.processMultipart(function (field, ct, oname) {
             // Check file extension
             var idx = oname ? oname.lastIndexOf('.') : -1;
-            var fileExt = idx < 0 ? '' : oname.slice(++idx).toLowerCase();
+            var fileExt = idx < 0 ? '' : oname.slice(idx += 1).toLowerCase();
 
             if (['csv', 'jpg', 'jpeg', 'pdf', 'png'].indexOf(fileExt) === -1) {
                 wrongFileExtension = true;
@@ -205,7 +208,8 @@ server.post('SaveCertificate',
     }
 );
 
-server.get('CertificateList',
+server.get(
+    'CertificateList',
     userLoggedIn.validateLoggedInAjax,
     function (req, res, next) {
         var data = res.getViewData();
@@ -227,7 +231,6 @@ server.get('CertificateList',
         var drTaxCertificates = getTaxCertificateList(drCustomerId);
 
         var reqRedirectUrl = 'https://' + req.host; // adding code to get the hostname
-
 
         var context = new HashMap();
         context.put('digitalRiverTaxCertificate', drTaxCertificates);
@@ -255,7 +258,7 @@ server.get('CertificateList',
                 dropInConfiguration: dropinHelper.getConfiguration({
                     basket: BasketMgr.getCurrentBasket(),
                     customer: req.currentCustomer.raw,
-                    reqUrl: reqRedirectUrl  // adding host name
+                    reqUrl: reqRedirectUrl // adding host name
                 }),
                 cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString()
             };
@@ -271,6 +274,5 @@ server.get('CertificateList',
         return next();
     }
 );
-
 
 module.exports = server.exports();

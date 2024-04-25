@@ -5,7 +5,7 @@
 * @param {Object} params - object with current basket, session id
 * @returns {Object} - configuration for DropIn
 */
-function getConfiguration(params) { 
+function getConfiguration(params) {
     var baseUrl = params.reqUrl;
     var URLUtils = require('dw/web/URLUtils');
     var currentBasket = params.basket ? params.basket : require('dw/order/BasketMgr').getCurrentBasket();
@@ -14,7 +14,7 @@ function getConfiguration(params) {
     var configuration = {};
     var checkoutHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var drPaymentSessionId = currentBasket.custom.drPaymentSessionId;
-    //Redirect Flow 2.6 - START
+    // Redirect Flow 2.6 - START
     if (email && currentBasket.custom.drPaymentSessionId && checkoutHelpers.getIsRedirectFlow()) {
         configuration = {
             sessionId: currentBasket.custom.drPaymentSessionId, // used value from digitalRiverCheckout.createCheckout()
@@ -27,7 +27,7 @@ function getConfiguration(params) {
                 showSavePaymentAgreement: (currentCustomer && currentCustomer.authenticated)
             }
         };
-    //Redirect Flow 2.6 Stop
+    // Redirect Flow 2.6 Stop
     } else if (email && currentBasket.custom.drPaymentSessionId) {
         configuration = {
             sessionId: currentBasket.custom.drPaymentSessionId, // used value from digitalRiverCheckout.createCheckout()

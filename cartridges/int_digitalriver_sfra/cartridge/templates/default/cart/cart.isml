@@ -33,7 +33,9 @@
             <div class="col-sm-5 text-right hidden-xs-down">
                 <div>
                     <span>${Resource.msg('info.need.help','cart',null)}</span>
-                    <span><a class="help-phone-number" href="tel:${Resource.msg('info.phone.number','common',null)}">${Resource.msg('info.phone.number','common',null)}</a></span>
+                    <span>
+                        <a class="help-phone-number" href="tel:${Resource.msg('info.phone.number','common',null)}">${Resource.msg('info.phone.number','common',null)}</a>
+                    </span>
                 </div>
             </div>
         </div>

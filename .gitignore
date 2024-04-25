@@ -4,8 +4,7 @@ cartridges/app_storefront_base/
 cartridges/modules/
 cartridges/bm_app_storefront_base/
 cartridges/int_digitalriver_sfra/cartridge/static/
-cartridges/digitalriver_test
-customercredit-ui-mockup
+cartridges/bm_digitalriver/cartridge/static/
 
 workspace/
 coverage/
@@ -13,7 +12,6 @@ npm-debug.log
 cartridges.zip
 .idea/
 dw.json
-package-lock.json
 sitegenesisdata/
 mobilefirstdata/
 storefrontdata/
@@ -28,3 +26,4 @@ test/appium/webdriver/config.json
 test/acceptance/report
 test/integration/config.json
 metadata/digitalriverOriginal.zip
+yarn.lock

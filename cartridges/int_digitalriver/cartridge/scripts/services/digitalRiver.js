@@ -100,11 +100,12 @@ function createDigitalRiverService(relativePath, serviceConfig) {
 }
 
 /**
- * @param {object} drServicePath  - url path to Digital River endpoint
- * @param {object} body - Passing request body
- * @param {boolean} isBody - check request body includes data
- * @returns return the oject
- */
+* Handles retry logic for Digital River service calls
+* @param {dw.svc.HTTPService} drServicePath - the Digital River service path
+* @param {Object} body - the request body for the service call
+* @param {boolean} isBody - flag to indicate if the request body is present
+* @returns {dw.svc.Result} - the result of the service call after retrying
+*/
 function drServiceRetryLogic(drServicePath, body, isBody) {
     var counterLimit = require('*/cartridge/customData.json').retryLogicCount;
     var counter = 0;
@@ -119,7 +120,7 @@ function drServiceRetryLogic(drServicePath, body, isBody) {
             break;
         }
         logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
-        counter++;
+        counter += 1;
     } while (callResult.error >= 500 && callResult.error < 600 && counter < counterLimit);
     if (callResult.error < 500 || callResult.error >= 600) {
         logger.error('ERROR::>> ', JSON.stringify(callResult.errorMessage));

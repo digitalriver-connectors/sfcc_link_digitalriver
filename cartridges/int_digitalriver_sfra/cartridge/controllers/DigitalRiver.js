@@ -1,4 +1,3 @@
-/* globals request session*/
 'use strict';
 
 var server = require('server');
@@ -16,10 +15,10 @@ server.post('DRUpdateOrder', function (req) {
         'custom.drOrderID={0}',
         orderId
     );
-    for (var i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i += 1) {
         var id = items[i].skuId;
         var products = updatedOrder.getAllProductLineItems(id);
-        for (var j = 0; j < products.length; j++) {
+        for (var j = 0; j < products.length; j += 1) {
             var quantity;
             if (products[j].productID === id) {
                 var prodQuantity = products[j].quantityValue;
@@ -244,7 +243,6 @@ server.post('LogMessage', function (req, res, next) {
     next();
 });
 
-
 server.get('DisplayCompliance', function (req, res, next) {
     res.render('/digitalriver/compliance', {
         complianceId: req.querystring.complianceId
@@ -252,7 +250,8 @@ server.get('DisplayCompliance', function (req, res, next) {
     next();
 });
 
-server.post('SubmitDropInConfigForm',
+server.post(
+    'SubmitDropInConfigForm',
     csrfProtection.validateAjaxRequest,
     function (req, res, next) {
         var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
@@ -304,7 +303,8 @@ server.post('SubmitDropInConfigForm',
             });
         }
         next();
-    });
+    }
+);
 
 server.post('StoredCards', function (req, res, next) {
     var Resource = require('dw/web/Resource');
@@ -431,7 +431,7 @@ server.post('PurchaseType', function (req, res, next) {
             postalCode: billingForm.addressFields.postalCode.value,
             countryCode: billingForm.addressFields.country
         };
-        if (stateCode && stateCode != '') {
+        if (stateCode && stateCode !== '') {
             billingAddress.stateCode = stateCode;
         }
 
@@ -540,7 +540,6 @@ server.get('DisplayOfflineRefund', function (req, res, next) {
     var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
     var refundCallResult = drOrderAPI.getRefundDetailsByRefundId(req.querystring.refundId);
     if (refundCallResult.ok) {
-        var drOrderId = refundCallResult.object.orderId;
         res.render('/digitalriver/offlineRefundForm', {
             token: refundCallResult.object.tokenInformation.token,
             orderID: req.querystring.orderID
@@ -652,8 +651,8 @@ server.get('CountryCurrencySelector', function (req, res, next) {
     var listNamePattern = currentSite.getCustomPreferenceValue('drListConvertedPriceBookNaming');
     if (currentSite.getCustomPreferenceValue('drEnableDynamicPricing') && currentSite.getCustomPreferenceValue('drUseDropInFeature')) {
         var countryCurrencyPairs = currentSite.getCustomPreferenceValue('drCountryCurrencyPairs')
-        ? JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs'))
-        : null;
+            ? JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs'))
+            : null;
         if (!session.privacy.currencyCode || !session.privacy.countryCode) {
             var selectedCountry;
             var selectedCurrency;
@@ -681,10 +680,10 @@ server.get('CountryCurrencySelector', function (req, res, next) {
         }
 
         // If price book doesn't exist remove from the country-currency selection list
-        for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i++) {
+        for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i += 1) {
             let country = Object.keys(countryCurrencyPairs)[i];
             let currencies = countryCurrencyPairs[country];
-            for (let j = 0; j < currencies.length; j++) {
+            for (let j = 0; j < currencies.length; j += 1) {
                 var salePriceBookName = saleNamePattern ? saleNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currencies[j]) : null;
                 var listPriceBookName = listNamePattern ? listNamePattern.replace('{COUNTRY}', country).replace('{CURRENCY}', currencies[j]) : null;
                 var applicablePriceBooks = [];
@@ -696,10 +695,10 @@ server.get('CountryCurrencySelector', function (req, res, next) {
                 }
                 if (applicablePriceBooks.length < 1) {
                     countryCurrencyPairs[country].splice(j, 1);
-                    j--;
+                    j -= 1;
                     if (currencies.length === 0) {
                         delete countryCurrencyPairs[country];
-                        i--;
+                        i -= 1;
                     }
                 }
             }
@@ -709,14 +708,16 @@ server.get('CountryCurrencySelector', function (req, res, next) {
         var currentCurrency = session.privacy.currencyCode;
         var currentCountry = session.privacy.countryCode;
         var template = '/digitalriver/dynamicPricingSelector';
-        res.render(template,
+        res.render(
+            template,
             {
                 enableScript: req.querystring.mobile,
                 countryCurrencyPairs: countryCurrencyPairs,
                 supportedCountriesAndCurrencies: JSON.stringify(supportedCountriesAndCurrenciesJSON),
                 currentCurrency: currentCurrency,
                 currentCountry: currentCountry
-            });
+            }
+        );
     }
 
     next();
@@ -772,13 +773,10 @@ server.get('SelectCountryCurrency', function (req, res, next) {
 * Route to display the DR returns link on the order detail page
 */
 server.get('DRReturnsLink', function (req, res, next) {
-     var OrderMgr = require('dw/order/OrderMgr');
-
     var thisOrder = OrderMgr.searchOrder(
         'custom.drOrderID={0}',
         req.querystring.id
     );
-    
 
     var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
     var returnPortalUrlResult = drOrderAPI.getReturnPortalUrl(req.querystring.id, thisOrder.orderNo, thisOrder.shipments[0].shippingAddress.postalCode.toString());
@@ -790,13 +788,12 @@ server.get('DRReturnsLink', function (req, res, next) {
     } else {
         returnLinkAvailable = false;
     }
-    res.render('digitalriver/drReturnsLink',{
+    res.render('digitalriver/drReturnsLink', {
         drReturnsLink: url,
         returnLinkAvailable: returnLinkAvailable
     });
 
     return next();
 });
-
 
 module.exports = server.exports();

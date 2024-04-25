@@ -35,7 +35,6 @@ server.append(
     }
 );
 
-
 server.append(
     'PlaceOrder',
     function (req, res, next) {
@@ -45,21 +44,18 @@ server.append(
             return next();
         }
 
-        if(!viewData.error || !req.custom)
-        {
+        if (!viewData.error || !req.custom) {
             return next();
         }
 
         if (!req.custom.isDrConflictError) { // eslint-disable-line no-undef
             return next();
         }
-        
-        checkoutHelper.resetBasketOnError(req, res);
 
+        checkoutHelper.resetBasketOnError(req, res);
 
         return next();
     }
 );
-
 
 module.exports = server.exports();

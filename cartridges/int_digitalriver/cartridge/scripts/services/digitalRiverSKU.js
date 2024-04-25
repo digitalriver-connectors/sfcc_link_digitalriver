@@ -1,3 +1,5 @@
+'use strict';
+
 var digitalRiver = require('*/cartridge/scripts/services/digitalRiver');
 
 /**

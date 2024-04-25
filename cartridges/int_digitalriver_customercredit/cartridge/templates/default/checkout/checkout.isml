@@ -2,7 +2,7 @@
     <!----------------------------------------------------------------------------------->
     <!-- Load Static Assets -->
     <!----------------------------------------------------------------------------------->
-    <link rel="stylesheet" href="https://js.digitalriverws.com/v1/css/DigitalRiver.css" type="text/css"/>
+    <link rel="stylesheet" href="https://js.digitalriverws.com/v1/css/DigitalRiver.css" type="text/css" />
     <isscript>
         var assets = require('*/cartridge/scripts/assets.js');
         assets.addJs('/js/checkout.js');
@@ -16,24 +16,27 @@
     </isif>
 
     <h1 class="page-title">
-        ${Resource.msg('title.checkout','checkout',null)}
+        ${Resource.msg('title.checkout', 'checkout', null)}
     </h1>
-    <div id="checkout-main" class="container data-checkout-stage <isif condition="${pdict.order.usingMultiShipping && pdict.order.shipping.length > 1}">multi-ship</isif>" data-customer-type="${pdict.customer.registeredUser ? 'registered' : 'guest'}" data-checkout-stage="${pdict.currentStage}" data-checkout-get-url="${URLUtils.https('CheckoutServices-Get')}">
+    <div id="checkout-main" class="container data-checkout-stage <isif condition=" ${pdict.order.usingMultiShipping && pdict.order.shipping.length > 1}">multi-ship</isif>" data-customer-type="${pdict.customer.registeredUser ? 'registered' : 'guest'}" data-checkout-stage="${pdict.currentStage}"
+        data-checkout-get-url="${URLUtils.https('CheckoutServices-Get')}">
         <!----------------------------------------------------------------------------------->
         <!-- Help and Phone -->
         <!----------------------------------------------------------------------------------->
         <div class="row hidden-xs-down">
             <div class="col-12 col-sm-5 offset-sm-7 col-md-5 offset-md-7">
                 <div class="text-center">
-                    <span>${Resource.msg('info.need.help','cart',null)}</span>
-                    <span><a href="tel:${Resource.msg('info.phone.number','common',null)}">${Resource.msg('info.phone.number','common',null)}</a></span>
+                    <span>${Resource.msg('info.need.help', 'cart', null)}</span>
+                    <span>
+                        <a href="tel:${Resource.msg('info.phone.number', 'common', null)}">${Resource.msg('info.phone.number', 'common', null)}</a>
+                    </span>
                 </div>
             </div>
         </div>
 
         <div class="row d-sm-none">
             <div class="col-12">
-                <span class="grand-total-label">${Resource.msgf('label.number.items.in.cart','cart', null, pdict.order.items.totalQuantity)}</span>
+                <span class="grand-total-label">${Resource.msgf('label.number.items.in.cart', 'cart', null, pdict.order.items.totalQuantity)}</span>
                 <span class="grand-total-price">${pdict.order.totals.subTotal}</span>
             </div>
         </div>
@@ -61,11 +64,12 @@
                 <isif condition="${!pdict.customer.registeredUser}">
                     <isinclude template="checkout/customer/customer" />
                 </isif>
-                 <div class="card customer-summary">
+                <div class="card customer-summary">
                     <div class="card-header clearfix">
                         <h2 class="pull-left card-header-custom">${Resource.msg('heading.checkout.customer', 'checkout', null)}</h2>
                         <isif condition="${!pdict.customer.registeredUser}">
-                            <button class="edit-button pull-right" aria-label="${Resource.msg('action.edit.step.msg.customer', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
+                            <button class="edit-button pull-right"
+                                aria-label="${Resource.msg('action.edit.step.msg.customer', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
                         </isif>
                     </div>
                     <div class="card-body">
@@ -78,7 +82,8 @@
                 <div class="card shipping-summary">
                     <div class="card-header clearfix">
                         <h2 class="pull-left card-header-custom">${Resource.msg('heading.checkout.shipping', 'checkout', null)}</h2>
-                        <button class="edit-button pull-right" aria-label="${Resource.msg('action.edit.step.msg.shipping', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
+                        <button class="edit-button pull-right"
+                            aria-label="${Resource.msg('action.edit.step.msg.shipping', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
                     </div>
                     <div class="card-body">
                         <isinclude template="checkout/shipping/shippingSummary" />
@@ -89,8 +94,10 @@
                 <isinclude template="checkout/billing/billing" />
                 <div class="card payment-summary">
                     <div class="card-header clearfix">
-                        <h2 class="pull-left card-header-custom">${Resource.msg('heading.payment', 'checkout', null)}</h2>
-                        <button class="edit-button pull-right" aria-label="${Resource.msg('action.edit.step.msg.payment', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
+                        <h2 class="pull-left card-header-custom">${Resource.msg('heading.payment', 'checkout', null)}
+                        </h2>
+                        <button class="edit-button pull-right"
+                            aria-label="${Resource.msg('action.edit.step.msg.payment', 'checkout', null)}">${Resource.msg('action.edit.step', 'checkout', null)}</button>
                     </div>
 
                     <div class="card-body">
@@ -105,17 +112,29 @@
                 <div class="row">
                     <div class="col-12 next-step-button">
                         <div class="mb-sm-3">
-                            <button class="btn btn-primary btn-block submit-shipping" type="submit" name="submit" value="submit-shipping" <isif condition="${(pdict.order.usingMultiShipping && !pdict.order.shippable) || pdict.drCustomerError}">disabled</isif>>
+                            <button class="btn btn-primary btn-block submit-shipping" type="submit" name="submit"
+                                value="submit-shipping" <isif
+                                condition="${(pdict.order.usingMultiShipping && !pdict.order.shippable) || pdict.drCustomerError}">disabled
+                                </isif>>
                                 ${Resource.msg('button.next.payment', 'checkout', null)}
                             </button>
-                            <isset name="submitPaymentToggle" value="${pdict.customer.registeredUser && !!pdict.customer.customerPaymentInstruments.length}" scope="page" />
-                            <isset name="submitPaymentShow" value="${!pdict.digitalRiverUseDropInFeature || pdict.order.totals.isZeroTotal || (pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length && (pdict.amountRemainingToBeContributed !== 0 || pdict.primarySource))  ? '' : 'digitalriver-hide'}" scope="page" />
-                            <button class="btn btn-primary btn-block submit-payment ${submitPaymentShow}" type="submit" name="submit" value="submit-payment" data-toggle="${submitPaymentToggle}" data-saved-payments="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length}">
+                            <isset name="submitPaymentToggle"
+                                value="${pdict.customer.registeredUser && !!pdict.customer.customerPaymentInstruments.length}"
+                                scope="page" />
+                            <isset name="submitPaymentShow"
+                                value="${!pdict.digitalRiverUseDropInFeature || pdict.order.totals.isZeroTotal || (pdict.customer.registeredUser && pdict
+                                    .customer.customerPaymentInstruments.length && (pdict.amountRemainingToBeContributed !== 0 || pdict
+                                    .primarySource)) ? '' : 'digitalriver-hide'}"
+                                scope="page" />
+                            <button class="btn btn-primary btn-block submit-payment ${submitPaymentShow}" type="submit"
+                                name="submit" value="submit-payment" data-toggle="${submitPaymentToggle}"
+                                data-saved-payments="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length}">
                                 ${Resource.msg('button.next.place.order', 'checkout', null)}
                             </button>
 
-                            <button class="btn btn-primary btn-block place-order" data-action="${URLUtils.url('CheckoutServices-PlaceOrder')}"
-                                    type="submit" name="submit" value="place-order">${Resource.msg('button.place.order', 'checkout', null)}
+                            <button class="btn btn-primary btn-block place-order"
+                                data-action="${URLUtils.url('CheckoutServices-PlaceOrder')}" type="submit" name="submit"
+                                value="place-order">${Resource.msg('button.place.order', 'checkout', null)}
                             </button>
                             <isinclude template="digitalriver/checkout/placeOrder/drPlaceOrder" />
                         </div>
@@ -125,7 +144,8 @@
                 <div class="row">
                     <div class="col-12 next-step-button">
                         <div class="mb-sm-3" id="ch">
-                            <isinclude url="${URLUtils.url('DigitalRiver-DisplayCompliance', 'complianceId', 'checkoutCompliance')}" />
+                            <isinclude
+                                url="${URLUtils.url('DigitalRiver-DisplayCompliance', 'complianceId', 'checkoutCompliance')}" />
                         </div>
                     </div>
                 </div>

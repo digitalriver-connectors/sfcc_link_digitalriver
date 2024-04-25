@@ -3,18 +3,26 @@
     <div class="customerCredit-block ${pdict.order.totals.adjustedGrandTotal.customerCreditTotal && pdict.order.totals.adjustedGrandTotal.customerCreditTotal.value > 0 ? '' : 'hide-order-discount'}">
         <div class="row leading-lines customerCredit-items">
             <div class="col-6 start-lines">
-                <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.customerCredit','digitalriver', null)}</span></p>
+                <p class="order-receipt-label">
+                    <span>${Resource.msg('label.order.sales.customerCredit','digitalriver', null)}</span>
+                </p>
             </div>
             <div class="col-6 end-lines">
-                <p class="text-right"><span class="customerCredit-total">${pdict.order.totals.adjustedGrandTotal.customerCreditTotal.formatted}</span></p>
+                <p class="text-right">
+                    <span class="customerCredit-total">${pdict.order.totals.adjustedGrandTotal.customerCreditTotal.formatted}</span>
+                </p>
             </div>
         </div>
         <div class="row grand-total leading-lines">
             <div class="col-6 start-lines">
-                <p class="order-receipt-label"><span>${Resource.msg('label.order.adjusted.grand.total','digitalriver', null)}</span></p>
+                <p class="order-receipt-label">
+                    <span>${Resource.msg('label.order.adjusted.grand.total','digitalriver', null)}</span>
+                </p>
             </div>
             <div class="col-6 end-lines">
-                <p class="text-right"><span class="grand-total-sum-adjusted">${pdict.order.totals.adjustedGrandTotal.formatted}</span></p>
+                <p class="text-right">
+                    <span class="grand-total-sum-adjusted">${pdict.order.totals.adjustedGrandTotal.formatted}</span>
+                </p>
             </div>
         </div>
     </div>

@@ -19,10 +19,10 @@
                 <iscomment> Include DR invoice & credit memo links </iscomment>
                 <isinclude url="${URLUtils.url('DigitalRiver-InvoiceCredit', 'id', pdict.order.drOrderID)}" />
                 <isinclude url="${URLUtils.url('DigitalRiver-OfflineRefund', 'id', pdict.order.drOrderID, 'sfOrderID', pdict.order.orderNumber)}" />
-                
+
                 <isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
                 <isif condition="${currentSite.getCustomPreferenceValue('drGlobalReturnsPortalEnabled') && currentSite.getCustomPreferenceValue('drUseDropInFeature')}">
-                        <isinclude url="${URLUtils.url('DigitalRiver-DRReturnsLink', 'id', pdict.order.drOrderID)}" />
+                    <isinclude url="${URLUtils.url('DigitalRiver-DRReturnsLink', 'id', pdict.order.drOrderID)}" />
                 </isif>
                 <div class="my-account">
                     <a href="${pdict.exitLinkUrl}" title="${Resource.msg('link.orderdetails.myaccount','account',null)}" aria-label="${Resource.msg('link.orderdetails.myaccount','account',null)}">

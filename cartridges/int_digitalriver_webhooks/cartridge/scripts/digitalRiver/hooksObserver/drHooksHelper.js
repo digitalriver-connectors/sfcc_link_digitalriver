@@ -53,7 +53,6 @@ function checkSignature(signature, requestBodyAsString) {
         forResponse.errorMessage = e;
     }
 
-
     return forResponse;
 }
 

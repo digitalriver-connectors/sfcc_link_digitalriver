@@ -18,7 +18,7 @@ output.updateCustomerCreditTotal = function (adjustedGrandTotal, customerCreditS
             Modify labelCustomerCredit value with the value you want to be displayed on the UI
         */
         var labelCustomerCredit = $('#dr-list-of-applied-customercredits').data('payment-info-text');
-        for (var i = 0; i < customerCreditSources.length; i++) {
+        for (var i = 0; i < customerCreditSources.length; i += 1) {
             htmlGiftToAppend += '<div class="col-6 start-lines">'
                 + '<span class="order-receipt-label">' + labelCustomerCredit + ' ' + (i + 1) + '</span>'
                 + '</div><div class="col-6 end-lines">'
@@ -53,65 +53,56 @@ function handleDROrderPlacement(defer, placeOrderCallBack) {
                     // go to appropriate stage and display error message
                     defer.reject(data);
                 }
+            } else if (data.placeFinalOrder) {
+                // DR order successfully placed. Go back to main place order logic by calling nextStage again
+
+                $('.DR-place-order').data('dr-order-placed', true);
+                // members.nextStage();
+                placeOrderCallBack(defer);
             } else {
-                //DR order successfully placed. Go back to main place order logic by calling nextStage again
-                if(data.placeFinalOrder)
-                {
-                    $('.DR-place-order').data('dr-order-placed', true);
-                    //members.nextStage();
-                    placeOrderCallBack(defer);
-                }
-                else {
                 // handle the response
-                    var redirect = $('<form>')
-                        .appendTo(document.body)
-                        .attr({
-                            method: 'POST',
-                            action: data.continueUrl
-                        });
+                var redirect = $('<form>')
+                    .appendTo(document.body)
+                    .attr({
+                        method: 'POST',
+                        action: data.continueUrl
+                    });
 
-                    $('<input>')
-                        .appendTo(redirect)
-                        .attr({
-                            name: 'orderID',
-                            value: data.orderID
-                        });
+                $('<input>')
+                    .appendTo(redirect)
+                    .attr({
+                        name: 'orderID',
+                        value: data.orderID
+                    });
 
-                    $('<input>')
-                        .appendTo(redirect)
-                        .attr({
-                            name: 'orderToken',
-                            value: data.orderToken
-                        });
-                    redirect.submit();
-                    defer.resolve();
-                    //placeOrderCallBack(defer);
-                
-                }
-                                          
+                $('<input>')
+                    .appendTo(redirect)
+                    .attr({
+                        name: 'orderToken',
+                        value: data.orderToken
+                    });
+                redirect.submit();
+                defer.resolve();
+                // placeOrderCallBack(defer);
             }
         },
         error: function () {
             // enable the placeOrder button here
             $('body').trigger('checkout:enableButton', $('.next-step-button button'));
         }
-    }); 
+    });
 }
 
 /** Digital River - 2.6 - Redirect flow logic
  * @param {Object} members - used to control checkout flow
  */
-function handleDROrderRedirect(members)
-{
-    if($('.DR-place-order').data('dr-redirect-success'))
-    {
-        $('.DR-place-order').data('dr-redirect-success',"false");
-        $('.DR-place-order').data('dr-order-placed',"true");
+function handleDROrderRedirect(members) {
+    if ($('.DR-place-order').data('dr-redirect-success')) {
+        $('.DR-place-order').data('dr-redirect-success', 'false');
+        $('.DR-place-order').data('dr-order-placed', 'true');
         members.gotoStage('placeOrder');
         members.nextStage();
-    }
-    else if($('.DR-place-order').data('dr-redirect-error'))
-    {
+    } else if ($('.DR-place-order').data('dr-redirect-error')) {
         $('.error-message').show();
         members.gotoStage('payment');
     }
@@ -167,4 +158,4 @@ module.export = {
     handleDROrderPlacement: handleDROrderPlacement,
     handleDROrderRedirect: handleDROrderRedirect,
     retrieveStoredCard: retrieveStoredCard
-}
+};

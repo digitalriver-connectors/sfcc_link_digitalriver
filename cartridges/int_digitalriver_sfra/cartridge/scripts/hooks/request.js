@@ -1,4 +1,5 @@
 'use strict';
+
 var BasketMgr = require('dw/order/BasketMgr');
 var Transaction = require('dw/system/Transaction');
 var Currency = require('dw/util/Currency');
@@ -32,4 +33,3 @@ exports.onRequest = function () {
         request.session.privacy.currencyCode = null;
     }
 };
-

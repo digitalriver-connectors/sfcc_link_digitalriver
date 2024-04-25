@@ -18,7 +18,7 @@ output.methods.updatePaymentInformation = function (order) {
             Modify labelCustomerCredit value with the value you want to be displayed on the UI
         */
         var labelCustomerCredit = $('#dr-list-of-applied-customercredits').data('payment-info-text');
-        for (var i = 0; i < paymentInstruments.length; i++) {
+        for (var i = 0; i < paymentInstruments.length; i += 1) {
             /*
                 @IG:
                 Modify the following condition depending on your implementation of secondary payment
@@ -29,7 +29,7 @@ output.methods.updatePaymentInformation = function (order) {
                     + '</div><div class="col-6 end-lines">'
                     + '<div class="text-right">'
                     + '<span>' + paymentInstruments[i].formattedAmount + '</span></div></div>';
-                index++;
+                index += 1;
             } else if (paymentInstruments[i].paymentType === 'creditCard') {
                 htmlToAppend += '<div class="row leading-lines">'
                     + '<div class="col-6 start-lines">'

@@ -10,7 +10,7 @@ function getMaskedEmail(email) {
     var prefix = email.slice(0, email.lastIndexOf('@'));
     var postfix = email.slice(email.lastIndexOf('@'));
 
-    for (var i = 0; i < prefix.length; i++) {
+    for (var i = 0; i < prefix.length; i += 1) {
         if (i === 0 || i === prefix.length - 1) {
             masked += prefix[i].toString();
         } else {

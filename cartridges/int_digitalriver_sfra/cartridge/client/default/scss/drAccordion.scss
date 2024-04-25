@@ -7,7 +7,7 @@
     .dr-accordion-btn {
         background-color: transparent;
         border: 0;
-        border: 0.0625em solid rgba(0, 0, 0, 0.125);
+        border: 0.0625em solid rgba(0, 0, 0, 12.5%);
         border-radius: 0.1875rem;
         width: 100%;
         padding: 1rem;
@@ -37,7 +37,7 @@
             width: 0;
             height: 0;
             border: 0.3125em solid transparent;
-            border-top: 0.375em solid rgba(0, 0, 0, 0.26);
+            border-top: 0.375em solid rgba(0, 0, 0, 26%);
             border-bottom: none;
             display: block;
             float: right;
@@ -50,9 +50,9 @@
     position: relative;
     margin-bottom: 1rem;
     padding: 1rem;
-    border-bottom: 0.0625em solid rgba(0, 0, 0, 0.125);
-    border-left: 0.0625em solid rgba(0, 0, 0, 0.125);
-    border-right: 0.0625em solid rgba(0, 0, 0, 0.125);
+    border-bottom: 0.0625em solid rgba(0, 0, 0, 12.5%);
+    border-left: 0.0625em solid rgba(0, 0, 0, 12.5%);
+    border-right: 0.0625em solid rgba(0, 0, 0, 12.5%);
 
     .contact-info-block {
         border: none;

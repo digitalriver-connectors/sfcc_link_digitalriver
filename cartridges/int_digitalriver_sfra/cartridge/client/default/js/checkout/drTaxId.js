@@ -45,7 +45,7 @@ function updateTaxIdentifierSubmitBtn() {
     } else if (Object.keys(taxidentifierData.fieldsWithSuccess[customerType]).length) { // if have success (not empty)
         // enable button
         $btnTaxidentifierSubmit.prop('disabled', false);
-    } else {    // success id was deleted from input -> no errors && no success
+    } else { // success id was deleted from input -> no errors && no success
         $btnTaxidentifierSubmit.prop('disabled', true);
     }
 }
@@ -56,7 +56,7 @@ function updateTaxIdentifierSubmitBtn() {
  */
 function displayAppliedTaxIdentifiers(arrayOfAppliedIdentifiers, deleteText) {
     var appliedIdentifiersToHtml = '';
-    for (var i = 0; i < arrayOfAppliedIdentifiers.length; i++) {
+    for (var i = 0; i < arrayOfAppliedIdentifiers.length; i += 1) {
         var identifier = arrayOfAppliedIdentifiers[i];
         appliedIdentifiersToHtml += '<div class="dr-applied-identifier" data-id="' + identifier.id + '">';
         appliedIdentifiersToHtml += identifier.value;
@@ -118,11 +118,11 @@ function mountTaxIdentifier(taxIdConfig) {
             taxidentifierData.fieldsWithError[customerType] = taxidentifierData.fieldsWithError[customerType] || {};
             taxidentifierData.fieldsWithSuccess[customerType] = taxidentifierData.fieldsWithSuccess[customerType] || {};
 
-            if (event.empty) {  // when field is empty on change
+            if (event.empty) { // when field is empty on change
                 // remove field value from prepared lists
                 delete taxidentifierData.fieldsWithError[customerType][TIType];
                 delete taxidentifierData.fieldsWithSuccess[customerType][TIType];
-            } else if (event.complete && event.error == null) {    // we have some value in field and complete status
+            } else if (event.complete && event.error == null) { // we have some value in field and complete status
                 // add to success
                 taxidentifierData.fieldsWithSuccess[customerType][TIType] = event.identifier;
                 // remove from errors
@@ -142,7 +142,7 @@ function mountTaxIdentifier(taxIdConfig) {
         if (event.hasTaxIdentifier) {
             $btnTaxidentifierSubmit.show(); // but still disabled
         } else {
-            taxIdContainer.append(taxIdConfig.msgNotApplicable);  // show message Tax exemption not applicable for this order
+            taxIdContainer.append(taxIdConfig.msgNotApplicable); // show message Tax exemption not applicable for this order
         }
         taxIdContainer.spinner().stop();
 
@@ -183,14 +183,17 @@ function loadTaxIdentifierConfig() {
     });
 }
 
+/**
+* Toggles the visibility and required attribute of the organization name input field based on the selected business type
+*/
 function toggleOrganizationInputField() {
     var isBusinessType = $('#typeBusiness').prop('checked');
     if (isBusinessType) {
-        $('#organizationNameSection').removeClass( "dr-organization-name hidden" ).addClass( "dr-organization-name show" );
-        $("#organizationName").attr("required", true);
+        $('#organizationNameSection').removeClass('dr-organization-name hidden').addClass('dr-organization-name show');
+        $('#organizationName').attr('required', true);
     } else {
-        $("#organizationName").attr("required", false);
-        $('#organizationNameSection').removeClass( "dr-organization-name show" ).addClass( "dr-organization-name hidden" );
+        $('#organizationName').attr('required', false);
+        $('#organizationNameSection').removeClass('dr-organization-name show').addClass('dr-organization-name hidden');
     }
 }
 
@@ -266,7 +269,7 @@ function initEvents() {
     // process tax identifiers
     $btnTaxidentifierSubmit.on('click', function () {
         var applyUrl = $(this).data('apply-url');
-        $('#accordionBilling').spinner().start();   // don't allow to continue till process finish
+        $('#accordionBilling').spinner().start(); // don't allow to continue till process finish
         drHelper.clearError();
 
         $.ajax({
@@ -279,7 +282,7 @@ function initEvents() {
                 if (ajaxResponse.error) {
                     drHelper.checkoutError(ajaxResponse.errorMessage);
                 } else if (ajaxResponse.appliedTaxIdentifiers) {
-                    taxIdentifier.unmount();    // rerender fields to not have values in it
+                    taxIdentifier.unmount(); // rerender fields to not have values in it
                     taxIdentifier.mount('tax-id');
                     displayAppliedTaxIdentifiers(ajaxResponse.appliedTaxIdentifiers, ajaxResponse.deleteText);
                     recalculateBasket(ajaxResponse.order);

@@ -4,6 +4,9 @@ var Money = require('dw/value/Money');
 var Resource = require('dw/web/Resource');
 var TaxMgr = require('dw/order/TaxMgr');
 var Transaction = require('dw/system/Transaction');
+var ProductLineItem = require('dw/order/ProductLineItem');
+var ShippingLineItem = require('dw/order/ShippingLineItem');
+var PriceAdjustment = require('dw/order/PriceAdjustment');
 
 const TAX_ADJUSTMENT = 'digitalRiver_TaxAdjustment';
 const ITEM_ADJUSTMENT = 'digitalRiver_ItemAdjustment';
@@ -29,13 +32,13 @@ function createBasketStateSnapshot(basket) {
     return basket.getAllLineItems()
         .toArray()
         .filter(function (item) {
-            return !(item instanceof dw.order.PriceAdjustment && (item.promotionID === TAX_ADJUSTMENT || item.promotionID === FEES_ADJUSTMENT || item.promotionID === ITEM_ADJUSTMENT));
+            return !(item instanceof PriceAdjustment && (item.promotionID === TAX_ADJUSTMENT || item.promotionID === FEES_ADJUSTMENT || item.promotionID === ITEM_ADJUSTMENT));
         })
         .map(function (item) {
             return item.constructor.name
                 + '(' + item.getUUID() + '):'
-                + ((item instanceof dw.order.ProductLineItem || item instanceof dw.order.ShippingLineItem) ? item.getPriceValue() : '')
-                + ((item instanceof dw.order.ProductLineItem) ? '(' + item.quantity.value + ')' : '');
+                + ((item instanceof ProductLineItem || item instanceof ShippingLineItem) ? item.getPriceValue() : '')
+                + ((item instanceof ProductLineItem) ? '(' + item.quantity.value + ')' : '');
         })
         .sort()
         .join('|');
@@ -301,9 +304,11 @@ function updateCheckoutDataInBasket(checkoutUpdates, basket) {
 
 /**
  * Resets all basket custom values related to specific Digital River Checkout
- * @param {dw.order.Basket} basket current basket
+ * @param {dw.order.Basket} currentBasket current basket
  */
-function resetBasketCheckoutData(basket) {
+function resetBasketCheckoutData(currentBasket) {
+    var basket = currentBasket;
+
     Transaction.wrap(function () {
         var currentShipment = basket.shipments[0];
         var shipmentLI = currentShipment.getShippingLineItems().toArray();
@@ -321,16 +326,16 @@ function resetBasketCheckoutData(basket) {
 
         // remove all tax adjustments
         var allLineItems = basket.getAllLineItems();
-        for (var i = 0; i < allLineItems.length; i++) {
+        for (var i = 0; i < allLineItems.length; i += 1) {
             var item = allLineItems[i];
-            if (item instanceof dw.order.ProductLineItem) {
+            if (item instanceof ProductLineItem) {
                 var adjustment = item.getPriceAdjustmentByPromotionID(TAX_ADJUSTMENT);
                 if (adjustment) {
                     item.removePriceAdjustment(adjustment); // remove old tax adjustment if it exists
                 }
-            } else if (item instanceof dw.order.ShippingLineItem) {
+            } else if (item instanceof ShippingLineItem) {
                 var shippingPriceAdjustments = item.getShippingPriceAdjustments();
-                for (var k = 0; k < shippingPriceAdjustments.length; k++) {
+                for (var k = 0; k < shippingPriceAdjustments.length; k += 1) {
                     if (shippingPriceAdjustments[k].promotionID === TAX_ADJUSTMENT) {
                         item.removeShippingPriceAdjustment(shippingPriceAdjustments[k]);
                     }
@@ -425,7 +430,7 @@ function updateTaxPromotion(basket) {
     var adjustedValue;
     var itemTotalAdjustmentValue;
 
-    for (var i = 0; i < productLineItems.length; i++) {
+    for (var i = 0; i < productLineItems.length; i += 1) {
         itemTotalAdjustmentValue = 0;
         var productItem = productLineItems[i];
         var checkoutItem = checkoutLineItems.find(function (item) { // eslint-disable-line no-loop-func

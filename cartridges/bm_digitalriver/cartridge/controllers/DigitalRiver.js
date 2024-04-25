@@ -1,5 +1,4 @@
 'use strict';
-/* globals response request*/
 
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
@@ -111,7 +110,6 @@ var getActionMessage = function (jobType) {
     return actionMessage;
 };
 
-
 /**
  * Shows Trigger Delta Job Run page
  */
@@ -193,7 +191,7 @@ function CountryCurrencyPairs() {
         });
     });
     var supportedPairs = {};
-    for (var i = 0; i < countriesJSON.length; i++) {
+    for (var i = 0; i < countriesJSON.length; i += 1) {
         let countryCode = countriesJSON[i].id.split('_')[1];
         if (Object.hasOwnProperty.call(supportedCountries, countryCode) && countriesJSON[i].alternativeCurrencyCodes) {
             supportedPairs[countryCode] = countriesJSON[i].alternativeCurrencyCodes;
@@ -209,7 +207,6 @@ function CountryCurrencyPairs() {
         countryCurrencyPairsCodes: JSON.stringify(countryCurrencyPairsCodes)
     });
 }
-
 
 /**
  * Adds a country-currency pair to the list of supported countries and currencies
@@ -256,7 +253,6 @@ function AddCountryCurrency() {
     renderJSON({
         success: true
     });
-    return;
 }
 
 /**
@@ -312,7 +308,6 @@ function DeleteCountryCurrency() {
     renderJSON({
         success: true
     });
-    return;
 }
 
 module.exports.Start = Start;

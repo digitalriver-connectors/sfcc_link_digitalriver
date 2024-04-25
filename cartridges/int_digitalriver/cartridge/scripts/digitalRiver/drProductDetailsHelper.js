@@ -1,4 +1,5 @@
 /* eslint-disable require-jsdoc */
+
 'use strict';
 
 const URLUtils = require('dw/web/URLUtils');
@@ -18,7 +19,7 @@ function getCategoryPath(category, path) {
 
 function getAllCategoryPaths(product) {
     let catList = new ArrayList();
-    for (var c = 0; c < product.categories.length; c++) {
+    for (var c = 0; c < product.categories.length; c += 1) {
         let cat = getCategoryPath(product.categories[c]);
         catList.add(cat);
     }
@@ -44,9 +45,35 @@ function getProductImageUrl(product) {
     return product.getImage('small').getAbsURL().toString();
 }
 
+function sendProductDetails(product) {
+    var productDetails = {
+        countryOfOrigin: product.custom.drCountryOfOrigin,
+        name: product.name,
+        id: product.ID
+    };
+
+    var additionalAttributes = {
+        weight: product.custom.drWeight ? Number(product.custom.drWeight.toFixed(4)) : null,
+        weightUnit: product.custom.drWeight ? (product.custom.drWeightUnit.value || 'oz') : null,
+        skuGroupId: product.custom.drSkuGroupId,
+        description: getProductTaxDesc(product),
+        itemBreadcrumb: getProductItemBreadcrumb(product),
+        image: getProductImageUrl(product),
+        url: getProductUrl(product.ID)
+    };
+
+    Object.keys(additionalAttributes).forEach(function (key) {
+        if (!empty(additionalAttributes[key])) {
+            productDetails[key] = additionalAttributes[key];
+        }
+    });
+    return productDetails;
+}
+
 module.exports = {
     getProductTaxDesc: getProductTaxDesc,
     getProductItemBreadcrumb: getProductItemBreadcrumb,
     getProductUrl: getProductUrl,
-    getProductImageUrl: getProductImageUrl
+    getProductImageUrl: getProductImageUrl,
+    sendProductDetails: sendProductDetails
 };

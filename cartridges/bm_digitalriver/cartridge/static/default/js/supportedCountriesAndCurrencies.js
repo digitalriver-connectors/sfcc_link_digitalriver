@@ -1,298 +1,34 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./cartridges/bm_digitalriver/cartridge/client/default/js/supportedCountriesAndCurrencies.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./cartridges/bm_digitalriver/cartridge/client/default/js/supportedCountriesAndCurrencies.js":
 /*!***************************************************************************************************!*\
   !*** ./cartridges/bm_digitalriver/cartridge/client/default/js/supportedCountriesAndCurrencies.js ***!
   \***************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function() {
 
-"use strict";
-
-
-jQuery.noConflict();
-
-jQuery(document).ready(function ($) {
-    const countryCurrencyPairsNames = JSON.parse(
-        $('#countryCurrencyPairsNames').val()
-    );
-    const countryCurrencyPairsCodes = JSON.parse(
-        $('#countryCurrencyPairsCodes').val()
-    );
-    const error = $('.error');
-
-    /**
-     * Loads the selected country-currency pairs into the DOM
-     * @param {Array} pairNames - array of country-currency pair names
-     * @param {Array} pairCodes - array of country-currency pair codes
-     */
-    function loadSelectedCountryCurrency(
-        pairNames,
-        pairCodes
-    ) {
-        const selectedCountryCurrencyList = $(
-            '#selected-country-currency-list'
-        );
-
-        for (let i = 0; i < pairNames.length; i++) {
-            const div = $('<div>').addClass('form-group');
-            const input = $('<input>')
-                .attr({
-                    type: 'text',
-                    name: 'countryCurrencyPair',
-                    value: pairNames[i],
-                    readonly: true
-                })
-                .addClass('form-control drbm-dp-input');
-            const button = $('<button>')
-                .attr({
-                    type: 'button',
-                    name: 'removeCountryCurrencyPair',
-                    value: pairCodes[i]
-                })
-                .addClass('btn btn-danger drbm-dp-remove-btn')
-                .text('Remove');
-
-            button.on('click', function () {
-                const deletedCountryCurrencyPair = $(this).val();
-                $.ajax({
-                    url: $('#add-country-currency').data('delete-url'),
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        deletedCountryCurrencyPair
-                    },
-                    success: function (response) {
-                        if (response.error) {
-                            error.text(response.error);
-                            error.removeClass('hidden');
-                            return false;
-                        }
-                        div.remove();
-                        error.addClass('hidden');
-                        return true;
-                    },
-                    error: function () {
-                        error.text(
-                            'Error while removing the country-currency pair. Please try again later'
-                        );
-                        error.removeClass('hidden');
-                        return false;
-                    }
-                });
-            });
-
-            div.append(input).append(button);
-            selectedCountryCurrencyList.append(div);
-        }
-    }
-
-    /**
-     * Creates a dynamic pricing selector for the supported countries and currencies
-     * @param {Object} countrySelect - the country select element
-     * @param {Object} currencySelect - the currency select element
-     * @param {Object} addButton - the add button element
-     * @param {Object} supportedCountriesAndCurrencies - the supported countries and currencies
-     * @param {Object} countries - the countries object
-     * @param {Object} currencies - the currencies object
-     * @param {Object} supportedPairs - the supported pairs object
-     */
-    function getDynamicPricingSelector() {
-        var countrySelect = $('#country-select');
-        var currencySelect = $('#currency-select');
-        var addButton = $('#add-country-currency');
-        var supportedCountriesAndCurrencies = addButton.data('supported-countries-currencies');
-        var countries = supportedCountriesAndCurrencies.countries;
-        var currencies = supportedCountriesAndCurrencies.currencies;
-        var supportedPairs = JSON.parse($('#supportedPairs').val());
-
-        // Populate the country select with the supported countries
-        for (let i = 0; i < Object.keys(supportedPairs).length; i++) {
-            let country = Object.keys(supportedPairs)[i];
-
-            let option = $('<option>', {
-                value: country,
-                text: countries[country].name,
-                class: 'countryName'
-            });
-
-            countrySelect.append(option);
-        }
-
-    // Update the currency select when the country select changes
-        countrySelect.on('change', () => {
-        // Clear the currency select
-            currencySelect.empty();
-
-        // Get the selected country
-            var selectedCountry = countrySelect.val();
-
-        // Populate the currency select with the values for the selected country
-            for (var currency of supportedPairs[selectedCountry]) {
-                let option = $('<option>', {
-                    value: currency,
-                    text: currencies[currency].name
-                });
-                currencySelect.append(option);
-            }
-        });
-    }
-    /**
-     * Adds a country-currency pair to the list of selected country-currency pairs
-     * @param {Object} country - the selected country
-     * @param {Object} currency - the selected currency
-     */
-    function addCountryCurrency() {
-        $('#add-country-currency').on('click', function () {
-            const country = $('#country-select');
-            const currency = $('#currency-select');
-            const selectedCountry = country.find('option:selected');
-            const selectedCurrency = currency.find('option:selected');
-            const fieldText = selectedCountry.text() + ' - ' + selectedCurrency.text();
-
-            if (fieldText.includes('Select')) {
-                if (
-                    selectedCountry.text().includes('Select') &&
-                    selectedCurrency.text().includes('Select')
-                ) {
-                    error.text('Please select a country and a currency.');
-                } else if (selectedCountry.text().includes('Select')) {
-                    error.text('Please select a country.');
-                } else if (selectedCurrency.text().includes('Select')) {
-                    error.text('Please select a currency.');
-                }
-                error.removeClass('hidden');
-                return false;
-            }
-
-            // Make AJAX call
-            $.ajax({
-                url: $(this).data('add-url'),
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    country: selectedCountry.val(),
-                    currency: selectedCurrency.val()
-                },
-                success: function (response) {
-                    if (response.error) {
-                        error.text(response.error);
-                        error.removeClass('hidden');
-                        return false;
-                    }
-                    loadSelectedCountryCurrency(
-                        [fieldText],
-                        [`${selectedCountry.val()}-${selectedCurrency.val()}`]
-                    );
-                    error.addClass('hidden');
-                    return true;
-                },
-                error: function () {
-                    error.text('Error while adding country currency pair');
-                    error.removeClass('hidden');
-                    return false;
-                }
-            });
-            return true;
-        });
-    }
-
-    getDynamicPricingSelector();
-    loadSelectedCountryCurrency(
-        countryCurrencyPairsNames,
-        countryCurrencyPairsCodes
-    );
-    addCountryCurrency();
-});
-
+eval("\n\njQuery.noConflict();\n\njQuery(document).ready(function ($) {\n    const countryCurrencyPairsNames = JSON.parse(\n        $('#countryCurrencyPairsNames').val()\n    );\n    const countryCurrencyPairsCodes = JSON.parse(\n        $('#countryCurrencyPairsCodes').val()\n    );\n    const error = $('.error');\n\n    /**\n     * Loads the selected country-currency pairs into the DOM\n     * @param {Array} pairNames - array of country-currency pair names\n     * @param {Array} pairCodes - array of country-currency pair codes\n     */\n    function loadSelectedCountryCurrency(\n        pairNames,\n        pairCodes\n    ) {\n        const selectedCountryCurrencyList = $(\n            '#selected-country-currency-list'\n        );\n\n        for (let i = 0; i < pairNames.length; i += 1) {\n            const div = $('<div>').addClass('form-group');\n            const input = $('<input>')\n                .attr({\n                    type: 'text',\n                    name: 'countryCurrencyPair',\n                    value: pairNames[i],\n                    readonly: true\n                })\n                .addClass('form-control drbm-dp-input');\n            const button = $('<button>')\n                .attr({\n                    type: 'button',\n                    name: 'removeCountryCurrencyPair',\n                    value: pairCodes[i]\n                })\n                .addClass('btn btn-danger drbm-dp-remove-btn')\n                .text('Remove');\n\n            button.on('click', function () {\n                const deletedCountryCurrencyPair = $(this).val();\n                $.ajax({\n                    url: $('#add-country-currency').data('delete-url'),\n                    type: 'post',\n                    dataType: 'json',\n                    data: {\n                        deletedCountryCurrencyPair\n                    },\n                    success: function (response) {\n                        if (response.error) {\n                            error.text(response.error);\n                            error.removeClass('hidden');\n                            return false;\n                        }\n                        div.remove();\n                        error.addClass('hidden');\n                        return true;\n                    },\n                    error: function () {\n                        error.text(\n                            'Error while removing the country-currency pair. Please try again later'\n                        );\n                        error.removeClass('hidden');\n                        return false;\n                    }\n                });\n            });\n\n            div.append(input).append(button);\n            selectedCountryCurrencyList.append(div);\n        }\n    }\n\n    /**\n     * Creates a dynamic pricing selector for the supported countries and currencies\n     * @param {Object} countrySelect - the country select element\n     * @param {Object} currencySelect - the currency select element\n     * @param {Object} addButton - the add button element\n     * @param {Object} supportedCountriesAndCurrencies - the supported countries and currencies\n     * @param {Object} countries - the countries object\n     * @param {Object} currencies - the currencies object\n     * @param {Object} supportedPairs - the supported pairs object\n     */\n    function getDynamicPricingSelector() {\n        var countrySelect = $('#country-select');\n        var currencySelect = $('#currency-select');\n        var addButton = $('#add-country-currency');\n        var supportedCountriesAndCurrencies = addButton.data('supported-countries-currencies');\n        var countries = supportedCountriesAndCurrencies.countries;\n        var currencies = supportedCountriesAndCurrencies.currencies;\n        var supportedPairs = JSON.parse($('#supportedPairs').val());\n\n        // Populate the country select with the supported countries\n        for (let i = 0; i < Object.keys(supportedPairs).length; i += 1) {\n            let country = Object.keys(supportedPairs)[i];\n\n            let option = $('<option>', {\n                value: country,\n                text: countries[country].name,\n                class: 'countryName'\n            });\n\n            countrySelect.append(option);\n        }\n\n        // Update the currency select when the country select changes\n        countrySelect.on('change', () => {\n        // Clear the currency select\n            currencySelect.empty();\n\n            // Get the selected country\n            var selectedCountry = countrySelect.val();\n\n            // Populate the currency select with the values for the selected country\n            var currencyArray = supportedPairs[selectedCountry];\n            for (var j = 0; j < currencyArray.length; j += 1) {\n                var currency = currencyArray[j];\n                var option = $('<option>', {\n                    value: currency,\n                    text: currencies[currency].name\n                });\n                currencySelect.append(option);\n            }\n        });\n    }\n    /**\n     * Adds a country-currency pair to the list of selected country-currency pairs\n     * @param {Object} country - the selected country\n     * @param {Object} currency - the selected currency\n     */\n    function addCountryCurrency() {\n        $('#add-country-currency').on('click', function () {\n            const country = $('#country-select');\n            const currency = $('#currency-select');\n            const selectedCountry = country.find('option:selected');\n            const selectedCurrency = currency.find('option:selected');\n            const fieldText = selectedCountry.text() + ' - ' + selectedCurrency.text();\n\n            if (fieldText.includes('Select')) {\n                if (\n                    selectedCountry.text().includes('Select')\n                    && selectedCurrency.text().includes('Select')\n                ) {\n                    error.text('Please select a country and a currency.');\n                } else if (selectedCountry.text().includes('Select')) {\n                    error.text('Please select a country.');\n                } else if (selectedCurrency.text().includes('Select')) {\n                    error.text('Please select a currency.');\n                }\n                error.removeClass('hidden');\n                return false;\n            }\n\n            // Make AJAX call\n            $.ajax({\n                url: $(this).data('add-url'),\n                type: 'post',\n                dataType: 'json',\n                data: {\n                    country: selectedCountry.val(),\n                    currency: selectedCurrency.val()\n                },\n                success: function (response) {\n                    if (response.error) {\n                        error.text(response.error);\n                        error.removeClass('hidden');\n                        return false;\n                    }\n                    loadSelectedCountryCurrency(\n                        [fieldText],\n                        [`${selectedCountry.val()}-${selectedCurrency.val()}`]\n                    );\n                    error.addClass('hidden');\n                    return true;\n                },\n                error: function () {\n                    error.text('Error while adding country currency pair');\n                    error.removeClass('hidden');\n                    return false;\n                }\n            });\n            return true;\n        });\n    }\n\n    getDynamicPricingSelector();\n    loadSelectedCountryCurrency(\n        countryCurrencyPairsNames,\n        countryCurrencyPairsCodes\n    );\n    addCountryCurrency();\n});\n\n\n//# sourceURL=webpack://int_digitalriver_sfra/./cartridges/bm_digitalriver/cartridge/client/default/js/supportedCountriesAndCurrencies.js?");
 
 /***/ })
 
-/******/ });
-//# sourceMappingURL=supportedCountriesAndCurrencies.js.map
+/******/ 	});
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__["./cartridges/bm_digitalriver/cartridge/client/default/js/supportedCountriesAndCurrencies.js"]();
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGVmYXVsdFxcanNcXHN1cHBvcnRlZENvdW50cmllc0FuZEN1cnJlbmNpZXMuanMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztVQ0FBO1VBQ0E7VUFDQTtVQUNBO1VBQ0EiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFjay9iZWZvcmUtc3RhcnR1cCIsIndlYnBhY2s6Ly8vd2VicGFjay9zdGFydHVwIiwid2VicGFjazovLy93ZWJwYWNrL2FmdGVyLXN0YXJ0dXAiXSwic291cmNlc0NvbnRlbnQiOlsiIiwiLy8gc3RhcnR1cFxuLy8gTG9hZCBlbnRyeSBtb2R1bGUgYW5kIHJldHVybiBleHBvcnRzXG4vLyBUaGlzIGVudHJ5IG1vZHVsZSBjYW4ndCBiZSBpbmxpbmVkIGJlY2F1c2UgdGhlIGV2YWwgZGV2dG9vbCBpcyB1c2VkLlxudmFyIF9fd2VicGFja19leHBvcnRzX18gPSB7fTtcbl9fd2VicGFja19tb2R1bGVzX19bXCIuL2NhcnRyaWRnZXMvYm1fZGlnaXRhbHJpdmVyL2NhcnRyaWRnZS9jbGllbnQvZGVmYXVsdC9qcy9zdXBwb3J0ZWRDb3VudHJpZXNBbmRDdXJyZW5jaWVzLmpzXCJdKCk7XG4iLCIiXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=

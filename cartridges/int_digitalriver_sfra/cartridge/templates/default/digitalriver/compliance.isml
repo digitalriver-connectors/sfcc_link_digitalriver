@@ -7,7 +7,7 @@
 if (typeof DigitalRiver !== 'undefined') {
     var DRLocale = "<isprint value="${request.getLocale().replace('_', '-')}" encoding="htmldoublequote" />";
     var DRapiKey = "<isprint value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drPublicKey')}" encoding="htmlsinglequote" />";
-    
+
     var complianceOptions = {
         classes: {
             base: 'DRElement'

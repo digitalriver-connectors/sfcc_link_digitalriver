@@ -76,7 +76,7 @@ function sendProductData(product) {
             status = new Status(Status.ERROR);
         }
     } else {
-        ++numberOfPublishedErrors;
+        numberOfPublishedErrors += 1;
         if (numberOfPublishedErrors <= maxNumberOfLoggedErrors) {
             logger.info('Error sending product "{0}" data: {1}', product.ID, serviceResponse.errorMessage);
         }
@@ -176,7 +176,7 @@ var runSending = function (onlyModified) {
                 if (isProductModified(product)) {
                     sendProductData(product);
                 }
-            } else {    // run job to send all products
+            } else { // run job to send all products
                 sendProductData(product);
             }
         }

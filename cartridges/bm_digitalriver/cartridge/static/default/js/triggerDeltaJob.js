@@ -1,150 +1,34 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./cartridges/bm_digitalriver/cartridge/client/default/js/triggerDeltaJob.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./cartridges/bm_digitalriver/cartridge/client/default/js/triggerDeltaJob.js":
 /*!***********************************************************************************!*\
   !*** ./cartridges/bm_digitalriver/cartridge/client/default/js/triggerDeltaJob.js ***!
   \***********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function() {
 
-"use strict";
-
-
-jQuery.noConflict();
-
-/**
- * Append parameters to url
- *
- * @param {string} url
- * @param {Object} params url parameters
- * @returns {string}
- */
-function appendToUrl(url, params) {
-    var newUrl = url;
-    newUrl += (newUrl.indexOf('?') !== -1 ? '&' : '?') + Object.keys(params).map(function (key) {
-        return key + '=' + encodeURIComponent(params[key]);
-    }).join('&');
-
-    return newUrl;
-}
-
-/**
- * Trigger scheduledJob
- *
- * @param {Object} $ Jquery object
- */
-function triggerJob($) {
-    $('.drbm-trigger-button').on('click', function (e) {
-        var triggerJobButton = $(this);
-        e.preventDefault();
-        var url = triggerJobButton.data('url');
-        var urlParams = {
-            actionMessage: triggerJobButton.text().trim()
-        };
-        url = appendToUrl(url, urlParams);
-        $.ajax({
-            url: url,
-            type: 'get',
-            dataType: 'json',
-            success: function (res) {
-                triggerJobButton.text(res.actionMessage);
-            }
-        });
-    });
-}
-
-jQuery(document).ready(function ($) {
-    triggerJob($);
-});
-
+eval("\n\njQuery.noConflict();\n\n/**\n* Appends query parameters to a URL\n* @param {string} url - the original URL\n* @param {Object} params - the query parameters to append to the URL\n* @returns {string} the modified URL with the appended query parameters\n*/\nfunction appendToUrl(url, params) {\n    var newUrl = url;\n    newUrl += (newUrl.indexOf('?') !== -1 ? '&' : '?') + Object.keys(params).map(function (key) {\n        return key + '=' + encodeURIComponent(params[key]);\n    }).join('&');\n\n    return newUrl;\n}\n\n/**\n * Trigger scheduledJob\n *\n * @param {Object} $ Jquery object\n */\nfunction triggerJob($) {\n    $('.drbm-trigger-button').on('click', function (e) {\n        var triggerJobButton = $(this);\n        e.preventDefault();\n        var url = triggerJobButton.data('url');\n        var urlParams = {\n            actionMessage: triggerJobButton.text().trim()\n        };\n        url = appendToUrl(url, urlParams);\n        $.ajax({\n            url: url,\n            type: 'get',\n            dataType: 'json',\n            success: function (res) {\n                triggerJobButton.text(res.actionMessage);\n            }\n        });\n    });\n}\n\njQuery(document).ready(function ($) {\n    triggerJob($);\n});\n\n\n//# sourceURL=webpack://int_digitalriver_sfra/./cartridges/bm_digitalriver/cartridge/client/default/js/triggerDeltaJob.js?");
 
 /***/ })
 
-/******/ });
-//# sourceMappingURL=triggerDeltaJob.js.map
+/******/ 	});
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__["./cartridges/bm_digitalriver/cartridge/client/default/js/triggerDeltaJob.js"]();
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGVmYXVsdFxcanNcXHRyaWdnZXJEZWx0YUpvYi5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O1VDQUE7VUFDQTtVQUNBO1VBQ0E7VUFDQSIsInNvdXJjZXMiOlsid2VicGFjazovLy93ZWJwYWNrL2JlZm9yZS1zdGFydHVwIiwid2VicGFjazovLy93ZWJwYWNrL3N0YXJ0dXAiLCJ3ZWJwYWNrOi8vL3dlYnBhY2svYWZ0ZXItc3RhcnR1cCJdLCJzb3VyY2VzQ29udGVudCI6WyIiLCIvLyBzdGFydHVwXG4vLyBMb2FkIGVudHJ5IG1vZHVsZSBhbmQgcmV0dXJuIGV4cG9ydHNcbi8vIFRoaXMgZW50cnkgbW9kdWxlIGNhbid0IGJlIGlubGluZWQgYmVjYXVzZSB0aGUgZXZhbCBkZXZ0b29sIGlzIHVzZWQuXG52YXIgX193ZWJwYWNrX2V4cG9ydHNfXyA9IHt9O1xuX193ZWJwYWNrX21vZHVsZXNfX1tcIi4vY2FydHJpZGdlcy9ibV9kaWdpdGFscml2ZXIvY2FydHJpZGdlL2NsaWVudC9kZWZhdWx0L2pzL3RyaWdnZXJEZWx0YUpvYi5qc1wiXSgpO1xuIiwiIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9

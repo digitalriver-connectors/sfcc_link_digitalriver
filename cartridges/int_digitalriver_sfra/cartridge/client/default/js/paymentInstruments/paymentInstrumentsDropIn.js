@@ -1,4 +1,5 @@
 'use strict';
+
 /* globals DigitalRiver */
 var scrollAnimate = require('base/components/scrollAnimate');
 
@@ -27,7 +28,7 @@ function submitDropInData(source) {
             csrf_token: $('*[name=csrf_token]').val()
         },
         success: function (data) {
-            location.href = data.redirectUrl;
+            window.location.href = data.redirectUrl;
         },
         error: function (err) {
             if (err.responseJSON.redirectUrl) {

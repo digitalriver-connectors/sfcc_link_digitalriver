@@ -6,20 +6,20 @@
 </div>
 
 <form id="dropInAddressForm" autocomplete="on"
-          action="${URLUtils.url('DigitalRiver-SubmitDropInConfigForm')}"
-          method="POST"
-          <isprint value=${pdict.forms.billingForm.attributes} encoding="htmlsinglequote"/>
+    action="${URLUtils.url('DigitalRiver-SubmitDropInConfigForm')}"
+    method="POST"
+    <isprint value=${pdict.forms.billingForm.attributes} encoding="htmlsinglequote"/>
     >
     <fieldset class="billing-address-block">
-        
+
         <fieldset class="billing-address">
             <isset name="billingFields" value="${pdict.forms.billingForm.addressFields}" scope="page"/>
-            
+
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.firstName.mandatory === true ? 'required' : ''}
-                        ${billingFields.firstName.htmlName}">
+                            ${billingFields.firstName.mandatory === true ? 'required' : ''}
+                            ${billingFields.firstName.htmlName}">
                         <label class="form-control-label" for="billingFirstName">${Resource.msg('field.billing.address.first.name','address',null)}</label>
                         <input autofocus type="text" class="form-control billingFirstName" id="billingFirstName"
                             value="${billingFields.firstName.value || ''}"
@@ -30,8 +30,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.lastName.mandatory === true ? 'required' : ''}
-                        ${billingFields.lastName.htmlName}">
+                            ${billingFields.lastName.mandatory === true ? 'required' : ''}
+                            ${billingFields.lastName.htmlName}">
                         <label class="form-control-label" for="billingLastName">${Resource.msg('field.billing.address.last.name','address',null)}</label>
                         <input type="text" class="form-control billingLastName" id="billingLastName"
                             value="${billingFields.lastName.value || ''}"
@@ -45,8 +45,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group
-                        ${billingFields.address1.mandatory === true ? 'required' : ''}
-                        ${billingFields.address1.htmlName}">
+                            ${billingFields.address1.mandatory === true ? 'required' : ''}
+                            ${billingFields.address1.htmlName}">
                         <label class="form-control-label" for="billingAddressOne">${Resource.msg('field.billing.address.one','address',null)}</label>
                         <input type="text" class="form-control billingAddressOne" id="billingAddressOne"
                             value="${billingFields.address1.value || ''}"
@@ -60,8 +60,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group
-                        ${billingFields.address2.mandatory === true ? 'required' : ''}
-                        ${billingFields.address2.htmlName}">
+                            ${billingFields.address2.mandatory === true ? 'required' : ''}
+                            ${billingFields.address2.htmlName}">
                         <label class="form-control-label" for="billingAddressTwo">${Resource.msg('field.billing.address.two','address',null)}</label>
                         <input type="text" class="form-control billingAddressTwo" id="billingAddressTwo"
                             value="${billingFields.address2.value || ''}"
@@ -76,22 +76,22 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.country.mandatory === true ? 'required' : ''}
-                        ${billingFields.country.htmlName}">
+                            ${billingFields.country.mandatory === true ? 'required' : ''}
+                            ${billingFields.country.htmlName}">
                         <label class="form-control-label" for="billingCountry">${Resource.msg('field.billing.address.country','address',null)}</label>
                         <select class="form-control billingCountry custom-select" id="billingCountry"
                             <isprint value=${billingFields.country.attributes} encoding="htmlsinglequote"/>
                             autocomplete="billing country">
-                                <option label=" "></option>
-                                <isloop items=${billingFields.country.options} var="country">
-                                    <option id="${country.id}" value="${country.htmlValue}"
-                                        ${country.id === billingFields.country.value
+                            <option label=" "></option>
+                            <isloop items=${billingFields.country.options} var="country">
+                                <option id="${country.id}" value="${country.htmlValue}"
+                                    ${country.id === billingFields.country.value
                                             ? "selected"
                                             : "" }
                                     >
-                                        ${country.label}
-                                    </option>
-                                </isloop>
+                                    ${country.label}
+                                </option>
+                            </isloop>
                         </select>
                         <div class="invalid-feedback"></div>
 
@@ -99,21 +99,21 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.states.stateCode.mandatory === true ? 'required' : ''}
-                        ${billingFields.states.stateCode.htmlName}">
+                            ${billingFields.states.stateCode.mandatory === true ? 'required' : ''}
+                            ${billingFields.states.stateCode.htmlName}">
                         <label class="form-control-label" for="billingState">${Resource.msg('field.billing.address.state','address',null)}</label>
                         <select class="form-control billingState custom-select" id="billingState"
                             <isprint value=${billingFields.states.stateCode.attributes} encoding="htmlsinglequote"/>
                             autocomplete="billing address-level1">
-                                <isloop items=${billingFields.states.stateCode.options} var="state">
-                                    <option id="${state.id}"  value="${state.htmlValue}"
-                                        ${state.id === billingFields.states.stateCode.value
+                            <isloop items=${billingFields.states.stateCode.options} var="state">
+                                <option id="${state.id}"  value="${state.htmlValue}"
+                                    ${state.id === billingFields.states.stateCode.value
                                             ? "selected"
                                             : "" }
                                     >
-                                        ${state.label}
-                                    </option>
-                                </isloop>
+                                    ${state.label}
+                                </option>
+                            </isloop>
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
@@ -123,8 +123,8 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.city.mandatory === true ? 'required' : ''}
-                        ${billingFields.city.htmlName}">
+                            ${billingFields.city.mandatory === true ? 'required' : ''}
+                            ${billingFields.city.htmlName}">
                         <label class="form-control-label" for="billingAddressCity">${Resource.msg('field.billing.address.city','address',null)}</label>
                         <input type="text" class="form-control billingAddressCity" id="billingAddressCity"
                             value="${billingFields.city.value || ''}"
@@ -135,8 +135,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group
-                        ${billingFields.postalCode.mandatory === true ? 'required' : ''}
-                        ${billingFields.postalCode.htmlName}">
+                            ${billingFields.postalCode.mandatory === true ? 'required' : ''}
+                            ${billingFields.postalCode.htmlName}">
                         <label class="form-control-label" for="billingZipCode">${Resource.msg('field.billing.address.zip.code','address',null)}</label>
                         <input type="text" class="form-control billingZipCode" id="billingZipCode"
                             value="${billingFields.postalCode.value || ''}"
@@ -154,12 +154,12 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group
-                    <isif condition=${pdict.forms.customerForm.email.mandatory === true}>required</isif>
-                    ${pdict.forms.customerForm.email.htmlName}">
+                        <isif condition=${pdict.forms.customerForm.email.mandatory === true}>required</isif>
+                        ${pdict.forms.customerForm.email.htmlName}">
                     <label class="form-control-label" for="email">${Resource.msg('field.customer.email','checkout',null)}</label>
 
                     <button type="button" class="info-icon">
-                        <span class="icon" aria-hidden="true">i</span>
+                        <span class="icon" aria-hidden="true">${Resource.msg('label.i', 'digitalriver', null)}</span>
                         <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
                         <span class="tooltip d-none">
                             ${Resource.msg('tooltip.email','creditCard',null)}
@@ -167,7 +167,7 @@
                     </button>
 
                     <input type="text" class="form-control email" id="email"
-                        value="${pdict.CurrentCustomer.profile.email}" 
+                        value="${pdict.CurrentCustomer.profile.email}"
                         <isprint value=${pdict.forms.customerForm.email.attributes} encoding="htmlsinglequote"/>
                         aria-describedby="emailInvalidMessage" >
                     <div class="invalid-feedback" id="emailInvalidMessage"></div>
@@ -175,12 +175,12 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group
-                    <isif condition=${pdict.forms.billingForm.contactInfoFields.phone.mandatory === true}>required</isif>
-                    ${pdict.forms.billingForm.contactInfoFields.phone.htmlName}">
+                        <isif condition=${pdict.forms.billingForm.contactInfoFields.phone.mandatory === true}>required</isif>
+                        ${pdict.forms.billingForm.contactInfoFields.phone.htmlName}">
                     <label class="form-control-label" for="phoneNumber">${Resource.msg('field.customer.phone.number','checkout',null)}</label>
 
                     <button type="button" class="info-icon">
-                        <span class="icon" aria-hidden="true">i</span>
+                        <span class="icon" aria-hidden="true">${Resource.msg('label.i', 'digitalriver', null)}</span>
                         <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
                         <span class="tooltip d-none">
                             ${Resource.msg('tooltip.phone.number','creditCard',null)}
@@ -197,7 +197,7 @@
             </div>
         </div>
     </fieldset>
-    
+
     <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
 
 </form>

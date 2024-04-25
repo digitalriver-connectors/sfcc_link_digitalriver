@@ -15,11 +15,11 @@
             <tbody>
                 <isloop items="${pdict.digitalRiverTaxCertificate}" var="certificate" status="status">
                     <tr>
-                        <td>${certificate.companyName||''}</td>
-                        <td>${certificate.taxAuthority||''}</td>
-                        <td>${certificate.startDate||''}</td>
-                        <td>${certificate.endDate||''}</td>
-                    </tr>                           
+                        <td>${certificate.companyName || ''}</td>
+                        <td>${certificate.taxAuthority || ''}</td>
+                        <td>${certificate.startDate || ''}</td>
+                        <td>${certificate.endDate || ''}</td>
+                    </tr>
                 </isloop>
             </tbody>
         </table>

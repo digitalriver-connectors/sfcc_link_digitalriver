@@ -3,12 +3,11 @@
 jQuery.noConflict();
 
 /**
- * Append parameters to url
- *
- * @param {string} url
- * @param {Object} params url parameters
- * @returns {string}
- */
+* Appends query parameters to a URL
+* @param {string} url - the original URL
+* @param {Object} params - the query parameters to append to the URL
+* @returns {string} the modified URL with the appended query parameters
+*/
 function appendToUrl(url, params) {
     var newUrl = url;
     newUrl += (newUrl.indexOf('?') !== -1 ? '&' : '?') + Object.keys(params).map(function (key) {

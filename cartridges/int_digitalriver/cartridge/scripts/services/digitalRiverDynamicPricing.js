@@ -25,7 +25,7 @@ function convertDynamicPricing(body) {
     }
 
     logger.debug('Dynamic prices for country {0} and currency {1} successfully converted (Batch {2})', body.countryCode, body.currencyCode, batchNo);
-    batchNo++;
+    batchNo += 1;
     return result;
 }
 

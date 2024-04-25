@@ -34,7 +34,6 @@ var createCustomer = function (email, uuid) { // eslint-disable-line no-unused-v
     return result;
 };
 
-
 /**
   * Sends "update customer" request to Digital River
   * @param {string} customerId id of customer to be updated
@@ -182,17 +181,16 @@ function createFile(payload) {
     if (callResult.ok) {
         result = callResult.object || null;
         logger.info('Send image of Tax Certificate {0}', payload.fileName);
-    } else {
-        if (callResult.error >= 500 && callResult.error < 600) {
-            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
-            callResult = digitalRiver.drServiceRetryLogic(drUploadFileSvc, payload, true);
-            if (callResult.ok) {
-                result = callResult.object || null;
-            }
-        } else {
-            logger.error('Error sending image of Tax Certificate: {0}', JSON.stringify(callResult.errorMessage));
+    } else if (callResult.error >= 500 && callResult.error < 600) {
+        logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
+        callResult = digitalRiver.drServiceRetryLogic(drUploadFileSvc, payload, true);
+        if (callResult.ok) {
+            result = callResult.object || null;
         }
+    } else {
+        logger.error('Error sending image of Tax Certificate: {0}', JSON.stringify(callResult.errorMessage));
     }
+
     return result;
 }
 

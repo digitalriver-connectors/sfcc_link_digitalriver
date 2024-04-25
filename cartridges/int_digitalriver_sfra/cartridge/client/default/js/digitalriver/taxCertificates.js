@@ -42,7 +42,7 @@ module.exports = {
                             formValidation($form, data);
                         }
                     } else {
-                        location.href = data.redirectUrl;
+                        window.location.href = data.redirectUrl;
                     }
                 },
                 error: function (err) {

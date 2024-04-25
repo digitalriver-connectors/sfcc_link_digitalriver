@@ -1,13 +1,4 @@
-cartridges/app_storefront_base/
-cartridges/bm_app_storefront_base/
-cartridges/modules/
-workspace/
-coverage/
-doc/
-bin/
-cartridges/int_digitalriver_sfra/cartridge/static/
-cartridges/bm_digitalriver/cartridge/static/
-codecept.conf.js
 cartridges/*/cartridge/static/
 test/
 webpack.config.js
+node_modules

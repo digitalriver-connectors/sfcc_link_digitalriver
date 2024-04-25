@@ -1,29 +1,32 @@
-<isset name="isDRDropInEnabled" value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseDropInFeature')}" scope="page" />
+<isset name="isDRDropInEnabled"
+    value="${require('dw/system/Site').getCurrent().getCustomPreferenceValue('drUseDropInFeature')}" scope="page" />
 <div class="invalid-feedback" id="savedPaymentNotSelectedMessage">${Resource.msg('error.select.stored.card', 'digitalriver', null)}</div>
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
     <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
         <div class="form-group required saved-security-code col-6 col-md-3">
-            <img class="card-image"
-                 src="${paymentInstrument.cardTypeImage.src}"
-                 alt="${paymentInstrument.cardTypeImage.alt}"
-            >
+            <img class="card-image" src="${paymentInstrument.cardTypeImage.src}"
+                alt="${paymentInstrument.cardTypeImage.alt}">
 
-            <isif condition="${!isDRDropInEnabled}"> <iscomment> Digital River - if enabled no cvv needed thus pictures are always shown instead of input </iscomment>
+            <isif condition="${!isDRDropInEnabled}">
+                <iscomment> Digital River - if enabled no cvv needed thus pictures are always shown instead of input
+                </iscomment>
                 <div class="security-code-input ${loopState.first ? '' : 'checkout-hidden'}">
-                    <label class="form-control-label" for="saved-payment-security-code">${Resource.msg('label.credit.card-security.code','checkout',null)}</label>
+                    <label class="form-control-label"
+                        for="saved-payment-security-code">${Resource.msg('label.credit.card-security.code', 'checkout', null)}</label>
 
                     <button type="button" class="info-icon">
-                        <span class="icon" aria-hidden="true">i</span>
-                        <span class="sr-only">${Resource.msg('button.help.assistive.text','common',null)}</span>
+                        <span class="icon" aria-hidden="true">${Resource.msg('label.i', 'digitalriver', null)}</span>
+                        <span class="sr-only">${Resource.msg('button.help.assistive.text', 'common', null)}</span>
                         <span class="tooltip d-none">
-                            ${Resource.msg('tooltip.security.code','creditCard',null)}
+                            ${Resource.msg('tooltip.security.code', 'creditCard', null)}
                         </span>
                     </button>
 
-                    <input type="text" class="form-control saved-payment-security-code" id="saved-payment-security-code" maxlength="4"
-                        aria-describedby="savedPaymentSecurityCodeInvalidMessage">
-                    <div class="invalid-feedback" id="savedPaymentSecurityCodeInvalidMessage">${Resource.msg('error.message.security.code.required', 'checkout', null)}</div>
-                </div>                                
+                    <input type="text" class="form-control saved-payment-security-code" id="saved-payment-security-code"
+                        maxlength="4" aria-describedby="savedPaymentSecurityCodeInvalidMessage">
+                    <div class="invalid-feedback" id="savedPaymentSecurityCodeInvalidMessage">
+                        ${Resource.msg('error.message.security.code.required', 'checkout', null)}</div>
+                </div>
             </isif>
 
         </div>

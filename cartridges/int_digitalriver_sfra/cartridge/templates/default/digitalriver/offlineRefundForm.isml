@@ -1,24 +1,29 @@
 <script src="https://js.digitalriverws.com/v1/DigitalRiver.js"></script>
-<link rel="stylesheet" href="https://js.digitalriverws.com/v1/css/DigitalRiver.css" type="text/css"/>
+<link rel="stylesheet" href="https://js.digitalriverws.com/v1/css/DigitalRiver.css" type="text/css" />
+
 <isdecorate template="common/layout/page">
-<isscript>
-var assets = require('*/cartridge/scripts/assets.js');
-assets.addJs('/js/drOfflineRefund.js');
-</isscript>
-<isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
-<div class="card p-3">
-   <div id="welcomeMsg">
-    <h5 class="card-header">${Resource.msg('label.enter.form.details', 'digitalriver', null)}</h5>
-   </div>
- <div id="offlineContainer" class="offline-container"
-                data-locale="${request.getLocale().replace('_', '-')}"
-                data-apikey="${currentSite.getCustomPreferenceValue('drPublicKey')}"
-                data-token="${pdict.token}">
-  <div class="card-body">
-    <p class="card-text" id="offline-refund-form"></p>
-  </div>
-</div>
-<div style="display:none" id="successMsg" class="p-3">
-<p>${Resource.msg('label.refund.form.submitted', 'digitalriver', null)} <a href="${URLUtils.url('Order-Details', 'orderID', pdict.orderID,'orderFilter', pdict.orderFilter)}" class="text-primary">${Resource.msg('label.click', 'digitalriver', null)}</a></p>
-</div>
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('/js/drOfflineRefund.js');
+    </isscript>
+    <isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
+    <div class="card p-3">
+        <div id="welcomeMsg">
+            <h5 class="card-header">${Resource.msg('label.enter.form.details', 'digitalriver', null)}</h5>
+        </div>
+    <div id="offlineContainer" class="offline-container" data-locale="${request.getLocale().replace('_', '-')}"
+            data-apikey="${currentSite.getCustomPreferenceValue('drPublicKey')}" data-token="${pdict.token}">
+        <div class="card-body">
+            <p class="card-text" id="offline-refund-form"></p>
+        </div>
+    </div>
+    <div style="display:none" id="successMsg" class="p-3">
+        <p>${Resource.msg('label.refund.form.submitted', 'digitalriver', null)}
+            <a href="${URLUtils.url('Order-Details', 'orderID', pdict.orderID, 'orderFilter', pdict.orderFilter)}"
+                    class="text-primary">
+                ${Resource.msg('label.click', 'digitalriver', null)}
+            </a>
+        </p>
+    </div>
+    </div>
 </isdecorate>

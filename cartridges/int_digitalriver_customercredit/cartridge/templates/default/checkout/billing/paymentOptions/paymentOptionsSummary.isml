@@ -8,7 +8,9 @@
                     <span class="order-receipt-label">${Resource.msg('label.order.sales.customerCredit','digitalriver', null) + ' ' + index++}</span>
                 </div>
                 <div class="col-6 end-lines">
-                    <div class="text-right"><span>${payment.formattedAmount}</span></div>
+                    <div class="text-right">
+                        <span>${payment.formattedAmount}</span>
+                    </div>
                 </div>
             </isif>
         </isloop>

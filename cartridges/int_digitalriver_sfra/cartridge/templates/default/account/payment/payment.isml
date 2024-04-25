@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col">
                             <a href="${URLUtils.url('Account-Show')}" class="text-center back-to-account-link" aria-label="${Resource.msg('label.addressbook.myaccount','account',null)}">
-                            ${Resource.msg('link.profile.backtomyaccount','account',null)}
+                                ${Resource.msg('link.profile.backtomyaccount','account',null)}
                             </a>
                         </div>
                         <isif condition="${pdict.addPaymentUrl}">

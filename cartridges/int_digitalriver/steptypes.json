@@ -257,6 +257,26 @@
                         }
                     ]
                 }
+            },
+            {
+              "@type-id": "custom.DigitalRiverUpdateDRTaxDetailsForOrders",
+              "@supports-site-context": "true",
+              "@supports-organization-context": "false",
+              "description": "Updates order product line items with product and shipping tax details from Digital River",
+              "module": "int_digitalriver/cartridge/scripts/jobsteps/drUpdateOrders.js",
+              "function": "updateDRTaxDetailsForOrders",
+              "status-codes": {
+                  "status": [
+                      {
+                          "@code": "ERROR",
+                          "description": "Used when an error occurred."
+                      },
+                      {
+                          "@code": "OK",
+                          "description": "Used when everything went well."
+                      }
+                  ]
+              }
             }
         ]
     }

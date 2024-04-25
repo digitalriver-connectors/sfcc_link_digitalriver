@@ -115,8 +115,9 @@ function handleOrderUpdates(ordersArray) {
  */
 function getNextCountFromIterator(ordersSeekIterator, size) {
     var result = [];
-    var counter = 0;
-    while (ordersSeekIterator.hasNext() && counter++ < size) {
+    var counter = 1;
+    while (ordersSeekIterator.hasNext() && counter < size) {
+        counter += 1;
         result.push(ordersSeekIterator.next());
     }
     return result;
@@ -128,12 +129,13 @@ function getNextCountFromIterator(ordersSeekIterator, size) {
  */
 function updatePendingOrders() {
     var overallStatus = new Status(Status.OK);
-    var ordersIterator = OrderMgr.searchOrders('(custom.drOrderID != NULL AND (custom.drOrderStatus = {0} OR custom.drOrderStatus = {1} OR custom.drOrderStatus = {2}))',
+    var ordersIterator = OrderMgr.searchOrders(
+        '(custom.drOrderID != NULL AND (custom.drOrderStatus = {0} OR custom.drOrderStatus = {1} OR custom.drOrderStatus = {2}))',
         null,
         drStates.ORDER_STATE_ON_FRAUD_REVIEW,
         drStates.ORDER_STATE_ON_PAYMENT_REVIEW,
         drStates.ORDER_STATE_FULFILLED
-        );
+    );
 
     while (ordersIterator.hasNext()) {
         var ordersToUpdate = getNextCountFromIterator(ordersIterator, MAX_ORDERS_PER_REQUEST);
@@ -156,7 +158,8 @@ function completeFulfilledOrders() {
     var Order = require('dw/order/Order');
 
     var overallStatus = new Status(Status.OK);
-    var ordersIterator = OrderMgr.searchOrders('(custom.drOrderID != NULL AND (shippingStatus = {0} AND custom.drOrderStatus = {1}) OR (status = {2} AND custom.drOrderStatus = {1}))',
+    var ordersIterator = OrderMgr.searchOrders(
+        '(custom.drOrderID != NULL AND (shippingStatus = {0} AND custom.drOrderStatus = {1}) OR (status = {2} AND custom.drOrderStatus = {1}))',
         null,
         Order.SHIPPING_STATUS_SHIPPED,
         drStates.ORDER_STATE_ACCEPTED,
@@ -208,7 +211,8 @@ function fulfillOrders() {
         ordersToUpdate.push(order);
     };
 
-    var orderIterator = OrderMgr.searchOrders('(custom.drOrderID != NULL AND (shippingStatus = {0} AND custom.drOrderStatus = {1}) OR (status = {2} AND custom.drOrderStatus = {1}))',
+    var orderIterator = OrderMgr.searchOrders(
+        '(custom.drOrderID != NULL AND (shippingStatus = {0} AND custom.drOrderStatus = {1}) OR (status = {2} AND custom.drOrderStatus = {1}))',
         null,
         Order.SHIPPING_STATUS_SHIPPED,
         drStates.ORDER_STATE_ACCEPTED,
@@ -232,8 +236,117 @@ function fulfillOrders() {
     return overallStatus;
 }
 
+/**
+ * Get tax details in item.metadata by type and returns string.
+ * @param {string} taxType tax detail type, productTaxDetail or shippingTaxDetail
+ * @param {array} metadata metadata array from DR order
+ * @returns {string} tax details results
+ */
+function getTaxDetail(taxType, metadata) {
+    var keys = Object.keys(metadata).sort().filter(k => k.startsWith(taxType));
+    if (keys.length === 0) { return null; }
+    var taxData = {};
+    taxData[taxType] = [];
+    keys.forEach(k => {
+        taxData[taxType].push(metadata[k]);
+    });
+    return JSON.stringify(taxData);
+}
+
+/**
+ * Updates the tax details of the lineitems in the order.
+ * @param {array} ordersArray collection of dw.order.Order
+ * @returns {dw.system.Status} job result status
+ */
+function handleDRTaxDetailsUpdates(ordersArray) {
+    var drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+    var Transaction = require('dw/system/Transaction');
+
+    var udpateStatus = new Status(Status.OK);
+    ordersArray.sort(compareOrders);
+    var params = {};
+    params.limit = MAX_ORDERS_PER_REQUEST;
+    params.ids = ordersArray
+        .map(function (order) { return order.custom.drOrderID; })
+        .join(',');
+    try {
+        var callResult = drOrderAPI.getOrders(params);
+        if (!callResult.ok) {
+            return new Status(Status.ERROR);
+        }
+        if (callResult.object.data.length < ordersArray.length) { // backup for scenario that should never happen
+            var requestedOrders = ordersArray.map(function (order) { return order.custom.drOrderID; });
+            var retrievedOrders = callResult.object.data.map(function (order) { return order.id; });
+            var missingOrders = requestedOrders
+                .filter(function (orderId) {
+                    return retrievedOrders.every(function (drOrderID) { return orderId !== drOrderID; });
+                })
+                .join(', ');
+            logger.error('Not all requested orders were retrieved. Missing orders:' + missingOrders);
+            udpateStatus = new Status(Status.ERROR);
+        }
+        Transaction.wrap(function () {
+            callResult.object.data.forEach(function (drOrder) {
+                var index = findOrder(ordersArray, drOrder.id);
+                if (index < 0) {
+                    logger.error('Order with drOrderID ' + drOrder.id + ' wasn\'t found in current orders collection');
+                    udpateStatus = new Status(Status.ERROR);
+                } else {
+                    var order = ordersArray[index];
+                    if (Object.hasOwnProperty.call(drOrder, 'metadata') && Object.hasOwnProperty.call(drOrder.metadata, 'td_process')) {
+                        if (drOrder.totalTax > 0) {
+                            var lineItems = order.getAllProductLineItems().toArray();
+                            drOrder.items.forEach(function (drItem) {
+                                if (Object.hasOwnProperty.call(drItem, 'metadata')) {
+                                    var item = lineItems.find(li => li.custom.digitalRiverID === drItem.id);
+                                    item.custom.drTaxDetail = getTaxDetail('productTaxDetail', drItem.metadata);
+                                    item.custom.drShippingTaxDetail = getTaxDetail('shippingTaxDetail', drItem.metadata);
+                                }
+                            });
+                        }
+                        order.custom.isDRTaxDetailPopulated = true;
+                    } else {
+                        order.custom.isDRTaxDetailPopulated = false;
+                    }
+                }
+            });
+        });
+    } catch (e) {
+        logger.error(e.message);
+        return new Status(Status.ERROR);
+    }
+    return udpateStatus;
+}
+
+/**
+ * Queries all orders that need tax details populated, requests those orders from DR by ids and updates the tax details of those orders if tax details are present in the DR order metadata.
+ * @returns {dw.system.Status} job result status
+ */
+function updateDRTaxDetailsForOrders() {
+    var overallStatus = new Status(Status.OK);
+    var ordersIterator = OrderMgr.searchOrders(
+        '(custom.drOrderID != NULL AND (custom.drOrderStatus = {0} OR custom.drOrderStatus = {1} OR custom.drOrderStatus = {2}) AND (custom.isDRTaxDetailPopulated = NULL OR custom.isDRTaxDetailPopulated = false))',
+        null,
+        drStates.ORDER_STATE_ACCEPTED,
+        drStates.ORDER_STATE_FULFILLED,
+        drStates.ORDER_STATE_COMPLETED
+    );
+
+    while (ordersIterator.hasNext()) {
+        var ordersToUpdate = getNextCountFromIterator(ordersIterator, MAX_ORDERS_PER_REQUEST);
+        var handleStatus = handleDRTaxDetailsUpdates(ordersToUpdate);
+        if (handleStatus.isError()) {
+            overallStatus = handleStatus;
+        }
+    }
+
+    ordersIterator.close();
+    return overallStatus;
+}
+
 module.exports = {
     updatePendingOrders: updatePendingOrders,
     completeFulfilledOrders: completeFulfilledOrders,
-    fulfillOrders: fulfillOrders
+    fulfillOrders: fulfillOrders,
+    updateDRTaxDetailsForOrders: updateDRTaxDetailsForOrders
 };

@@ -99,6 +99,20 @@
         <triggers/>
     </job>
 
+    <job job-id="DigitalRiver_updateDRTaxDetailsForOrders" priority="0">
+      <description>Updates order product line items with product and shipping tax details from Digital River</description>
+      <parameters/>
+      <flow>
+          <context site-id="RefArch"/>
+          <step step-id="updateDRTaxDetailsForOrders" type="custom.DigitalRiverUpdateDRTaxDetailsForOrders" enforce-restart="false">
+              <description/>
+              <parameters/>
+          </step>
+      </flow>
+      <rules/>
+      <triggers/>
+    </job>
+
      <job job-id="DigitalRiver_DynamicPricing" priority="0">
         <description>Creates price books by converting the prices dynamically from base price book</description>
         <parameters>

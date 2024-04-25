@@ -156,10 +156,10 @@ function clearError() {
  */
 function checkAllowedFilesType(fileList) {
     var allowedFileExt = ['csv', 'jpg', 'jpeg', 'pdf', 'png'];
-    for (var i = 0; i < fileList.length; i++) {
+    for (var i = 0; i < fileList.length; i += 1) {
         var fileName = fileList[i].name;
         var idx = fileName ? fileName.lastIndexOf('.') : -1;
-        var fileExt = idx < 0 ? '' : (fileName.slice(++idx)).toLowerCase();
+        var fileExt = idx < 0 ? '' : (fileName.slice(idx += 1)).toLowerCase();
         if (allowedFileExt.indexOf(fileExt) === -1) return false;
     }
     return true;
@@ -189,38 +189,37 @@ function handleDROrderPlacement(defer, placeOrderCallBack) {
                     // go to appropriate stage and display error message
                     defer.reject(data);
                 }
-            } else {
+            } else if (data.placeFinalOrder) {
                 // DR order successfully placed. Go back to main place order logic by calling nextStage again
-                if (data.placeFinalOrder) {
-                    $('.DR-place-order').data('dr-order-placed', true);
-                    // members.nextStage();
-                    placeOrderCallBack(defer);
-                } else {
+
+                $('.DR-place-order').data('dr-order-placed', true);
+                // members.nextStage();
+                placeOrderCallBack(defer);
+            } else {
                 // handle the response
-                    var redirect = $('<form>')
-                        .appendTo(document.body)
-                        .attr({
-                            method: 'POST',
-                            action: data.continueUrl
-                        });
+                var redirect = $('<form>')
+                    .appendTo(document.body)
+                    .attr({
+                        method: 'POST',
+                        action: data.continueUrl
+                    });
 
-                    $('<input>')
-                        .appendTo(redirect)
-                        .attr({
-                            name: 'orderID',
-                            value: data.orderID
-                        });
+                $('<input>')
+                    .appendTo(redirect)
+                    .attr({
+                        name: 'orderID',
+                        value: data.orderID
+                    });
 
-                    $('<input>')
-                        .appendTo(redirect)
-                        .attr({
-                            name: 'orderToken',
-                            value: data.orderToken
-                        });
-                    redirect.submit();
-                    defer.resolve();
-                    // placeOrderCallBack(defer);
-                }
+                $('<input>')
+                    .appendTo(redirect)
+                    .attr({
+                        name: 'orderToken',
+                        value: data.orderToken
+                    });
+                redirect.submit();
+                defer.resolve();
+                // placeOrderCallBack(defer);
             }
         },
         error: function () {

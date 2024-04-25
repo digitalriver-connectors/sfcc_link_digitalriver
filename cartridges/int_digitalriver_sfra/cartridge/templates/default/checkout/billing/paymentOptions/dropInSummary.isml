@@ -1,7 +1,8 @@
 <isif condition="${payment.paymentType === 'creditCard'}">
     <div class="credit-card-type">
         <span>${Resource.msg('msg.payment.type.credit', 'confirmation', null)}
-        ${payment.type}</span>
+            ${payment.type}'
+        </span>
     </div>
     <div class="credit-card-number">
         ${payment.maskedCreditCardNumber}

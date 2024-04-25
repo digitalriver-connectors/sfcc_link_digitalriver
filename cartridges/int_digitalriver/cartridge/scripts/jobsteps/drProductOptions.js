@@ -27,7 +27,7 @@ var uniqueCurrencies;
 exports.beforeStep = function (parameters) {
     var allSites = Site.getAllSites();
     var allCurrencies = [];
-    for (var i = 0; i < allSites.length; i++) {
+    for (var i = 0; i < allSites.length; i += 1) {
         var currentSite = allSites[i];
         if (currentSite.getCustomPreferenceValue('drUseDropInFeature') && currentSite.getCustomPreferenceValue('drEnableDynamicPricing')) {
             var currentPairs = currentSite.getCustomPreferenceValue('drCountryCurrencyPairs') ? JSON.parse(currentSite.getCustomPreferenceValue('drCountryCurrencyPairs')) : null;
@@ -39,9 +39,12 @@ exports.beforeStep = function (parameters) {
             }
 
             if (currentPairs && Object.keys(currentPairs).length > 0) {
-                for (var countryCode in currentPairs) { //eslint-disable-line
+                var countryCodes = Object.keys(currentPairs);
+                for (var j = 0; j < countryCodes.length; j += 1) {
+                    var countryCode = countryCodes[i];
                     var currencyCodes = currentPairs[countryCode];
-                    for (var currencyCode of currencyCodes) {
+                    for (var k = 0; k < currencyCodes.length; k += 1) {
+                        var currencyCode = currencyCodes[k];
                         allCurrencies.push(currencyCode);
                         if (!currencies[currencyCode]) {
                             var result = DynamicPricingService.convertDynamicPricing({
@@ -59,9 +62,12 @@ exports.beforeStep = function (parameters) {
                 // If there are, then assign the first country code that has that currency
                 // This is to handle if there are not any countries that are supported by DR that are supported by the site
                 var uniqueCurrencyList = Array.from(new Set(allCurrencies)); //eslint-disable-line
-                for (var currencyCode2 of uniqueCurrencyList) {
+                for (var l = 0; l < uniqueCurrencyList.length; l += 1) {
+                    var currencyCode2 = uniqueCurrencyList[l];
                     if (!currencies[currencyCode2]) {
-                        for (var countryCode2 in currentPairs) { //eslint-disable-line
+                        var countryCodes2 = Object.keys(currentPairs);
+                        for (var m = 0; m < countryCodes2.length; m += 1) {
+                            var countryCode2 = countryCodes2[m];
                             if (currentPairs[countryCode2].includes(currencyCode2)) {
                                 currencies[currencyCode2] = countryCode2;
                                 break;
@@ -169,7 +175,7 @@ exports.read = function () {
  */
 function getConvertedProductOptions(option, object, newValuesArgs, currencyCode, priceAttributeName) {
     var newValues = newValuesArgs;
-    for (let j = 0; j < object.length; j++) {
+    for (let j = 0; j < object.length; j += 1) {
         var convertedProduct = object[j];
         if (currencyCode && convertedProduct[priceAttributeName]) {
             if (!Object.hasOwnProperty.call(newValues, convertedProduct.id)) {
@@ -193,7 +199,7 @@ exports.process = function (option) {
     var newValues = {};
     if (option && !option.error && uniqueCurrencies.length > 0) {
         try {
-            for (var i = 0; i < uniqueCurrencies.length; i++) {
+            for (var i = 0; i < uniqueCurrencies.length; i += 1) {
                 var currencyCode = uniqueCurrencies[i];
                 if (currencyCode !== baseCurrency) {
                     // convert the price for each currency (except the base currency)
@@ -229,23 +235,37 @@ exports.process = function (option) {
 exports.write = function (optionArray) {
     if (optionArray.length > 0) {
         if (Object.keys(optionArray[0]).length > 0) {
-            for (let i = 0; i < optionArray.length; i++) {
+            for (let i = 0; i < optionArray.length; i += 1) {
                 if (!optionArray[i].error) {
                     var element = '';
                     try {
-                        for (var [optionID, optionValue] of Object.entries(optionArray[i])) {
+                        var optionKeys = Object.keys(optionArray[i]);
+                        for (var k = 0; k < optionKeys.length; k += 1) {
+                            var optionID = optionKeys[k];
+                            var optionValue = optionArray[i][optionID];
                             element += '<product-option option-id="' + optionID + '"><option-values>';
-                            for (var [valueID, value] of Object.entries(optionValue)) {
+
+                            var valueKeys = Object.keys(optionValue);
+                            for (var l = 0; l < valueKeys.length; l += 1) {
+                                var valueID = valueKeys[l];
+                                var value = optionValue[valueID];
                                 element += '<option-value value-id="' + valueID + '" default="' + value.default + '">';
-                                for (let j = 0; j < value.displayValues.length; j++) {
+
+                                for (var j = 0; j < value.displayValues.length; j += 1) {
                                     element += '<display-value xml:lang="' + value.displayValues[j].lang + '">' + value.displayValues[j].value + '</display-value>';
                                 }
+
                                 element += '<option-value-prices>';
-                                for (var [currency, price] of Object.entries(value.prices)) {
+                                var priceEntries = Object.entries(value.prices);
+                                for (var m = 0; m < priceEntries.length; m += 1) {
+                                    var currency = priceEntries[m][0];
+                                    var price = priceEntries[m][1];
                                     element += '<option-value-price currency="' + currency + '">' + price + '</option-value-price>';
                                 }
+
                                 element += '</option-value-prices></option-value>';
                             }
+
                             element += '</option-values></product-option>';
                         }
                     } catch (error) {
@@ -279,4 +299,3 @@ exports.afterStep = function (success) {
     logger.info('Product options are converted with Dynamic Pricing and exported successfully');
     return new Status(Status.OK);
 };
-

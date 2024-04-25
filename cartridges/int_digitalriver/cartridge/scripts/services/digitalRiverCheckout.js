@@ -5,6 +5,7 @@ var taxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
 var checkoutHelper = require('*/cartridge/scripts/digitalRiver/drCheckoutHelper');
 var collections = require('*/cartridge/scripts/util/collections');
 var logger = require('*/cartridge/scripts/digitalRiver/drLogger').getLogger('digitalriver.checkout');
+var productDetailsHelper = require('*/cartridge/scripts/digitalRiver/drProductDetailsHelper');
 
 var Site = require('dw/system/Site');
 var Money = require('dw/value/Money');
@@ -124,11 +125,10 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
         };
     }
 
-
     // Preparing products data
     var items = currentBasket.allProductLineItems;
     var itemArray = [];
-    for (var i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i += 1) {
         var metadata;
         var totalOptionsCost = new Money(0, currentBasket.currencyCode); // aggregate price for all options to add it to parent item price
         if (!items[i].optionProductLineItem) {
@@ -163,11 +163,16 @@ function createCheckout(currentBasket, customerType, includeAppliedTaxIdentifier
             }
 
             var item = {
-                skuId: items[i].productID,
                 quantity: items[i].quantityValue,
-                aggregatePrice: aggregatePrice.value
+                aggregatePrice: aggregatePrice.value,
+                metadata: metadata
             };
-            item.metadata = metadata;
+
+            if (Site.current.getCustomPreferenceValue('drSendProductDetails') === true) {
+                item.productDetails = productDetailsHelper.sendProductDetails(items[i].product);
+            } else {
+                item.skuId = items[i].productID;
+            }
 
             itemArray.push(item);
         }

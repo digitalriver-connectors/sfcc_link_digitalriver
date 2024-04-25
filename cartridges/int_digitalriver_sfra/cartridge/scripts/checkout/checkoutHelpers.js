@@ -62,19 +62,17 @@ output.placeOrder = function (order) {
     var drOrderHelper = require('*/cartridge/scripts/digitalRiver/drOrderHelper');
     var OrderMgr = require('dw/order/OrderMgr');
 
-    var checkoutId = order.custom.drCheckoutID;
     var result = { error: false };
-    
+
     var logger = require('dw/system').Logger.getLogger('DigitalRiver', '');
     var digitalRiver = require('*/cartridge/scripts/services/digitalRiver');
     var isResultFlag = false;
     var DRResult = drCheckoutAPI.updateDROrderWithUpstreamId(order.custom.drOrderID, order.orderNo);
-    
+
     Transaction.wrap(function () {
         if (DRResult.ok) {
             isResultFlag = true;
-        }
-        else {
+        } else {
             logger.warn('Something went wrong while updating upstreamId. Retrying...');
             var body = {
                 upstreamId: order.orderNo
@@ -116,8 +114,7 @@ output.placeOrder = function (order) {
                 delete DRResult.object.items; // Items deleted to reduce number of symbols due to Note limit. Clients are supposed to take information about items from order itself
                 delete DRResult.object.payment; // Payment data added to separate Note due to Note limit
                 order.addNote('Digital River order data', JSON.stringify(DRResult.object));
-            }
-            else {
+            } else {
                 OrderMgr.failOrder(order, true);
                 result.error = true;
             }
@@ -126,7 +123,7 @@ output.placeOrder = function (order) {
     if (result.error) {
         return result;
     }
-    
+
     return parent.placeOrder.apply(this, arguments);
 };
 

@@ -31,9 +31,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) { // eslint-di
             var primarySource = checkoutData.sources.find(function (source) {
                 return source.type !== 'customerCredit';
             });
-            var paymentInstrument = currentBasket.createPaymentInstrument(
-                'DIGITAL_RIVER_DROPIN', new Money(primarySource.amount, currentBasket.currencyCode)
-            );
+            var paymentInstrument = currentBasket.createPaymentInstrument('DIGITAL_RIVER_DROPIN', new Money(primarySource.amount, currentBasket.currencyCode));
 
             paymentInstrument.custom.drSourceId = primarySource.id;
             paymentInstrument.custom.drPaymentType = paymentInformation.paymentType;

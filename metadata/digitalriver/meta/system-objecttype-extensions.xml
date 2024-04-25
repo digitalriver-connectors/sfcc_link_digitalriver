@@ -201,7 +201,13 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>true</externally-managed-flag>
             </attribute-definition>
-
+            <attribute-definition attribute-id="isDRTaxDetailPopulated">
+              <display-name xml:lang="x-default">Is Tax Details Populated</display-name>
+              <description xml:lang="x-default"></description>
+              <type>boolean</type>
+              <mandatory-flag>false</mandatory-flag>
+              <externally-managed-flag>true</externally-managed-flag>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="DigitalRiverAttributes">
@@ -216,6 +222,7 @@
                 <attribute attribute-id="drDuty"/>
                 <attribute attribute-id="drTotalImporterTax"/>
                 <attribute attribute-id="drTotalFees"/>
+                <attribute attribute-id="isDRTaxDetailPopulated"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
@@ -636,6 +643,22 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>true</externally-managed-flag>
             </attribute-definition>
+            <attribute-definition attribute-id="drTaxDetail">
+              <display-name xml:lang="x-default">Product Tax Details</display-name>
+              <description xml:lang="x-default">Product tax</description>
+              <type>string</type>
+              <mandatory-flag>false</mandatory-flag>
+              <externally-managed-flag>true</externally-managed-flag>
+              <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drShippingTaxDetail">
+              <display-name xml:lang="x-default">Shipping Tax Details</display-name>
+              <description xml:lang="x-default">Product shipping tax</description>
+              <type>string</type>
+              <mandatory-flag>false</mandatory-flag>
+              <externally-managed-flag>true</externally-managed-flag>
+              <min-length>0</min-length>
+            </attribute-definition>
             <attribute-definition attribute-id="drTrackingCompany">
                 <display-name xml:lang="x-default">Tracking Company</display-name>
                 <type>string</type>
@@ -667,6 +690,8 @@
                 <attribute attribute-id="drFeeAmount"/>
                 <attribute attribute-id="drFeeTaxAmount"/>
                 <attribute attribute-id="drFeeDetails"/>
+                <attribute attribute-id="drTaxDetail"/>
+                <attribute attribute-id="drShippingTaxDetail"/>
                 <attribute attribute-id="drTrackingCompany"/>
                 <attribute attribute-id="drTrackingNumber"/>
                 <attribute attribute-id="drTrackingUrl"/>
@@ -709,6 +734,13 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="drSendProductDetails">
+                <display-name xml:lang="x-default">Digital River Send Product Details</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="drShipFromAddress1">
                 <display-name xml:lang="x-default">Digital River ship from address line 1</display-name>
@@ -931,13 +963,13 @@ Later these placeholders will be replaced in the code with the given country cod
                 <attribute attribute-id="drDropInPaymentRedirect"/>
                 <attribute attribute-id="drEnableDynamicPricing"/>
                 <attribute attribute-id="drShippingMethodAvailability"/>
-                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
-                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
                 <attribute attribute-id="drListConvertedPriceBookNaming"/>
                 <attribute attribute-id="drSaleConvertedPriceBookNaming"/>
                 <attribute attribute-id="drBatchSize"/>
+                <attribute attribute-id="drShippingOptionsFreeShippingOption"/>
                 <attribute attribute-id="drGlobalReturnsPortalEnabled"/>
                 <attribute attribute-id="drFlatRateConfiguration"/>
+                <attribute attribute-id="drSendProductDetails"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

@@ -43,17 +43,13 @@ function getSelectedShippingMethod(shipment) {
  * @classdesc Model that represents shipping information
  *
  * @param {dw.order.Shipment} shipment - the default shipment of the current basket
- * @param {Object} address - the address to use to filter the shipping method list
- * @param {Object} customer - the current customer model
- * @param {string} containerView - the view of the product line items (order or basket)
  */
-function ShippingModel(shipment, address) {
+function ShippingModel(shipment) {
     parent.apply(this, arguments);
-    var shippingHelpers = require('*/cartridge/scripts/checkout/shippingHelpers');
     var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
     var Transaction = require('dw/system/Transaction');
 
-    //this.applicableShippingMethods = shippingHelpers.getApplicableShippingMethods(shipment, address);
+    // this.applicableShippingMethods = shippingHelpers.getApplicableShippingMethods(shipment, address);
     if (!this.applicableShippingMethods || empty(this.applicableShippingMethods)) {
         var basket = BasketMgr.getCurrentBasket();
         if (basket) {

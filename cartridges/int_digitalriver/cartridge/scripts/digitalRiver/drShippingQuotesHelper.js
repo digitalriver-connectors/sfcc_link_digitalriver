@@ -1,4 +1,5 @@
-/* globals session*/
+'use strict';
+
 var ShippingQuotesService = require('*/cartridge/scripts/services/digitalRiverShippingQuotes');
 var Site = require('dw/system/Site');
 var BasketMgr = require('dw/order/BasketMgr');
@@ -17,6 +18,7 @@ var checkoutHelper = require('*/cartridge/scripts/digitalRiver/drCheckoutHelper'
  */
 function createBody() {
     var currentBasket = BasketMgr.getCurrentBasket();
+    var body;
     if (currentBasket) {
         var shipping = currentBasket.shipments[0].shippingAddress;
         var items = currentBasket.allProductLineItems;
@@ -41,7 +43,6 @@ function createBody() {
             return null;
         }
 
-
         // 7-10-2023 Fix for issue where API calls are beign made in native mode
         var drShippingMethodAvailability = Site.getCurrent().getCustomPreferenceValue('drShippingMethodAvailability').value;
         if (drShippingMethodAvailability === 'native') {
@@ -60,7 +61,6 @@ function createBody() {
             }
         };
 
-
         // Packages:
         var productDetailsObj;
         var packages = [];
@@ -70,7 +70,7 @@ function createBody() {
 
         var itemArray = [];
 
-        for (var i = 0; i < items.length; i++) {
+        for (var i = 0; i < items.length; i += 1) {
             var product;
             var item = items[i];
             var productID = item.productID;
@@ -122,7 +122,7 @@ function createBody() {
         if (empty(itemArray)) {
             return null;
         }
-        var body = {
+        body = {
             currency: currentBasket.currencyCode,
             shipTo: shipTo,
             shipFrom: shipFrom,
@@ -149,7 +149,7 @@ function getShippingQuotesCost(drID, drTerm, defaultCurrency, defaultPrice) {
     if (!empty(drID) && !empty(drTerm) && !empty(drFlatRateConfiguration)) {
         var lines = drFlatRateConfiguration.split('\n');
 
-        for (var i = 0; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i += 1) {
             var items = lines[i].trim().split('|');
             if (items.length === 6) {
                 var id = items[3];
@@ -160,7 +160,7 @@ function getShippingQuotesCost(drID, drTerm, defaultCurrency, defaultPrice) {
                 var minPrice = parseFloat(items[0]);
                 var maxPrice = parseFloat(items[1]);
 
-                if (id === drID && term === drTerm && currency.toLowerCase() === defaultCurrency.toLowerCase() && (isNaN(minPrice) || defaultPrice >= minPrice) && (isNaN(maxPrice) || defaultPrice <= maxPrice)) {
+                if (id === drID && term === drTerm && currency.toLowerCase() === defaultCurrency.toLowerCase() && (Number.isNaN(minPrice) || defaultPrice >= minPrice) && (Number.isNaN(maxPrice) || defaultPrice <= maxPrice)) {
                     return formatCurrency(price, defaultCurrency);
                 }
             }
@@ -207,7 +207,7 @@ function getShippingQuotes(shippingMethods, shipment, drShippingMethod) {
 
         if (!empty(result)) {
             shippingQuotes = result.quotes;
-            for (let i = 0; i < shippingQuotes.length; i++) {
+            for (let i = 0; i < shippingQuotes.length; i += 1) {
                 var uniqueID = Encoding.toHex(new MessageDigest(MessageDigest.DIGEST_SHA_256).digestBytes(new Bytes(JSON.stringify(shippingQuotes[i]), 'UTF-8')));
                 var obj = {};
                 obj.default = false;
@@ -246,18 +246,19 @@ function modifyShippingQuotes(quotes) {
 
 /**
  * Function will check if theres any free shipping options available. If yes then adds that shipping method as free.
- * @param {dw.util.Collection} shippingQuotes - the applicable shipping methods
+ * @param {dw.util.Collection} allShippingQuotes - the applicable shipping methods
  * @returns {dw.util.Collection} an array of shipping quotes objects
  */
-function applyDRFreeShipping(shippingQuotes) {
+function applyDRFreeShipping(allShippingQuotes) {
     var freeShippingOptions = Site.getCurrent().getCustomPreferenceValue('drShippingOptionsFreeShippingOption');
     var currentBasket = require('dw/order/BasketMgr').getCurrentBasket();
+    var shippingQuotes = allShippingQuotes;
 
     if (freeShippingOptions != null && shippingQuotes != null) {
         freeShippingOptions = freeShippingOptions.replace(/\s+/g, '');
         var drFreeShippingList = [];
         drFreeShippingList = freeShippingOptions.split(',');
-        for (var j = 0; j < shippingQuotes.length; j++) {
+        for (var j = 0; j < shippingQuotes.length; j += 1) {
             if (drFreeShippingList.includes(shippingQuotes[j].drID)) {
                 var freeShippingCost = new Money(0, currentBasket.currencyCode);
                 shippingQuotes[j].shippingCost = freeShippingCost.toFormattedString();

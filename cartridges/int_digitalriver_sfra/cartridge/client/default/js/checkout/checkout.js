@@ -1,4 +1,3 @@
-/* global $ jQuery Promise */
 'use strict';
 
 var customerHelpers = require('base/checkout/customer');
@@ -9,7 +8,6 @@ var summaryHelpers = require('./summary');
 var formHelpers = require('base/checkout/formErrors');
 var scrollAnimate = require('base/components/scrollAnimate');
 var drHelper = require('./drHelper');
-
 
 /**
  * Create the jQuery Checkout Plugin.
@@ -66,10 +64,10 @@ var drHelper = require('./drHelper');
          * @param {number} currentStage - The current stage the user is currently on in the checkout
          */
         function updateUrl(currentStage) {
-            history.pushState(
+            window.history.pushState(
                 checkoutStages[currentStage],
                 document.title,
-                location.pathname
+                window.location.pathname
                 + '?stage='
                 + checkoutStages[currentStage]
                 + '#'
@@ -123,7 +121,7 @@ var drHelper = require('./drHelper');
                         }
                     });
                     return defer;
-                } else if (stage === 'shipping') {
+                } if (stage === 'shipping') {
                     //
                     // Clear Previous Errors
                     //
@@ -133,8 +131,8 @@ var drHelper = require('./drHelper');
                     // Submit the Shipping Address Form
                     //
                     var isMultiShip = $('#checkout-main').hasClass('multi-ship');
-                    var formSelector = isMultiShip ?
-                        '.multi-shipping .active form' : '.single-shipping .shipping-form';
+                    var formSelector = isMultiShip
+                        ? '.multi-shipping .active form' : '.single-shipping .shipping-form';
                     var form = $(formSelector);
 
                     if (isMultiShip && form.length === 0) {
@@ -149,16 +147,18 @@ var drHelper = require('./drHelper');
                                 // enable the next:Payment button here
                                 $('body').trigger('checkout:enableButton', '.next-step-button button');
                                 if (!data.error) {
-                                    $('body').trigger('checkout:updateCheckoutView',
-                                        { order: data.order, customer: data.customer });
+                                    $('body').trigger(
+                                        'checkout:updateCheckoutView',
+                                        { order: data.order, customer: data.customer }
+                                    );
                                     defer.resolve();
                                 } else if (data.message && $('.shipping-error .alert-danger').length < 1) {
                                     var errorMsg = data.message;
-                                    var errorHtml = '<div class="alert alert-danger alert-dismissible valid-cart-error ' +
-                                        'fade show" role="alert">' +
-                                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                                        '<span aria-hidden="true">&times;</span>' +
-                                        '</button>' + errorMsg + '</div>';
+                                    var errorHtml = '<div class="alert alert-danger alert-dismissible valid-cart-error '
+                                        + 'fade show" role="alert">'
+                                        + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                                        + '<span aria-hidden="true">&times;</span>'
+                                        + '</button>' + errorMsg + '</div>';
                                     $('.shipping-error').append(errorHtml);
                                     scrollAnimate($('.shipping-error'));
                                     defer.reject();
@@ -212,7 +212,7 @@ var drHelper = require('./drHelper');
                         });
                     }
                     return defer;
-                } else if (stage === 'payment') {
+                } if (stage === 'payment') {
                     //
                     // Submit the Billing Address Form
                     //
@@ -272,25 +272,24 @@ var drHelper = require('./drHelper');
                                     return defer;
                                 }
 
-                                var cvvCode = $('.saved-payment-instrument.' +
-                                    'selected-payment .saved-payment-security-code').val();
+                                var cvvCode = $('.saved-payment-instrument.'
+                                    + 'selected-payment .saved-payment-security-code').val();
 
                                 if (cvvCode === '') {
-                                    var cvvElement = $('.saved-payment-instrument.' +
-                                        'selected-payment ' +
-                                        '.form-control');
+                                    var cvvElement = $('.saved-payment-instrument.'
+                                        + 'selected-payment '
+                                        + '.form-control');
                                     cvvElement.addClass('is-invalid');
                                     scrollAnimate(cvvElement);
                                     defer.reject();
                                     return defer;
                                 }
 
-                                var $savedPaymentInstrument = $('.saved-payment-instrument' +
-                                    '.selected-payment'
-                                );
+                                var $savedPaymentInstrument = $('.saved-payment-instrument'
+                                    + '.selected-payment');
 
-                                paymentForm += '&storedPaymentUUID=' +
-                                    $savedPaymentInstrument.data('uuid');
+                                paymentForm += '&storedPaymentUUID='
+                                    + $savedPaymentInstrument.data('uuid');
 
                                 paymentForm += '&securityCode=' + cvvCode;
                                 // --- Digital River Retrieve Stored Card ---
@@ -335,8 +334,10 @@ var drHelper = require('./drHelper');
                                 //
                                 // Populate the Address Summary
                                 //
-                                $('body').trigger('checkout:updateCheckoutView',
-                                    { order: data.order, customer: data.customer });
+                                $('body').trigger(
+                                    'checkout:updateCheckoutView',
+                                    { order: data.order, customer: data.customer }
+                                );
 
                                 if (data.renderedPaymentInstruments) {
                                     $('.stored-payments').empty().html(
@@ -365,18 +366,15 @@ var drHelper = require('./drHelper');
                     });
 
                     return defer;
-                } else if (stage === 'placeOrder') {
+                } if (stage === 'placeOrder') {
                     $('#checkout-main').spinner().start();
                     // --- Digital River Retrieve Stored Card ---
                     var placeOrder = function (defer) { // eslint-disable-line no-shadow
-                        //Digital River - 2.6 - Redirect Flow
-                        if (!$('.DR-place-order').data('dr-order-placed') && !$('.DR-place-order').data('dr-redirect-success'))
-                        {
+                        // Digital River - 2.6 - Redirect Flow
+                        if (!$('.DR-place-order').data('dr-order-placed') && !$('.DR-place-order').data('dr-redirect-success')) {
                             drHelper.handleDROrderPlacement(defer, placeOrder);
-                        }
-                        //End Digital River - 2.6 - Redirect Flow
-                        else {
-                            $('.DR-place-order').data('dr-order-placed',"false");
+                        } else { // End Digital River - 2.6 - Redirect Flow
+                            $('.DR-place-order').data('dr-order-placed', 'false');
                             // disable the placeOrder button here
                             $('body').trigger('checkout:disableButton', '.next-step-button button');
                             $.ajax({
@@ -419,7 +417,6 @@ var drHelper = require('./drHelper');
                                             });
                                         redirect.submit();
                                         defer.resolve(data);
-                                        
                                     }
                                 },
                                 error: function () {
@@ -504,8 +501,8 @@ var drHelper = require('./drHelper');
                     // Back button when event state less than current state in ordered
                     // checkoutStages array.
                     //
-                    if (e.state === null ||
-                        checkoutStages.indexOf(e.state) < members.currentStage) {
+                    if (e.state === null
+                        || checkoutStages.indexOf(e.state) < members.currentStage) {
                         members.handlePrevStage(false);
                     } else if (checkoutStages.indexOf(e.state) > members.currentStage) {
                         // Forward button  pressed
@@ -513,7 +510,7 @@ var drHelper = require('./drHelper');
                     }
                 });
 
-                //Digital River - 2.6 - Redirect Flow
+                // Digital River - 2.6 - Redirect Flow
                 $(document).ready(function () {
                     drHelper.handleDROrderRedirect(members);
                 });
@@ -522,7 +519,6 @@ var drHelper = require('./drHelper');
                 // Set the form data
                 //
                 plugin.data('formData', formData);
-
             },
 
             /**
@@ -569,7 +565,7 @@ var drHelper = require('./drHelper');
             handleNextStage: function (bPushState) {
                 if (members.currentStage < checkoutStages.length - 1) {
                     // move stage forward
-                    members.currentStage++;
+                    members.currentStage += 1;
 
                     //
                     // show new stage in url (e.g.payment)
@@ -589,7 +585,7 @@ var drHelper = require('./drHelper');
             handlePrevStage: function () {
                 if (members.currentStage > 0) {
                     // move state back
-                    members.currentStage--;
+                    members.currentStage -= 1;
                     updateUrl(members.currentStage);
                 }
 
@@ -604,9 +600,8 @@ var drHelper = require('./drHelper');
                 members.currentStage = checkoutStages.indexOf(stageName);
                 updateUrl(members.currentStage);
                 $(plugin).attr('data-checkout-stage', checkoutStages[members.currentStage]);
-            },
+            }
 
-            
         };
 
         //
@@ -617,7 +612,6 @@ var drHelper = require('./drHelper');
         return this;
     };
 }(jQuery));
-
 
 var exports = {
     initialize: function () {

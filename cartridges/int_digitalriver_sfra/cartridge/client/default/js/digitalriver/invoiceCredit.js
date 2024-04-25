@@ -30,7 +30,7 @@ function appendToUrl(url, params) {
 function displayFileLinks(fileLinks, $fileLinksContainer) {
     var fileLabel = $fileLinksContainer.data('file-label');
     var fileLinksHtml = '<ul>';
-    for (var i = 0; i < fileLinks.length; i++) {
+    for (var i = 0; i < fileLinks.length; i += 1) {
         var fileLink = fileLinks[i];
         fileLinksHtml += '<li><a href="' + fileLink.url + '">';
         fileLinksHtml += fileLabel + ' ' + fileLink.id;
@@ -66,16 +66,16 @@ function loadFileLinks($fileLinksContainer) {
         }
 
         $.when.apply($, ajaxCalls)
-        .done(function () {
-            if (fileLinks.length) {
-                displayFileLinks(fileLinks, $fileLinksContainer);
-            } else {
+            .done(function () {
+                if (fileLinks.length) {
+                    displayFileLinks(fileLinks, $fileLinksContainer);
+                } else {
+                    $fileLinksContainer.html(loadingErrorText);
+                }
+            })
+            .fail(function () {
                 $fileLinksContainer.html(loadingErrorText);
-            }
-        })
-        .fail(function () {
-            $fileLinksContainer.html(loadingErrorText);
-        });
+            });
     }
 }
 

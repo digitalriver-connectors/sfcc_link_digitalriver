@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Checks if all products are digital or not
  * @param {dw.util.Collection} productLineItems - product line items
@@ -6,7 +8,7 @@
 function checkDigitalProductsOnly(productLineItems) {
     var isAllDigitalProducts = true;
 
-    for (var i = 0; i < productLineItems.length; i++) {
+    for (var i = 0; i < productLineItems.length; i += 1) {
         var pli = productLineItems[i];
 
         if (pli.product !== null) {
@@ -74,8 +76,11 @@ function getAggregatePriceItem(item, currencyCode) {
 }
 
 /**
- * reset the basket and create a new DR checkout when an error occurs
- */
+* Resets the basket and sets error stage for payment
+* @param {dw.system.Request} req - the current request object
+* @param {dw.system.Response} res - the current response object
+* @returns {boolean} - true if the basket is reset successfully
+*/
 function resetBasketOnError(req, res) {
     var URLUtils = require('dw/web/URLUtils');
     var Resource = require('dw/web/Resource');
@@ -105,9 +110,9 @@ function resetBasketOnError(req, res) {
                 dropInConfiguration: dropinHelper.getConfiguration({
                     basket: currentBasket,
                     customer: req.currentCustomer.raw,
-                    reqUrl: reqRedirectUrl  // adding host name
+                    reqUrl: reqRedirectUrl // adding host name
                 }),
-                cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment',).toString(),
+                cancelRedirectUrl: URLUtils.url('Checkout-Begin', 'stage', 'payment').toString(),
                 paymentErrorMessage: Resource.msg('error.checkout.paynowerror', 'digitalriver', null)
             };
 
@@ -120,7 +125,6 @@ function resetBasketOnError(req, res) {
             currentBasket.custom.drOrderID = null;
         });
     }
-
 
     return true;
 }
@@ -168,17 +172,17 @@ function convertShippingMethodsToModel(shippingMethods, shipment) {
  */
 function populateShipmentCustomPref(shipmentArg, shippingMethod) {
     var shipment = shipmentArg;
-    shipment.custom.drSQId = "";
-    shipment.custom.drUniqueID = "";
-    shipment.custom.drSQDescription = "";
-    shipment.custom.drSQServiceLevel = "";
-    shipment.custom.drSQShipFrom = "";
-    shipment.custom.drSQShippingTerms = "";
-    shipment.custom.drSQEstimatedArrivalTime = "";
-    shipment.custom.drSQTotalAmount = "";
+    shipment.custom.drSQId = '';
+    shipment.custom.drUniqueID = '';
+    shipment.custom.drSQDescription = '';
+    shipment.custom.drSQServiceLevel = '';
+    shipment.custom.drSQShipFrom = '';
+    shipment.custom.drSQShippingTerms = '';
+    shipment.custom.drSQEstimatedArrivalTime = '';
+    shipment.custom.drSQTotalAmount = '';
     if (shippingMethod.isDR) {
         shipment.custom.drSQId = shippingMethod.drID;
-        shipment.custom.drUniqueID = shippingMethod.ID
+        shipment.custom.drUniqueID = shippingMethod.ID;
         shipment.custom.drSQDescription = shippingMethod.description;
         shipment.custom.drSQServiceLevel = shippingMethod.displayName;
         shipment.custom.drSQShipFrom = shippingMethod.shipFrom;
@@ -195,18 +199,18 @@ function populateShipmentCustomPref(shipmentArg, shippingMethod) {
  */
 function isAllowedEndpoint() {
     var httpPath = request.httpPath.split('/');
-    var pageURL  = httpPath.pop();
+    var pageURL = httpPath.pop();
     var checkoutOnly = false;
     var array = [
-        "Checkout-Begin",
-        "CheckoutShippingServices-UpdateShippingMethodsList",
-        "CheckoutShippingServices-SelectShippingMethod",
-        "CheckoutShippingServices-SubmitShipping",
-        "DigitalRiver-PurchaseType",
-        "DigitalRiver-TaxIdentifierConfig",
-        "DigitalRiver-TaxIdentifierApply",
-        "DigitalRiver-TaxIdentifierDelete",
-        "CheckoutServices-SubmitPayment"
+        'Checkout-Begin',
+        'CheckoutShippingServices-UpdateShippingMethodsList',
+        'CheckoutShippingServices-SelectShippingMethod',
+        'CheckoutShippingServices-SubmitShipping',
+        'DigitalRiver-PurchaseType',
+        'DigitalRiver-TaxIdentifierConfig',
+        'DigitalRiver-TaxIdentifierApply',
+        'DigitalRiver-TaxIdentifierDelete',
+        'CheckoutServices-SubmitPayment'
     ];
 
     if (array.indexOf(pageURL) > -1) {

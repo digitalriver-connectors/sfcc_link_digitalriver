@@ -7,6 +7,9 @@ Object.keys(parent).forEach(function (key) {
 });
 var Status = require('dw/system/Status');
 var Money = require('dw/value/Money');
+var ProductLineItem = require('dw/order/ProductLineItem');
+var ShippingLineItem = require('dw/order/ShippingLineItem');
+var PriceAdjustment = require('dw/order/PriceAdjustment');
 var collections = require('*/cartridge/scripts/util/collections');
 var taxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
 var ShippingMgr = require('dw/order/ShippingMgr');
@@ -21,7 +24,7 @@ output.calculateShipping = function (basket) {
     var status = new Status(Status.OK);
     try {
         Transaction.wrap(function () {
-            for (let i = 0; i < basket.shipments.length; i++) {
+            for (let i = 0; i < basket.shipments.length; i += 1) {
                 var shipment = basket.shipments[i];
                 if (shipment && shipment.shippingMethodID && shipment.shippingMethodID.indexOf('DRDefaultShp') > -1) {
                     ShippingMgr.applyShippingCost(basket);
@@ -37,7 +40,7 @@ output.calculateShipping = function (basket) {
                         shippingLineItem.setPriceValue(shippingPrice);
                         var taxRate = shippingLineItem.getTaxRate();
                         var updatedTax = shippingPrice * taxRate;
-                        shippingLineItem.updateTaxAmount(new dw.value.Money(updatedTax, basket.currencyCode));
+                        shippingLineItem.updateTaxAmount(new Money(updatedTax, basket.currencyCode));
                     }
                 } else {
                     ShippingMgr.applyShippingCost(basket);
@@ -77,7 +80,7 @@ output.calculateTax = function (basket) {
     var lineItems = basket.getAllLineItems();
 
     collections.forEach(lineItems, function (lineItem) {
-        if (lineItem instanceof dw.order.ProductLineItem) { // updating taxes for product line items
+        if (lineItem instanceof ProductLineItem) { // updating taxes for product line items
             var taxAmount = 0;
             var taxRate = 0;
             if (!lineItem.optionProductLineItem) { // option products line items will have 0 taxes while parent item taxes will include options cost
@@ -91,12 +94,12 @@ output.calculateTax = function (basket) {
                 lineItem.updateTax(taxRate);
             }
             lineItem.updateTaxAmount(new Money(taxAmount, currency));
-        } else if (lineItem instanceof dw.order.ShippingLineItem
+        } else if (lineItem instanceof ShippingLineItem
             && lineItem.ID !== 'digitalRiver_duty'
             && lineItem.ID !== 'digitalRiver_importerTax'
         ) {
             lineItem.updateTaxAmount(new Money(shippingTaxAmount, currency));
-        } else if (lineItem instanceof dw.order.PriceAdjustment) { // price adjustments except Fees will have 0 taxes
+        } else if (lineItem instanceof PriceAdjustment) { // price adjustments except Fees will have 0 taxes
             if (!taxHelper.isDrAdjustment(lineItem.promotionID)) {
                 lineItem.updateTax(0);
             }

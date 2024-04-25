@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+
 'use strict';
 
 (function ($) {
@@ -21,13 +23,13 @@
             var currentCountry = modalData.data('selected-country');
             var currentCurrency = modalData.data('selected-currency');
 
-        // Keep track of the current country and currency index
-        // so we can select them by default when the page loads
+            // Keep track of the current country and currency index
+            // so we can select them by default when the page loads
             var currentCountryIndex = 0;
             var currentCurrencyIndex = 0;
 
-        // Populate the country select with the supported countries
-            for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i++) {
+            // Populate the country select with the supported countries
+            for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i += 1) {
                 let country = Object.keys(countryCurrencyPairs)[i];
                 if (currentCountry === country) {
                     currentCountryIndex = i;
@@ -42,13 +44,13 @@
                 countrySelect.append(option);
             }
 
-        // Select the current country by default
+            // Select the current country by default
             var countrySelected = Object.keys(countryCurrencyPairs)[currentCountryIndex];
             countrySelect.val(countrySelected);
 
-        // Populate the currency select with the values for the selected country
+            // Populate the currency select with the values for the selected country
             var currenciesForSelectedCountry = countryCurrencyPairs[countrySelected];
-            for (let i = 0; i < currenciesForSelectedCountry.length; i++) {
+            for (let i = 0; i < currenciesForSelectedCountry.length; i += 1) {
                 let currency = currenciesForSelectedCountry[i];
                 if (currency === currentCurrency) {
                     currentCurrencyIndex = i;
@@ -63,18 +65,18 @@
                 currencySelect.append(option);
             }
 
-        // Select the current currency by default
+            // Select the current currency by default
             currencySelect.val(currenciesForSelectedCountry[currentCurrencyIndex]);
 
-        // Update the currency select when the country select changes
+            // Update the currency select when the country select changes
             countrySelect.on('change', () => {
             // Clear the currency select
                 currencySelect.empty();
 
-            // Get the selected country
+                // Get the selected country
                 var selectedCountry = countrySelect.val();
 
-            // Populate the currency select with the values for the selected country
+                // Populate the currency select with the values for the selected country
                 for (var currency of countryCurrencyPairs[selectedCountry]) {
                     let option = $('<option>', {
                         value: currency,
@@ -84,16 +86,16 @@
                 }
             });
 
-        // Make a call to the SFRA controller when the button is clicked
+            // Make a call to the SFRA controller when the button is clicked
             selectButton.on('click', (e) => {
                 e.preventDefault();
-            // Get the selected country and currency
+                // Get the selected country and currency
                 var selectedCountry = countrySelect.val();
                 var selectedCurrency = currencySelect.val();
                 var url = selectButton.data('url');
                 var action = $('.page').data('action');
                 var queryString = $('.page').data('querystring');
-            // Make the AJAX call to the SFRA controller
+                // Make the AJAX call to the SFRA controller
                 $.ajax({
                     url: url,
                     type: 'get',
@@ -180,7 +182,7 @@
 
             var countrySelect = $('#country-and-currency-modal #dr-country-select');
             // Populate the country select with the supported countries
-            for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i++) {
+            for (let i = 0; i < Object.keys(countryCurrencyPairs).length; i += 1) {
                 let country = Object.keys(countryCurrencyPairs)[i];
                 if (selectedCountry === country) {
                     currentCountryIndex = i;
@@ -201,7 +203,7 @@
             var currencySelect = $('#country-and-currency-modal #dr-currency-select');
             // Populate the currency select with the values for the selected country
             var currenciesForSelectedCountry = countryCurrencyPairs[countrySelected];
-            for (let i = 0; i < currenciesForSelectedCountry.length; i++) {
+            for (let i = 0; i < currenciesForSelectedCountry.length; i += 1) {
                 let currency = currenciesForSelectedCountry[i];
                 if (currency === selectedCurrency) {
                     currentCurrencyIndex = i;

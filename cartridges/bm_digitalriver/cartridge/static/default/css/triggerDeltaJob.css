@@ -1,1 +1,18 @@
-.drbm-trigger-button{background-color:#d9d9d9;padding:.2em .5em;cursor:pointer;border:.0625em solid #d9d9d9;border-radius:.188em;color:#00629b;margin:0;white-space:nowrap;width:min-content}
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[3]!./cartridges/bm_digitalriver/cartridge/client/default/scss/triggerDeltaJob.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+.drbm-trigger-button {
+  background-color: #d9d9d9;
+  padding: 0.2em 0.5em;
+  cursor: pointer;
+  border: 0.0625em solid #d9d9d9;
+  border-radius: 0.188em;
+  color: #00629b;
+  margin: 0;
+  white-space: nowrap;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGVmYXVsdFxcY3NzXFx0cmlnZ2VyRGVsdGFKb2IuY3NzIiwibWFwcGluZ3MiOiI7OztBQUFBO0VBQ0k7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQUE7RUFBQTtBQUNKLEMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9jYXJ0cmlkZ2VzL2JtX2RpZ2l0YWxyaXZlci9jYXJ0cmlkZ2UvY2xpZW50L2RlZmF1bHQvc2Nzcy90cmlnZ2VyRGVsdGFKb2Iuc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIuZHJibS10cmlnZ2VyLWJ1dHRvbiB7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2Q5ZDlkOTtcbiAgICBwYWRkaW5nOiAwLjJlbSAwLjVlbTtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgYm9yZGVyOiAwLjA2MjVlbSBzb2xpZCAjZDlkOWQ5O1xuICAgIGJvcmRlci1yYWRpdXM6IDAuMTg4ZW07XG4gICAgY29sb3I6ICMwMDYyOWI7XG4gICAgbWFyZ2luOiAwO1xuICAgIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gICAgd2lkdGg6IG1pbi1jb250ZW50O1xufVxuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9*/

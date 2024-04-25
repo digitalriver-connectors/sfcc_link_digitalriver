@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
             '#selected-country-currency-list'
         );
 
-        for (let i = 0; i < pairNames.length; i++) {
+        for (let i = 0; i < pairNames.length; i += 1) {
             const div = $('<div>').addClass('form-group');
             const input = $('<input>')
                 .attr({
@@ -97,7 +97,7 @@ jQuery(document).ready(function ($) {
         var supportedPairs = JSON.parse($('#supportedPairs').val());
 
         // Populate the country select with the supported countries
-        for (let i = 0; i < Object.keys(supportedPairs).length; i++) {
+        for (let i = 0; i < Object.keys(supportedPairs).length; i += 1) {
             let country = Object.keys(supportedPairs)[i];
 
             let option = $('<option>', {
@@ -109,17 +109,19 @@ jQuery(document).ready(function ($) {
             countrySelect.append(option);
         }
 
-    // Update the currency select when the country select changes
+        // Update the currency select when the country select changes
         countrySelect.on('change', () => {
         // Clear the currency select
             currencySelect.empty();
 
-        // Get the selected country
+            // Get the selected country
             var selectedCountry = countrySelect.val();
 
-        // Populate the currency select with the values for the selected country
-            for (var currency of supportedPairs[selectedCountry]) {
-                let option = $('<option>', {
+            // Populate the currency select with the values for the selected country
+            var currencyArray = supportedPairs[selectedCountry];
+            for (var j = 0; j < currencyArray.length; j += 1) {
+                var currency = currencyArray[j];
+                var option = $('<option>', {
                     value: currency,
                     text: currencies[currency].name
                 });
@@ -142,8 +144,8 @@ jQuery(document).ready(function ($) {
 
             if (fieldText.includes('Select')) {
                 if (
-                    selectedCountry.text().includes('Select') &&
-                    selectedCurrency.text().includes('Select')
+                    selectedCountry.text().includes('Select')
+                    && selectedCurrency.text().includes('Select')
                 ) {
                     error.text('Please select a country and a currency.');
                 } else if (selectedCountry.text().includes('Select')) {

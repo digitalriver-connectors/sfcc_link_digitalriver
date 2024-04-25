@@ -1,22 +1,23 @@
-<isset name="savedPaymentsAvailable" value="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length > 0}" scope="page" />
+<isset name="savedPaymentsAvailable"
+    value="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length > 0}" scope="page" />
 <isset name="currentSite" value="${require('dw/system/Site').getCurrent()}" scope="page" />
 
 <div class="form-nav billing-nav payment-information payment-instruments-container"
-     data-payment-method-id="${pdict.order.totals.isZeroTotal ? 'DIGITAL_RIVER_ZERO_PAYMENT' : 'DIGITAL_RIVER_DROPIN'}"
-     data-is-new-payment="${!savedPaymentsAvailable}"
->
+    data-payment-method-id="${pdict.order.totals.isZeroTotal ? 'DIGITAL_RIVER_ZERO_PAYMENT' : 'DIGITAL_RIVER_DROPIN'}"
+    data-is-new-payment="${!savedPaymentsAvailable}">
 </div>
 
 <script type="text/javascript" src="https://js.digitalriverws.com/v1/DigitalRiver.js"></script>
 
-<div class="credit-card-selection-new" >
+<div class="credit-card-selection-new">
     <div class="tab-pane active digital-river-dropin-content" id="digital-river-dropin-content">
         <fieldset class="payment-form-fields">
 
             <div class="row">
                 <div class="col">
                     <isif condition="${pdict.customer.registeredUser}">
-                        <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
+                        <div
+                            class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
                             <!--- Stored user payments --->
                             <div class="stored-payments">
                                 <isinclude template="checkout/billing/storedPaymentInstruments" />
@@ -36,29 +37,31 @@
             <!--- payment method is DIGITAL_RIVER_DROPIN --->
             <input id="payment-method-input" type="hidden" class="form-control"
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-                value="${pdict.order.totals.isZeroTotal ? 'DIGITAL_RIVER_ZERO_PAYMENT' : 'DIGITAL_RIVER_DROPIN'}"
-            />
+                value="${pdict.order.totals.isZeroTotal ? 'DIGITAL_RIVER_ZERO_PAYMENT' : 'DIGITAL_RIVER_DROPIN'}" />
             <div id="dropInContainer" class="drop-in-container ${savedPaymentsAvailable ? 'checkout-hidden' : ''}"
                 data-enabled="${currentSite.getCustomPreferenceValue('drUseDropInFeature')}"
                 data-locale="${request.getLocale().replace('_', '-')}"
-                data-apikey="${currentSite.getCustomPreferenceValue('drPublicKey')}"
-                data-mounted="false"
+                data-apikey="${currentSite.getCustomPreferenceValue('drPublicKey')}" data-mounted="false"
                 data-config-url="${URLUtils.url('DigitalRiver-DropInConfig')}"
                 data-compliance-entity="${currentSite.getCustomPreferenceValue('drDefaultEntity') ? currentSite.getCustomPreferenceValue('drDefaultEntity') : ''}"
-                data-country-error-msg="${Resource.msg('error.country.notsupported', 'digitalriver', null)}"
-            >
-                <div class="save-credit-card custom-control custom-checkbox checkout-hidden"> <!--- this hidden checkbox will be managed in Digital River Drop-in onSuccess handler --->
+                data-country-error-msg="${Resource.msg('error.country.notsupported', 'digitalriver', null)}">
+                <div class="save-credit-card custom-control custom-checkbox checkout-hidden">
+                    <!--- this hidden checkbox will be managed in Digital River Drop-in onSuccess handler --->
                     <isif condition="${pdict.customer.registeredUser}">
-                        <input type="checkbox" class="custom-control-input" id="saveCreditCard" name="${pdict.forms.billingForm.creditCardFields.saveCard.htmlName}" value="true"/>
+                        <input type="checkbox" class="custom-control-input" id="saveCreditCard"
+                            name="${pdict.forms.billingForm.creditCardFields.saveCard.htmlName}" value="true" />
                         <label class="custom-control-label" for="saveCreditCard">
                             ${pdict.forms.billingForm.creditCardFields.saveCard.label}
                         </label>
                     </isif>
                 </div>
-                <div id="drop-in" data-submit-url='<isprint value="${URLUtils.url('DigitalRiver-SubmitPayment')}" encoding="htmlcontent" />'
+                <div id="drop-in" data-submit-url='<isprint value="${URLUtils.url('DigitalRiver-SubmitPayment')}"
+                        encoding="htmlcontent" />'
                     data-dropin-summary=""
-                    data-logmessage-url='<isprint value="${URLUtils.url('DigitalRiver-LogMessage')}" encoding="htmlcontent" />'
-                    data-storedcard-url='<isprint value="${URLUtils.url('DigitalRiver-StoredCards')}" encoding="htmlcontent" />'>
+                    data-logmessage-url='
+                    <isprint value="${URLUtils.url('DigitalRiver-LogMessage')}" encoding="htmlcontent" />'
+                    data-storedcard-url='
+                    <isprint value="${URLUtils.url('DigitalRiver-StoredCards')}" encoding="htmlcontent" />'>
                 </div>
                 <isif condition="${savedPaymentsAvailable}">
                     <button class="btn btn-block cancel-new-payment btn-outline-primary" type="button">
@@ -69,8 +72,4 @@
 
         </fieldset>
     </div>
-
-
 </div>
-
-

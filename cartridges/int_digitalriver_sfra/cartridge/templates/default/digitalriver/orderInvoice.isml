@@ -18,7 +18,7 @@
         <iselse/>
             <div class="card-body">${Resource.msg('msg.no.invoice.creditmemo.data', 'digitalriver', null)}</div>
         </isif>
-        
+
     </div>
 
     <div class="card confirm-details">

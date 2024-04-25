@@ -1,4 +1,5 @@
-/* eslint-disable valid-jsdoc */
+'use strict';
+
 var File = require('dw/io/File');
 var FileReader = require('dw/io/FileReader');
 var XMLStreamReader = require('dw/io/XMLStreamReader');
@@ -15,10 +16,10 @@ var Status = require('dw/system/Status');
  * @param {XMLStreamWriter} xsw - the XMLStreamWriter object
  * @param {Array} products - an array of product objects
  * @param {Array} quantities - an array of quantity objects
- * @param {String} priceNaming - the name of the price attribute
+ * @param {string} priceNaming - the name of the price attribute
  */
 function writePriceTable(xsw, products, quantities) {
-    for (var i = 0; i < products.length; i++) {
+    for (var i = 0; i < products.length; i += 1) {
         if (i === 0 || products[i].id !== products[i - 1].id) {
             xsw.writeStartElement('price-table');
             xsw.writeAttribute('product-id', products[i].id);
@@ -34,14 +35,16 @@ function writePriceTable(xsw, products, quantities) {
 }
 
 /**
- * Gets dynamic pricing from a base file and exports it to an export folder
- * @param {string} baseFile - the base file name
- * @param {string} exportFolder - the export folder name
- * @param {string} country - the country code
- * @param {string} currency - the currency code
- * @param {string} namePattern - the name pattern for the export file
- * @param {string} priceBookID - the price book ID
- */
+* Retrieves dynamic pricing data and exports it to an XML file
+* @param {string} baseFile - the base file name for dynamic pricing
+* @param {string} exportFolder - the folder to export the dynamic pricing XML file
+* @param {string} country - the country code for dynamic pricing data
+* @param {string} currency - the currency code for dynamic pricing data
+* @param {string} namePattern - the pattern for the export file name
+* @param {string} basePattern - the base pattern for dynamic pricing
+* @throws {Error} if unexpected parameter type is encountered
+* @returns {dw.system.Status} the status of the export process
+*/
 function getDynamicPricing(baseFile, exportFolder, country, currency, namePattern, basePattern) {  //eslint-disable-line
     if (typeof currency !== 'string' || typeof country !== 'string') {
         throw new Error('Unexpected parameter type');
@@ -91,19 +94,19 @@ function getDynamicPricing(baseFile, exportFolder, country, currency, namePatter
         var eventType = xsr.next();
         if (eventType === XMLStreamConstants.START_ELEMENT) {
             if (
-                xsr.getLocalName() === 'price-table' &&
-                xsr.getAttributeValue(null, 'product-id')
+                xsr.getLocalName() === 'price-table'
+                && xsr.getAttributeValue(null, 'product-id')
             ) {
                 product.id = xsr.getAttributeValue(null, 'product-id');
             }
             if (
-                xsr.getLocalName() === 'amount' &&
-                xsr.getAttributeValue(null, 'quantity')
+                xsr.getLocalName() === 'amount'
+                && xsr.getAttributeValue(null, 'quantity')
             ) {
                 amounts.push({ quantity: xsr.getAttributeValue(null, 'quantity'), price: xsr.readXMLObject().toString() });
             }
         } else if (eventType === XMLStreamConstants.END_ELEMENT && xsr.getLocalName() === 'price-table') {
-            for (var i = 0; i < amounts.length; i++) {
+            for (var i = 0; i < amounts.length; i += 1) {
                 products.push({ id: product.id, price: amounts[i].price });
                 quantities.push(amounts[i].quantity);
             }

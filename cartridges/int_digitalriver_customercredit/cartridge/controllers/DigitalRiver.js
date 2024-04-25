@@ -44,7 +44,7 @@ server.post('AddCustomerCredit', function (req, res, next) {
     var customerCreditAmount = Number(req.form.customerCreditAmount.replace(/,/g, '.'));
     var customerCreditPI;
 
-    if (isNaN(customerCreditAmount)) {
+    if (Number.isNaN(customerCreditAmount)) {
         res.json({
             error: true,
             fieldErrors: Resource.msg('msg.error.customercredit.value', 'digitalriver', null)

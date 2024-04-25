@@ -21,6 +21,7 @@ server.prepend(
         };
         res.setViewData(viewData);
         next();
-    });
+    }
+);
 
 module.exports = server.exports();

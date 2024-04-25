@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Verifies the required information for billing form is provided.
  *
@@ -108,7 +109,6 @@ function processForm(req, paymentForm, viewFormData) {
         serverErrors: result.errorMessage || [Resource.msg('error.technical', 'checkout', null)]
     };
 }
-
 
 /**
  * Save the credit card information to login account if save card option is selected

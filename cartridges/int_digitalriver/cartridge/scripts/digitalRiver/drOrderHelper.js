@@ -147,7 +147,6 @@ function handleConflictStatus(order, drResult) {
     }
 }
 
-
 /**
  * Saves to product lines custom attributes ids of relevant items on Digital River side
  * @param {dw.order.Order} order current order
@@ -222,14 +221,15 @@ function notifyOrderFulfillment(order, items) {
     var i;
     var body;
     var result;
-    var mapOfLineItems = new Map();    // stores "drTrackingNumber" as a key and body as a value
+    // eslint-disable-next-line no-undef
+    var mapOfLineItems = new Map(); // stores "drTrackingNumber" as a key and body as a value
 
-    for (i = 0; i < lineItemsToSend.length; i++) {
+    for (i = 0; i < lineItemsToSend.length; i += 1) {
         var drTrackingCompany = lineItemsToSend[i].custom.drTrackingCompany;
         var drTrackingNumber = lineItemsToSend[i].custom.drTrackingNumber;
         var drTrackingUrl = lineItemsToSend[i].custom.drTrackingUrl;
 
-        if (!drTrackingNumber) {         // checking whether tracking number is empty
+        if (!drTrackingNumber) { // checking whether tracking number is empty
             drTrackingNumber = null;
         }
 
@@ -279,7 +279,6 @@ function notifyOrderCancellation(order, items) {
 
     return drOrderAPI.createFulfillment(body);
 }
-
 
 module.exports = {
     handleDigitalRiverOrderState: handleDigitalRiverOrderState,

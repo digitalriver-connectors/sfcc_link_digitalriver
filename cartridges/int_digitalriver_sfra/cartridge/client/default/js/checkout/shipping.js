@@ -1,8 +1,14 @@
 'use strict';
+
 var addressHelpers = require('base/checkout/address');
 
 var base = require('base/checkout/shipping');
 
+/**
+* Updates the multi-ship information for the order and triggers an event
+* @param {Object} order - the order object containing multi-shipping information
+* @returns {void}
+*/
 function updateMultiShipInformation(order) {
     var $checkoutMain = $('#checkout-main');
     var $checkbox = $('[name=usingMultiShipping]');
@@ -48,12 +54,14 @@ function updateShippingMethodList($shippingForm) {
                     if (data.error) {
                         window.location.href = data.redirectUrl;
                     } else {
-                        $('body').trigger('checkout:updateCheckoutView',
+                        $('body').trigger(
+                            'checkout:updateCheckoutView',
                             {
                                 order: data.order,
                                 customer: data.customer,
                                 options: { keepOpen: true }
-                            });
+                            }
+                        );
 
                         $shippingMethodList.spinner().stop();
                     }
@@ -63,6 +71,9 @@ function updateShippingMethodList($shippingForm) {
     }, 300);
 }
 
+/**
+* Updates the shipping list based on the provided event
+*/
 function updateShippingList() {
     var baseObj = this;
     var handler = function (e) {
@@ -76,7 +87,7 @@ function updateShippingList() {
     $(document).on('focusout', '.shippingZipCode', handler);
 
     $('select[name$="shippingAddress_addressFields_states_stateCode"]')
-            .on('change', handler);
+        .on('change', handler);
 }
 
 base.updateShippingList = updateShippingList;

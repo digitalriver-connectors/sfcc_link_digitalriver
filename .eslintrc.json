@@ -1,24 +1,77 @@
 {
     "root": true,
     "extends": "airbnb-base/legacy",
+    "env": {
+        "es6": true
+    },
     "parserOptions": {
-        "ecmaVersion": 6
+        "ecmaVersion": 8
     },
     "globals": {
-        "empty": true,
-        "request": true,
-        "response": true,
-        "dw": true
+        "session": "readonly",
+        "request": "readonly",
+        "empty": "readonly",
+        "customer": "readonly",
+        "response": "readonly",
+        "jQuery": "readonly",
+        "$": "readonly"
     },
     "rules": {
         "import/no-unresolved": "off",
-        "indent": ["error", 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1,
+                "VariableDeclarator": 1
+            }
+        ],
+        "prefer-regex-literals": "off",
         "func-names": "off",
         "require-jsdoc": "error",
-        "valid-jsdoc": ["error", { "preferType": { "Boolean": "boolean", "Number": "number", "object": "Object", "String": "string" }, "requireReturn": false}],
+        "valid-jsdoc": [
+            "error",
+            {
+                "preferType": {
+                    "Boolean": "boolean",
+                    "Number": "number",
+                    "object": "Object",
+                    "String": "string"
+                },
+                "requireReturn": false
+            }
+        ],
+        "no-console": [
+            "error",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ],
         "vars-on-top": "off",
         "global-require": "off",
-        "no-shadow": ["error", { "allow": ["err", "callback"]}],
-        "max-len": "off"
+        "no-shadow": [
+            "error",
+            {
+                "allow": [
+                    "err",
+                    "callback"
+                ]
+            }
+        ],
+        "max-len": "off",
+        "prefer-exponentiation-operator": "off",
+        "no-restricted-properties": [
+            1,
+            {
+                "object": "Math.pow"
+            }
+        ],
+        "prefer-template": "off",
+        "new-cap": "off",
+        "no-param-reassign": "error",
+        "no-loop-func": "error"
     }
 }

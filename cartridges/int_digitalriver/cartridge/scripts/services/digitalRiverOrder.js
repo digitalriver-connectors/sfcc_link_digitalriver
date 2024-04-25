@@ -71,24 +71,23 @@ function createFulfillment(body) {
     var callResult = drOrderService.call(body);
     if (callResult.ok) {
         logger.info('Fulfilments were successfully posted');
+    } else if (callResult.error >= 500 && callResult.error < 600) {
+        logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
+        callResult = digitalRiver.drServiceRetryLogic(drOrderService, body, true);
     } else {
-        if (callResult.error >= 500 && callResult.error < 600) {
-            logger.info('Retrying the API call due to failure : Response Code {0} Response Message {1}', callResult.error, callResult.errorMessage);
-            callResult = digitalRiver.drServiceRetryLogic(drOrderService, body, true);
-        } else {
-            logger.error('Error while while posting fulfilments for order {0}', body.orderId);
-        }
+        logger.error('Error while while posting fulfilments for order {0}', body.orderId);
     }
+
     return callResult;
 }
 
 /**
-* Sends API call to Digital River to retrieve refund detail for an orderId with pending information 
-* @param {string} orderId dr order id 
-* @returns {dw.svc.Result} call result 
+* Sends API call to Digital River to retrieve refund detail for an orderId with pending information
+* @param {string} orderId dr order id
+* @returns {dw.svc.Result} call result
 */
 function getRefunds(orderId) {
-    var drOrderService = digitalRiver.createDigitalRiverService('/refunds?orderId=' + orderId+'&state=pending_information');
+    var drOrderService = digitalRiver.createDigitalRiverService('/refunds?orderId=' + orderId + '&state=pending_information');
     drOrderService.setRequestMethod('GET');
     logger.info('Sending API request to retrieve order to {0}', drOrderService.getURL());
     var callResult = drOrderService.call();
@@ -101,9 +100,9 @@ function getRefunds(orderId) {
 }
 
 /**
-* Sends API call to Digital River to retrieve refund detail for refundId
-* @param {string} orderId dr order id 
-* @returns {dw.svc.Result} call result 
+* Retrieves refund details by refund ID from Digital River service
+* @param {string} refundId - the ID of the refund
+* @returns {Object} - the result of the API call to retrieve refund details
 */
 function getRefundDetailsByRefundId(refundId) {
     var drOrderService = digitalRiver.createDigitalRiverService('/refunds/' + refundId);
@@ -118,16 +117,15 @@ function getRefundDetailsByRefundId(refundId) {
     return callResult;
 }
 
-
 /**
 * Sends API call to Digital River to retrieve return portal url
 * @param {string} drOrderId Digital River orderId
 * @param {string} orderNumber salesforceOrderNumber
 * @param {string} postalCode postal code of the shipping address
-* @returns {dw.svc.Result} call result 
+* @returns {dw.svc.Result} call result
 */
 function getReturnPortalUrl(drOrderId, orderNumber, postalCode) {
-    var drOrderService = digitalRiver.createDigitalRiverService('/global-returns/orders/create-return-portal-url?orderId=' + drOrderId +'&upstreamOrderId=' + orderNumber + '&postalCode=' + postalCode);
+    var drOrderService = digitalRiver.createDigitalRiverService('/global-returns/orders/create-return-portal-url?orderId=' + drOrderId + '&upstreamOrderId=' + orderNumber + '&postalCode=' + postalCode);
     drOrderService.setRequestMethod('GET');
     logger.info('Sending API request to get DR return portal url to {0}', drOrderService.getURL());
     var callResult = drOrderService.call();

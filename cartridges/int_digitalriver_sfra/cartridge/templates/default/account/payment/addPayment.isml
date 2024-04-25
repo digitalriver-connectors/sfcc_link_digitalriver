@@ -14,7 +14,7 @@
         <!---Breadcrumbs--->
         <isinclude template="components/breadcrumbs/pageBreadcrumbs"/>
         <isif condition="${pdict.drCustomerError}">
-             <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <p class="error-message-text">${pdict.drCustomerError}</p>
             </div>
         <iselse/>
@@ -35,7 +35,7 @@
                                 <isinclude template="account/payment/dropinForm"/>
                                 <isinclude url="${URLUtils.url('DigitalRiver-DisplayCompliance', 'complianceId', 'compliancePayment')}" />
                             <iselse/>
-                            <iscomment> Default Payment form </iscomment>
+                                <iscomment> Default Payment form </iscomment>
                                 <isinclude template="account/payment/paymentForm"/>
                             </isif>
                         </div>

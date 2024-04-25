@@ -43,14 +43,13 @@ exports.beforeStep = function (parameters) {
         currencies = drCountryCurrencyPairs[parameters.CountryCode];
     } else if (drCountryCurrencyPairs && !parameters.CountryCode) {
             for (var country in drCountryCurrencyPairs) { //eslint-disable-line
-                var currency = drCountryCurrencyPairs[country];
-                for (let i = 0; i < currency.length; i++) {
-                    currencies.push([country, currency[i]]);
-                }
+            var currency = drCountryCurrencyPairs[country];
+            for (let i = 0; i < currency.length; i += 1) {
+                currencies.push([country, currency[i]]);
             }
+        }
     }
 };
-
 
 // eslint-disable-next-line consistent-return
 exports.read = function () {
@@ -102,4 +101,3 @@ exports.afterStep = function (success) {
     logger.info('Dynamic pricing export completed successfully');
     return new Status(Status.OK);
 };
-

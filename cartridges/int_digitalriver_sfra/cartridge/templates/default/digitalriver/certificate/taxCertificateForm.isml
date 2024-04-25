@@ -1,17 +1,13 @@
-<form
-    action="${URLUtils.url('TaxCertificates-SaveCertificate')}"
-    class="tax-certificate-form"
-    method="POST"
-    enctype="multipart/form-data"
-    <isprint value="${pdict.certificateForm.attributes}" encoding="htmlsinglequote" />>
+<form action="${URLUtils.url('TaxCertificates-SaveCertificate')}" class="tax-certificate-form" method="POST"
+    enctype="multipart/form-data" <isprint value="${pdict.certificateForm.attributes}" encoding="htmlsinglequote" />>
     <!-- Company Name -->
     <div class="form-group
-        ${pdict.certificateForm.companyName.mandatory === true ? 'required' : ''}">
+            ${pdict.certificateForm.companyName.mandatory === true ? 'required' : ''}">
         <label class="form-control-label" for="companyName">
             <isprint value="${pdict.certificateForm.companyName.label}" encoding="htmlcontent" />
         </label>
-        <input type="text" class="form-control" id="companyName"
-            <isprint value="${pdict.certificateForm.companyName.attributes}" encoding="htmlsinglequote" />>
+        <input type="text" class="form-control" id="companyName" <isprint
+            value="${pdict.certificateForm.companyName.attributes}" encoding="htmlsinglequote" />>
         <div class="invalid-feedback"></div>
     </div>
 
@@ -20,15 +16,16 @@
         <!-- Country  -->
         <div class="col-6">
             <div class="form-group
-                ${pdict.certificateForm.country.mandatory === true ? 'required' : ''}">
+                    ${pdict.certificateForm.country.mandatory === true ? 'required' : ''}">
                 <label class="form-control-label" for="country">
                     <isprint value="${pdict.certificateForm.country.label}" encoding="htmlcontent" />
                 </label>
-                <select class="form-control" id="country"
-                    <isprint value="${pdict.certificateForm.country.attributes}" encoding="htmlsinglequote" />
+                <select class="form-control" id="country" <isprint value="${pdict.certificateForm.country.attributes}"
+                    encoding="htmlsinglequote" />
                     autocomplete="country">
                     <isloop items=${pdict.certificateForm.country.options} var="country">
-                        <option id="${country.id}" value="${country.htmlValue}" <isif condition="${country.selected}">selected</isif>>${country.label}</option>
+                        <option id="${country.id}" value="${country.htmlValue}" <isif condition="${country.selected}">selected
+                        </isif>>${country.label}</option>
                     </isloop>
                 </select>
                 <div class="invalid-feedback"></div>
@@ -38,15 +35,16 @@
         <!-- State  -->
         <div class="col-6">
             <div class="form-group
-                ${pdict.certificateForm.states.stateCode.mandatory === true ? 'required' : ''}">
+                    ${pdict.certificateForm.states.stateCode.mandatory === true ? 'required' : ''}">
                 <label class="form-control-label" for="state">
                     <isprint value="${pdict.certificateForm.states.stateCode.label}" encoding="htmlcontent" />
                 </label>
-                <select class="form-control" id="state"
-                    <isprint value="${pdict.certificateForm.states.stateCode.attributes}" encoding="htmlsinglequote" />
+                <select class="form-control" id="state" <isprint
+                    value="${pdict.certificateForm.states.stateCode.attributes}" encoding="htmlsinglequote" />
                     autocomplete="address-level1">
                     <isloop items=${pdict.certificateForm.states.stateCode.options} var="state">
-                        <option id="${state.id}" value="${state.htmlValue}" <isif condition="${state.selected}">selected</isif>>${state.label || ' '}</option>
+                        <option id="${state.id}" value="${state.htmlValue}" <isif condition="${state.selected}">selected</isif>
+                        >${state.label || ' '}</option>
                     </isloop>
                 </select>
                 <div class="invalid-feedback"></div>
@@ -59,12 +57,13 @@
         <!-- Exemption date -->
         <div class="col-6">
             <div class="form-group
-                ${pdict.certificateForm.startDate.mandatory === true ? 'required' : ''}">
+                    ${pdict.certificateForm.startDate.mandatory === true ? 'required' : ''}">
                 <label class="form-control-label" for="startDate">
                     <isprint value="${pdict.certificateForm.startDate.label}" encoding="htmlcontent" />
                 </label>
-                <input type="date" class="form-control" id="startDate" min="2000-01-01" max="${new Date().toISOString().split("T")[0]}"
-                    <isprint value="${pdict.certificateForm.startDate.attributes}" encoding="htmlsinglequote" />>
+                <input type="date" class="form-control" id="startDate" min="2000-01-01"
+                    max="${new Date().toISOString().split(" T")[0]}" <isprint
+                    value="${pdict.certificateForm.startDate.attributes}" encoding="htmlsinglequote" />>
                 <div class="invalid-feedback"></div>
             </div>
         </div>
@@ -72,26 +71,27 @@
         <!-- Expiration date -->
         <div class="col-6">
             <div class="form-group
-                ${pdict.certificateForm.endDate.mandatory === true ? 'required' : ''}">
+                    ${pdict.certificateForm.endDate.mandatory === true ? 'required' : ''}">
                 <label class="form-control-label" for="endDate">
                     <isprint value="${pdict.certificateForm.endDate.label}" encoding="htmlcontent" />
                 </label>
-                <input type="date" class="form-control" id="endDate" min="${new Date().toISOString().split("T")[0]}" max="2100-01-01"
-                    <isprint value="${pdict.certificateForm.endDate.attributes}" encoding="htmlsinglequote" /> />
+                <input type="date" class="form-control" id="endDate" min="${new Date().toISOString().split(" T")[0]}"
+                    max="2100-01-01" <isprint value="${pdict.certificateForm.endDate.attributes}"
+                    encoding="htmlsinglequote" /> />
                 <div class="invalid-feedback"></div>
             </div>
         </div>
     </div>
 
     <!-- Certificate file name -->
-    <div class="form-group 
-        ${pdict.certificateForm.endDate.mandatory === true ? 'required' : ''}">
+    <div class="form-group
+            ${pdict.certificateForm.endDate.mandatory === true ? 'required' : ''}">
         <label class="form-control-label" for="imageFile">
             <isprint value="${pdict.certificateForm.imageFile.label}" encoding="htmlcontent" />
         </label>
         <div class="custom-file">
             <label class="custom-file-label" for="imageFile">
-                ${Resource.msg('label.input.file.choose','digitalriver',null)}
+                ${Resource.msg('label.input.file.choose', 'digitalriver', null)}
             </label>
             <input type="file" class="custom-file-input form-control" id="imageFile" accept=".csv,.jpg,.jpeg,.pdf,.png"
                 <isprint value="${pdict.certificateForm.imageFile.attributes}" encoding="htmlsinglequote" /> />
@@ -99,30 +99,31 @@
         </div>
     </div>
 
-    <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+    <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}" />
 
     <!-- Cancel and Save Buttons -->
     <isif condition="${pdict.accountlanding}">
         <div class="row">
             <div class="col-6">
-                <a href="${URLUtils.url('TaxCertificates-List')}" class="btn btn-block btn-outline-primary">${Resource.msg('button.cancel','account',null)}</a>
+                <a href="${URLUtils.url('TaxCertificates-List')}"
+                    class="btn btn-block btn-outline-primary">${Resource.msg('button.cancel', 'account', null)}</a>
             </div>
             <div class="col-6">
-                <button type="submit" name="save" class="btn btn-save btn-block btn-primary">${Resource.msg('button.save','account',null)}</button>
+                <button type="submit" name="save" class="btn btn-save btn-block btn-primary">${Resource.msg('button.save', 'account', null)}</button>
             </div>
-        </div>        
+        </div>
     <iselse/>
         <div class="row">
             <div class="col-6">
                 <button type="submit" name="save" class="btn btn-save btn-block btn-primary">
-                    ${Resource.msg('button.save','account',null)}
+                    ${Resource.msg('button.save', 'account', null)}
                 </button>
             </div>
             <div class="col-6">
                 <button type="button" name="cancel" class="btn btn-block btn-outline-primary" data-dismiss="modal">
-                    ${Resource.msg('button.cancel','account',null)}
+                    ${Resource.msg('button.cancel', 'account', null)}
                 </button>
             </div>
-        </div>        
+        </div>
     </isif>
 </form>
