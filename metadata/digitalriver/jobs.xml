@@ -266,4 +266,26 @@
         </triggers>
     </job>
 
+    <job job-id="DigitalRiver_CancelAbandonedOrders" priority="0">
+        <description>Cancels abandoned Digital River orders based on custom object data</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="cancelAbandonedOrders" type="custom.DigitalRiverCancelAbandonedOrders"  enforce-restart="false">
+                <description>Executes the job to cancel abandoned Digital River orders</description>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-04-13Z</date-from>
+                    <start-time>12:13:33.000Z</start-time>
+                    <interval>10m</interval>
+                    <day-of-week />
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
 </jobs>

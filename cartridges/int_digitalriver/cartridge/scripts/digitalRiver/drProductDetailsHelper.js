@@ -42,7 +42,7 @@ function getProductUrl(productID) {
 }
 
 function getProductImageUrl(product) {
-    return product.getImage('small').getAbsURL().toString();
+    return (product.getImage('small')) ? product.getImage('small').getAbsURL().toString() : '';
 }
 
 function sendProductDetails(product) {

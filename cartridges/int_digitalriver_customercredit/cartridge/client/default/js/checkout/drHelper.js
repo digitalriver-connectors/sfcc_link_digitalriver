@@ -98,8 +98,8 @@ function handleDROrderPlacement(defer, placeOrderCallBack) {
  */
 function handleDROrderRedirect(members) {
     if ($('.DR-place-order').data('dr-redirect-success')) {
-        $('.DR-place-order').data('dr-redirect-success', 'false');
-        $('.DR-place-order').data('dr-order-placed', 'true');
+        $('.DR-place-order').data('dr-order-placed', true);
+        $('.DR-place-order').attr('data-dr-order-placed', true);
         members.gotoStage('placeOrder');
         members.nextStage();
     } else if ($('.DR-place-order').data('dr-redirect-error')) {

@@ -271,7 +271,7 @@ function updateCheckout(checkoutId, body) {
     var currentBasket = BasketMgr.getCurrentBasket();
     if (currentBasket) {
         var checkoutData = JSON.parse(currentBasket.custom.drCheckoutData);
-        if (!body.sourceId && !checkoutData.sources.length) {
+        if (!body.sourceId && (!checkoutData || !checkoutData.sources || !checkoutData.sources.length)) {
             body.sourceId = ''; // eslint-disable-line no-param-reassign
         }
     }

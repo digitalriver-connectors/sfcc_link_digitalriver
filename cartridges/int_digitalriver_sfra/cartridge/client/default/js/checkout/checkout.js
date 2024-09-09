@@ -371,60 +371,60 @@ var drHelper = require('./drHelper');
                     // --- Digital River Retrieve Stored Card ---
                     var placeOrder = function (defer) { // eslint-disable-line no-shadow
                         // Digital River - 2.6 - Redirect Flow
-                        if (!$('.DR-place-order').data('dr-order-placed') && !$('.DR-place-order').data('dr-redirect-success')) {
-                            drHelper.handleDROrderPlacement(defer, placeOrder);
-                        } else { // End Digital River - 2.6 - Redirect Flow
-                            $('.DR-place-order').data('dr-order-placed', 'false');
-                            // disable the placeOrder button here
-                            $('body').trigger('checkout:disableButton', '.next-step-button button');
-                            $.ajax({
-                                url: $('.place-order').data('action'),
-                                method: 'POST',
-                                success: function (data) {
-                                    // enable the placeOrder button here
-                                    $('body').trigger('checkout:enableButton', '.next-step-button button');
-                                    if (data.error) {
-                                        if (data.cartError) {
-                                            window.location.href = data.redirectUrl;
-                                            defer.reject();
-                                        } else {
-                                            if (data.digitalRiverConfiguration) {
-                                                $('body').trigger('digitalRiver:updateDropIn', data.digitalRiverConfiguration);
-                                            }
-                                            // go to appropriate stage and display error message
-                                            defer.reject(data);
-                                        }
+                       // if (!$('.DR-place-order').data('dr-order-placed')) {
+                       //     drHelper.handleDROrderPlacement(defer, placeOrder);
+                       // } else { // End Digital River - 2.6 - Redirect Flow
+                        $('.DR-place-order').data('dr-order-placed', false);
+                        // disable the placeOrder button here
+                        $('body').trigger('checkout:disableButton', '.next-step-button button');
+                        $.ajax({
+                            url: $('.place-order').data('action'),
+                            method: 'POST',
+                            success: function (data) {
+                                // enable the placeOrder button here
+                                $('body').trigger('checkout:enableButton', '.next-step-button button');
+                                if (data.error) {
+                                    if (data.cartError) {
+                                        window.location.href = data.redirectUrl;
+                                        defer.reject();
                                     } else {
-                                        var redirect = $('<form>')
-                                            .appendTo(document.body)
-                                            .attr({
-                                                method: 'POST',
-                                                action: data.continueUrl
-                                            });
-
-                                        $('<input>')
-                                            .appendTo(redirect)
-                                            .attr({
-                                                name: 'orderID',
-                                                value: data.orderID
-                                            });
-
-                                        $('<input>')
-                                            .appendTo(redirect)
-                                            .attr({
-                                                name: 'orderToken',
-                                                value: data.orderToken
-                                            });
-                                        redirect.submit();
-                                        defer.resolve(data);
+                                        if (data.digitalRiverConfiguration) {
+                                            $('body').trigger('digitalRiver:updateDropIn', data.digitalRiverConfiguration);
+                                        }
+                                        // go to appropriate stage and display error message
+                                        defer.reject(data);
                                     }
-                                },
-                                error: function () {
-                                    // enable the placeOrder button here
-                                    $('body').trigger('checkout:enableButton', $('.next-step-button button'));
+                                } else {
+                                    var redirect = $('<form>')
+                                        .appendTo(document.body)
+                                        .attr({
+                                            method: 'POST',
+                                            action: data.continueUrl
+                                        });
+
+                                    $('<input>')
+                                        .appendTo(redirect)
+                                        .attr({
+                                            name: 'orderID',
+                                            value: data.orderID
+                                        });
+
+                                    $('<input>')
+                                        .appendTo(redirect)
+                                        .attr({
+                                            name: 'orderToken',
+                                            value: data.orderToken
+                                        });
+                                    redirect.submit();
+                                    defer.resolve(data);
                                 }
-                            });
-                        }
+                            },
+                            error: function () {
+                                // enable the placeOrder button here
+                                $('body').trigger('checkout:enableButton', $('.next-step-button button'));
+                            }
+                        });
+                        //}
                     };
                     drHelper.retrieveStoredCard(drStoredPayment, defer, placeOrder);
                     return defer;

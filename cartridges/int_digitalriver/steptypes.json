@@ -99,6 +99,34 @@
                         }
                     ]
                 }
+            },
+            {
+                "@type-id": "custom.DigitalRiverCancelAbandonedOrders",
+                "@supports-parallel-execution": "false",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "description": "Cancels abandoned Digital River orders based on custom object data",
+                "module": "int_digitalriver/cartridge/scripts/jobsteps/drCancelAbandonedOrders.js",
+                "before-step-function": "beforeStep",
+                "after-step-function": "afterStep",
+                "total-count-function": "getTotalCount",
+                "read-function": "read",
+                "process-function": "process",
+                "write-function": "write",
+                "chunk-size": 10,
+                "transactional": "false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "ERROR",
+                            "description": "Processing DR order cancellation requests failed."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Processing DR order cancellation requests finished successfully."
+                        }
+                    ]
+                }
             }
         ],
         "script-module-step": [

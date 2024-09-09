@@ -280,11 +280,62 @@ function notifyOrderCancellation(order, items) {
     return drOrderAPI.createFulfillment(body);
 }
 
+/**
+* Notifies the Digital River API about the cancellation of an abandoned order.
+*
+* This function formats the items from the given Digital River order and sends
+* a cancellation request to the Digital River API.
+*
+* @param {Object} drOrder - The Digital River order object containing order details.
+* @param {string} drOrder.id - The unique identifier of the Digital River order.
+* @param {Array} drOrder.items - The list of items in the order.
+* @param {string} drOrder.items[].id - The unique identifier of an item.
+* @param {number} drOrder.items[].quantity - The quantity of the item to be canceled.
+*
+* @returns {Object} The response from the Digital River API after attempting to create a fulfillment.
+*/
+function notifyAbandonedOrderCancellation(drOrder) {
+    const drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+
+    let items = drOrder.items;
+    let formattedItems = [];
+    for (let i = 0; i < items.length; i += 1) {
+        let item = items[i];
+        formattedItems.push({
+            itemId: item.id,
+            cancelQuantity: item.quantity
+        });
+    }
+
+    let body = {
+        orderId: drOrder.id,
+        items: formattedItems
+    };
+
+    return drOrderAPI.createFulfillment(body);
+}
+
+/**
+* Retrieves orders from the Digital River API using the provided upstream ID.
+*
+* @param {string[]} upstreamIds - The upstream ID used to fetch the orders.
+* @returns {Object} - The response from the Digital River API containing the orders.
+*/
+function getOrdersByUpstreamId(upstreamIds) {
+    const drOrderAPI = require('*/cartridge/scripts/services/digitalRiverOrder');
+    return drOrderAPI.getOrders({
+        upstreamIds: upstreamIds,
+        limit: 100
+    });
+}
+
 module.exports = {
     handleDigitalRiverOrderState: handleDigitalRiverOrderState,
     setFraudStatus: setFraudStatus,
     handleConflictStatus: handleConflictStatus,
     mapLineItemsWithDigitalRiver: mapLineItemsWithDigitalRiver,
     notifyOrderFulfillment: notifyOrderFulfillment,
-    notifyOrderCancellation: notifyOrderCancellation
+    notifyOrderCancellation: notifyOrderCancellation,
+    notifyAbandonedOrderCancellation: notifyAbandonedOrderCancellation,
+    getOrdersByUpstreamId: getOrdersByUpstreamId
 };

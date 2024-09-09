@@ -219,6 +219,34 @@ function isAllowedEndpoint() {
     return checkoutOnly;
 }
 
+/**
+* Creates a custom object for handling order cancellation requests on error.
+* If a custom object with the given basket ID and Digital River checkout ID does not exist,
+* it creates a new one and initializes its properties.
+*
+* @param {string} basketID - The ID of the basket associated with the cancellation request.
+* @param {string} digitalRiverCheckoutID - The Digital River checkout ID associated with the cancellation request.
+*/
+function createCancellationRequestCO(basketID, digitalRiverCheckoutID) {
+    if (!basketID || !digitalRiverCheckoutID) {
+        return;
+    }
+
+    var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+    var Transaction = require('dw/system/Transaction');
+    var UUIDUtils = require('dw/util/UUIDUtils');
+
+    var cancellationRequestCO = CustomObjectMgr.queryCustomObject('DROrderCancellationOnErrorRequest', 'custom.basketID = {0} AND custom.digitalRiverCheckoutID = {1}', basketID, digitalRiverCheckoutID);
+    if (!cancellationRequestCO) {
+        Transaction.wrap(function () {
+            cancellationRequestCO = CustomObjectMgr.createCustomObject('DROrderCancellationOnErrorRequest', UUIDUtils.createUUID());
+            cancellationRequestCO.custom.basketID = basketID;
+            cancellationRequestCO.custom.digitalRiverCheckoutID = digitalRiverCheckoutID;
+            cancellationRequestCO.custom.isOrderCancellationInitiated = false;
+        });
+    }
+}
+
 module.exports = {
     checkDigitalProductsOnly: checkDigitalProductsOnly,
     getCountry: getCountry,
@@ -226,5 +254,6 @@ module.exports = {
     resetBasketOnError: resetBasketOnError,
     convertShippingMethodsToModel: convertShippingMethodsToModel,
     populateShipmentCustomPref: populateShipmentCustomPref,
-    isAllowedEndpoint: isAllowedEndpoint
+    isAllowedEndpoint: isAllowedEndpoint,
+    createCancellationRequestCO: createCancellationRequestCO
 };

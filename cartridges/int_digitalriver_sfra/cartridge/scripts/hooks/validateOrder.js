@@ -18,6 +18,17 @@ output.validateOrder = function validateOrder(basket) {
             result.error = true;
             result.message = Resource.msg('error.checkout.invalidate', 'digitalriver', null);
         }
+
+        if (digitalRiverEnabled) {
+            var drRedirectStatus = Object.hasOwnProperty.call(basket.custom, 'drRedirectStatus') ? basket.custom.drRedirectStatus : null;
+            if (drRedirectStatus != null) {
+                if (drRedirectStatus === 'pending_redirect' || drRedirectStatus === 'redirect_failure' || drRedirectStatus === 'order_placement_error') {
+                    result.error = true;
+                    //To do evaluate replace error message
+                    result.message = drRedirectStatus;
+                }
+            }
+        }
     }
     return result;
 };

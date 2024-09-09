@@ -14,6 +14,7 @@ server.prepend(
     function (req, res, next) {
         var Resource = require('dw/web/Resource');
         var BasketMgr = require('dw/order/BasketMgr');
+        var Transaction = require('dw/system/Transaction');
         var currentSite = require('dw/system/Site').getCurrent();
         var drUtilsHelper = require('*/cartridge/scripts/digitalRiver/drUtilsHelper');
         var drTaxHelper = require('*/cartridge/scripts/digitalRiver/drTaxHelper');
@@ -56,6 +57,13 @@ server.prepend(
 
         // Digital River - 2.6 - Redirect flow
         var drCheckoutAPI = require('*/cartridge/scripts/services/digitalRiverCheckout');
+        var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
+
+        var validatedProducts = validationHelpers.validateProducts(currentBasket);
+        if (validatedProducts.error && currentBasket && currentBasket.custom.drCheckoutID) {
+            // Create a custom object to track the order cancellation request
+            checkoutHelper.createCancellationRequestCO(currentBasket.UUID, currentBasket.custom.drCheckoutID);
+        }
 
         var drPaymentSessionID = req.querystring.drPaymentSessionId;
         var drOrderID = currentBasket.custom.drOrderID;
@@ -64,9 +72,16 @@ server.prepend(
 
         if (drPaymentSessionID && (drPaymentSessionID === currentBasket.custom.drPaymentSessionId) && drOrderID.length > 0) {
             var drOrderRefreshResponse = drCheckoutAPI.refreshOrder(drOrderID);
-            if (drOrderRefreshResponse.object.state === 'accepted' || drOrderRefreshResponse.object.state === 'in_review'
+            if (drOrderRefreshResponse.ok && (
+                drOrderRefreshResponse.object.state === 'accepted'
+                || drOrderRefreshResponse.object.state === 'in_review'
                 || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending')
-                || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending_funds')) {
+                || (drOrderRefreshResponse.object.state === 'pending_payment' && drOrderRefreshResponse.object.payment.session.state === 'pending_funds')
+            )) {
+                // Update the basket data
+                Transaction.wrap(function () {
+                    currentBasket.custom.drRedirectStatus = 'redirect_success'; // eslint-disable-line no-param-reassign
+                });
                 // handle success scenario, proceed with placing the order
                 res.setViewData({
                     drRedirectError: false,
@@ -75,6 +90,18 @@ server.prepend(
                 isRedirectSuccess = true;
             } else {
                 // handle failure scenario
+                // Update the basket data
+                Transaction.wrap(function () {
+                    currentBasket.custom.drOrderID = ''; // eslint-disable-line no-param-reassign
+                    currentBasket.custom.drPaymentSessionId = ''; // eslint-disable-line no-param-reassign
+                    currentBasket.custom.drRedirectStatus = 'redirect_failure'; // eslint-disable-line no-param-reassign
+                });
+
+                // Create a custom object to track the order cancellation request
+                var basketID = drOrderRefreshResponse.ok ? drOrderRefreshResponse.object.upstreamId : currentBasket.UUID;
+                var checkoutID = drOrderRefreshResponse.ok ? drOrderRefreshResponse.object.checkoutId : currentBasket.custom.drCheckoutID;
+                checkoutHelper.createCancellationRequestCO(basketID, checkoutID);
+
                 res.setViewData({
                     errorMessage: Resource.msg('error.order.redirect.failure', 'digitalriver', null),
                     error: true,
